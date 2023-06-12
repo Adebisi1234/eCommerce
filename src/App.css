@@ -4,13 +4,24 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  background: rgba(202, 202, 206, 0.186);
 }
 
 #root {
   width: 360px;
-  border: 1px solid black;
+  padding: 0 8px;
+  /* border: 1px solid black; */
+  
 }
 
 * {
   box-sizing: border-box !important;
 }
+/* *::-webkit-scrollbar {
+  display: none;
+  -ms-overflow-style: none;  
+  scrollbar-width: none;  
+      width: 6px !important;
+    height: 6px !important;
+    background: transparent;
+} */
