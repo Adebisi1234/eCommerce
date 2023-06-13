@@ -1,56 +1,55 @@
 import Header from "../../components/Header";
-import clock from "../../images/clock4.jpg";
+import { useNavigate } from "react-router-dom";
+import { useTasks } from "../../context/Store";
+import CartItemsList from "../../components/CartItemsList";
+import { useEffect, useState } from "react";
+import { clocks } from "../../types/defaults";
+const Cart = () => {
+  const { cart, clocks } = useTasks();
+  const navigate = useNavigate();
+  const [cartItems, setCartItems] = useState<clocks>();
+  const [total, setTotal] = useState<number>(0);
+  useEffect(() => {
+    setCartItems(clocks.filter((clock) => cart.includes(clock.name)));
+  }, [cart]);
 
-const Cart = ({ num }: { num: string }) => {
+  const query = cart.join("/");
   return (
     <div>
-      <Header leftIcon="left" title={`cart (${num})`} />
+      <Header leftIcon="left" title={`cart (${cart.length})`} />
       <div className="top max-h-[385px] mt-10">
         <div className="flex flex-col items-center gap-10 mb-4 lists">
-          <div className="w-full flex justify-between items-center gap-14 h-[49px]">
-            <div className="flex items-center gap-4">
-              <img src={clock} alt="watch icon" className="w-12 h-12" />
-              <div>
-                <p className="text-[#7a7a7a] font-medium text-sm">Family</p>
-                <p className="text-sm font-bold">9000 NGN</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 num h-9">
-              <p className="text-[#7a7a7a] text-2xl">-</p>
-              <p className="text-lg font-semibold">01</p>
-              <p className="text-[#7a7a7a] text-2xl">+</p>
-            </div>
-          </div>
-          <div className="w-full flex justify-between items-center gap-14 h-[49px]">
-            <div className="flex items-center gap-4">
-              <img src={clock} alt="watch icon" className="w-12 h-12" />
-              <div>
-                <p className="text-[#7a7a7a] font-medium text-sm">Family</p>
-                <p className="text-sm font-bold">9000 NGN</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 num h-9">
-              <p className="text-[#7a7a7a] text-2xl">-</p>
-              <p className="text-lg font-semibold">01</p>
-              <p className="text-[#7a7a7a] text-2xl">+</p>
-            </div>
-          </div>
+          {cart.length === 0 && (
+            <p>Please select some clocks you wish to buy </p>
+          )}
+          {cartItems?.map((item) => {
+            return (
+              <CartItemsList
+                key={item.name}
+                img={item.imgUrl}
+                name={item.name}
+                price={item.price}
+                priceWord={item.priceWord}
+                maxNum={item.amount}
+                setTotal={setTotal}
+                total={total}
+              />
+            );
+          })}
         </div>
       </div>
 
       <div className="flex flex-col items-center gap-6 p-6 mt-10 bg-white bottom">
         <h2 className="text-xl font-semibold text-center">Order Info</h2>
         <div className="flex flex-col gap-4 h-[200px] w-full mt-6">
-          <div className="details text-[#7a7a7a] font-semibold h-6 justify-between flex">
-            <p>Family</p>
-            <p>9000 NGN</p>
-          </div>
-          <div className="details text-[#7a7a7a] font-semibold h-6 justify-between flex">
-            <p>Family</p>
-            <p>9000 NGN</p>
-          </div>
+          {cartItems?.map((clock) => {
+            return (
+              <div className="details text-[#7a7a7a] font-semibold h-6 justify-between flex">
+                <p>{clock.name}</p>
+                <p>{clock.priceWord} NGN</p>
+              </div>
+            );
+          })}
           <div className="delivery text-[#7a7a7a] font-semibold h-6 justify-between flex">
             <p>Delivery</p>
             <p>1000 NGN</p>
@@ -58,11 +57,20 @@ const Cart = ({ num }: { num: string }) => {
           <hr />
           <div className="flex justify-between h-6 font-semibold total">
             <p>Total</p>
-            <p className="font-extrabold">19,000 NGN</p>
+            <p className="font-extrabold">{total} NGN</p>
           </div>
         </div>
 
-        <button className="flex h-12 gap-3 px-6 py-3 mx-auto text-white bg-black">
+        <button
+          className="flex h-12 gap-3 px-6 py-3 mx-auto text-white bg-black"
+          onClick={() => {
+            if (cart.length > 0) {
+              navigate(`/checkout/${query}`, {
+                state: JSON.stringify(cart),
+              });
+            }
+          }}
+        >
           Proceed to place order
         </button>
       </div>
