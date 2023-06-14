@@ -130,7 +130,8 @@ const initialTasks: {
           price: 1900,
           priceWord: "1,900",
           category: ["all", "luxury"],
-          imgUrl: "src/images/clock.jpg",
+          imgUrl:
+            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock.jpg",
           showcase: ["string"],
           smallImgUrl: "string",
           available: true,
@@ -146,7 +147,8 @@ const initialTasks: {
           price: 1900,
           priceWord: "1,900",
           category: ["all", "luxury"],
-          imgUrl: "src/images/clock1.jpg",
+          imgUrl:
+            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock1.jpg",
           showcase: ["string"],
           smallImgUrl: "string",
           available: true,
@@ -162,7 +164,8 @@ const initialTasks: {
           price: 1900,
           priceWord: "1,900",
           category: ["all", "luxury"],
-          imgUrl: "src/images/clock2.jpg",
+          imgUrl:
+            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock2.jpg",
           showcase: ["string"],
           smallImgUrl: "string",
           available: true,
@@ -178,7 +181,8 @@ const initialTasks: {
           price: 1900,
           priceWord: "1,900",
           category: ["all", "luxury"],
-          imgUrl: "src/images/clock3.jpg",
+          imgUrl:
+            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock3.jpg",
           showcase: ["string"],
           smallImgUrl: "string",
           available: true,
@@ -194,7 +198,8 @@ const initialTasks: {
           price: 1900,
           priceWord: "1,900",
           category: ["all", "luxury"],
-          imgUrl: "src/images/clock4.jpg",
+          imgUrl:
+            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock4.jpg",
           showcase: ["string"],
           smallImgUrl: "string",
           available: true,
@@ -210,7 +215,8 @@ const initialTasks: {
           price: 1900,
           priceWord: "1,900",
           category: ["all", "luxury"],
-          imgUrl: "src/images/clock5.jpg",
+          imgUrl:
+            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock5.jpg",
           showcase: ["string"],
           smallImgUrl: "string",
           available: true,
@@ -227,7 +233,8 @@ const initialTasks: {
           price: 1900,
           priceWord: "1,900",
           category: ["all", "luxury"],
-          imgUrl: "src/images/clock7.jpg",
+          imgUrl:
+            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock7.jpg",
           showcase: ["string"],
           smallImgUrl: "string",
           available: true,
@@ -243,7 +250,8 @@ const initialTasks: {
           price: 1900,
           priceWord: "1,900",
           category: ["all", "luxury"],
-          imgUrl: "src/images/clock8.jpg",
+          imgUrl:
+            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock8.jpg",
           showcase: ["string"],
           smallImgUrl: "string",
           available: true,
@@ -259,7 +267,8 @@ const initialTasks: {
           price: 1900,
           priceWord: "1,900",
           category: ["all", "luxury"],
-          imgUrl: "src/images/clock9.jpg",
+          imgUrl:
+            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock9.jpg",
           showcase: ["string"],
           smallImgUrl: "string",
           available: true,
@@ -275,7 +284,8 @@ const initialTasks: {
           price: 1900,
           priceWord: "1,900",
           category: ["all", "luxury"],
-          imgUrl: "src/images/clock10.jpg",
+          imgUrl:
+            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock10.jpg",
           showcase: ["string"],
           smallImgUrl: "string",
           available: true,
@@ -291,7 +301,8 @@ const initialTasks: {
           price: 1900,
           priceWord: "1,900",
           category: ["all", "luxury"],
-          imgUrl: "src/images/clock11.jpg",
+          imgUrl:
+            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock11.jpg",
           showcase: ["string"],
           smallImgUrl: "string",
           available: true,
@@ -307,7 +318,8 @@ const initialTasks: {
           price: 1900,
           priceWord: "1,900",
           category: ["all", "luxury"],
-          imgUrl: "src/images/clock12.jpg",
+          imgUrl:
+            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock12.jpg",
           showcase: ["string"],
           smallImgUrl: "string",
           available: true,
@@ -323,7 +335,8 @@ const initialTasks: {
           price: 1900,
           priceWord: "1,900",
           category: ["all", "luxury"],
-          imgUrl: "src/images/clock13.jpg",
+          imgUrl:
+            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock13.jpg",
           showcase: ["string"],
           smallImgUrl: "string",
           available: true,
@@ -339,7 +352,8 @@ const initialTasks: {
           price: 1900,
           priceWord: "1,900",
           category: ["all", "luxury"],
-          imgUrl: "src/images/clock14.jpg",
+          imgUrl:
+            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock14.jpg",
           showcase: ["string"],
           smallImgUrl: "string",
           available: true,
@@ -355,7 +369,8 @@ const initialTasks: {
           price: 1900,
           priceWord: "1,900",
           category: ["all", "luxury"],
-          imgUrl: "src/images/clock15.jpg",
+          imgUrl:
+            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock15.jpg",
           showcase: ["string"],
           smallImgUrl: "string",
           available: true,
