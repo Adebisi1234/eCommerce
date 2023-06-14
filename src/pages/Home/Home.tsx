@@ -3,7 +3,6 @@ import Card from "../../components/Card";
 import filter from "../../assets/filter.svg";
 import search from "../../assets/search.svg";
 import discount from "../../assets/discount.svg";
-import clock from "../../images/clock1.jpg";
 import dashboard from "../../assets/dashboard.svg";
 import luxury from "../../assets/luxury.png";
 import fashion from "../../assets/fashion.svg";
@@ -33,8 +32,8 @@ const Home = () => {
   return (
     <>
       <Header leftIcon="menu" title="Home" rightIcon="cart" />
-      <div className="search mx-2 flex gap-4 h-10">
-        <div className="h-full flex p-1 gap-1 w-full ml-1 border-2">
+      <div className="flex h-10 gap-4 mx-2 search">
+        <div className="flex w-full h-full gap-1 p-1 ml-1 border-2">
           <img
             src={search}
             alt="search icon"
@@ -75,9 +74,9 @@ const Home = () => {
           )}
         </div>
       </div>
-      <div className="collections mt-6 mb-3">
-        <h2 className="font-bold mb-4">Browse collections</h2>
-        <div className="slide flex gap-8 pt-2 h-fit overflow-x-scroll mb-8 mx-2 ">
+      <div className="mt-6 mb-3 collections">
+        <h2 className="mb-4 font-bold">Browse collections</h2>
+        <div className="flex gap-8 pt-2 mx-2 mb-8 overflow-x-scroll slide h-fit ">
           {cats.map((cat) => (
             <Cat name={cat.name} key={cat.name} icon={cat.icon} />
           ))}
@@ -87,9 +86,9 @@ const Home = () => {
         <Box name="40% OFF" icon={discount} small="On all luxury watches" />
       </div>
       <div className="topPicks h-[292px] ">
-        <h2 className="font-bold mb-3">Top Picks</h2>
+        <h2 className="mb-3 font-bold">Top Picks</h2>
 
-        <div className="grid grid-cols-2 w-full place-items-center gap-x-6">
+        <div className="grid w-full grid-cols-2 place-items-center gap-x-6">
           {clocks.map((clock) => {
             return <Card name={clock?.name} key={clock?.name} />;
           })}

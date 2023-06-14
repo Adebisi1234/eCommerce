@@ -1,8 +1,6 @@
 import cartIcon from "../assets/cart.svg";
 import menu from "../assets/menu.svg";
 import left from "../assets/chevron-left.svg";
-import wished from "../assets/wishListed.svg";
-import wish from "../assets/wishList.svg";
 import { useNavigate } from "react-router-dom";
 import { useTasks } from "../context/Store";
 
@@ -10,13 +8,10 @@ const Header = ({
   leftIcon,
   title,
   rightIcon,
-  item,
-  wishListed,
 }: {
   leftIcon: string;
   title?: string;
   rightIcon?: string;
-  item?: number;
   wishListed?: boolean;
 }): JSX.Element => {
   const navigate = useNavigate();

@@ -26,7 +26,7 @@ const Search = () => {
   const [show, setShow] = useState(false);
   return (
     <>
-      <Header leftIcon="left" title={query} item={0} />
+      <Header leftIcon="left" title={query} />
       <div className="filter flex justify-between items-center relative">
         <h4 className="text-center font-bold text-[#7a7a7a] mb-2 text-base">
           {num} items..
