@@ -27,4 +27,3 @@ postcss.config.js
 .eslintrc.cjs
 tsconfig.json
 tsconfig.node.json
-src/images
