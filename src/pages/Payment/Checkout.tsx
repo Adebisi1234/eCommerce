@@ -2,19 +2,28 @@ import Header from "../../components/Header";
 import edit from "../../assets/edit.svg";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTasks, useTasksDispatch } from "../../context/Store";
+import { PaystackButton } from "react-paystack";
 
 const Checkout = () => {
   const navigate = useNavigate();
-  const { clocks, user } = useTasks();
+  const { user } = useTasks();
   const dispatch = useTasksDispatch();
-  const items: string[] | string = JSON.parse(useLocation().state);
-  const cartItems = clocks.filter((clock) => {
-    if (typeof items === "string") {
-      return clock.name === items;
-    } else {
-      return items.some((item) => clock.name === item);
-    }
-  });
+  const items: string[] | string = JSON.parse(useLocation().state)[1];
+  const total = JSON.parse(useLocation().state)[0];
+
+  const componentProps = {
+    email: user!.email,
+    amount: Number(total) * 100,
+    publicKey: "pk_test_406e44afd8d13715d52f62dad9d383d2035ee0e7",
+    text: "Confirm purchase",
+    onSuccess: () => {
+      dispatch({
+        type: "clearCart",
+      });
+      navigate("/");
+    },
+    onClose: () => navigate("/"),
+  };
   return (
     <>
       <Header leftIcon="left" title="Place order" />
@@ -57,29 +66,20 @@ const Checkout = () => {
         </button>
       </div>
       <div className="flex flex-col items-center gap-10 py-6 px-3 bg-white bottom">
-        {cartItems
-          ? cartItems.map((clock) => {
-              return (
-                <div
-                  key={clock.name}
-                  className="flex items-center justify-between w-full name h-7"
-                >
-                  <p className="text-lg font-semibold text-[#7a7a7a]">
-                    {clock.name}
-                  </p>
-                  <p className="text-2xl font-extrabold">
-                    {clock.priceWord} NGN
-                  </p>
-                </div>
-              );
-            })
-          : ""}
+        <div className="flex items-center justify-between w-full name h-7">
+          <p className="text-lg font-semibold text-[#7a7a7a]">Order</p>
+          <p className="text-2xl font-extrabold">{total} NGN</p>
+        </div>
 
         <div className="terms">
           This are the terms and conditions and shit and shat and shot and slap,
           Yada Yada
         </div>
-        <button
+        <PaystackButton
+          className="flex items-center justify-center w-full h-12 gap-3 px-6 py-3 mx-auto text-white bg-black"
+          {...componentProps}
+        />
+        {/* <button
           className="flex items-center justify-center w-full h-12 gap-3 px-6 py-3 mx-auto text-white bg-black"
           onClick={() => {
             dispatch({
@@ -89,7 +89,7 @@ const Checkout = () => {
           }}
         >
           Confirm purchase
-        </button>
+        </button> */}
       </div>
     </>
   );

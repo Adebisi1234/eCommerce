@@ -18,14 +18,15 @@ const CartItemsList = ({
   setTotal: React.Dispatch<React.SetStateAction<number>>;
   total: number;
 }) => {
+  console.log("total", total);
   const dispatch = useTasksDispatch();
   const totalRef = useRef(total);
   const [num, setNum] = useState(1);
   const minus = useRef<HTMLParagraphElement>(null);
   const plus = useRef<HTMLParagraphElement>(null);
   useEffect(() => {
-    setTotal(1000 + price);
-  }, [name]);
+    setTotal((prev) => prev + price);
+  }, []);
   return (
     <div className="w-full flex justify-between items-center gap-14 h-[49px]">
       <div className="flex items-center gap-4">

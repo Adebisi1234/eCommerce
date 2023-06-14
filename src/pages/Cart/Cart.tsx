@@ -8,7 +8,7 @@ const Cart = () => {
   const { cart, clocks } = useTasks();
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState<clocks>();
-  const [total, setTotal] = useState<number>(0);
+  const [total, setTotal] = useState<number>(1000);
   useEffect(() => {
     setCartItems(clocks.filter((clock) => cart.includes(clock.name)));
   }, [cart]);
@@ -66,7 +66,7 @@ const Cart = () => {
           onClick={() => {
             if (cart.length > 0) {
               navigate(`/checkout/${query}`, {
-                state: JSON.stringify(cart),
+                state: JSON.stringify([total, cart]),
               });
             }
           }}
