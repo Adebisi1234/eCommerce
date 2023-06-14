@@ -131,7 +131,7 @@ const initialTasks: {
           priceWord: "1,900",
           category: ["all", "luxury"],
           imgUrl:
-            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock.jpg",
+            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock.jpg?raw=true",
           showcase: ["string"],
           smallImgUrl: "string",
           available: true,
@@ -148,7 +148,7 @@ const initialTasks: {
           priceWord: "1,900",
           category: ["all", "luxury"],
           imgUrl:
-            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock1.jpg",
+            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock1.jpg?raw=true",
           showcase: ["string"],
           smallImgUrl: "string",
           available: true,
@@ -165,7 +165,7 @@ const initialTasks: {
           priceWord: "1,900",
           category: ["all", "luxury"],
           imgUrl:
-            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock2.jpg",
+            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock2.jpg?raw=true",
           showcase: ["string"],
           smallImgUrl: "string",
           available: true,
@@ -182,7 +182,7 @@ const initialTasks: {
           priceWord: "1,900",
           category: ["all", "luxury"],
           imgUrl:
-            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock3.jpg",
+            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock3.jpg?raw=true",
           showcase: ["string"],
           smallImgUrl: "string",
           available: true,
@@ -199,7 +199,7 @@ const initialTasks: {
           priceWord: "1,900",
           category: ["all", "luxury"],
           imgUrl:
-            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock4.jpg",
+            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock4.jpg?raw=true",
           showcase: ["string"],
           smallImgUrl: "string",
           available: true,
@@ -216,7 +216,7 @@ const initialTasks: {
           priceWord: "1,900",
           category: ["all", "luxury"],
           imgUrl:
-            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock5.jpg",
+            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock5.jpg?raw=true",
           showcase: ["string"],
           smallImgUrl: "string",
           available: true,
@@ -234,7 +234,7 @@ const initialTasks: {
           priceWord: "1,900",
           category: ["all", "luxury"],
           imgUrl:
-            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock7.jpg",
+            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock7.jpg?raw=true",
           showcase: ["string"],
           smallImgUrl: "string",
           available: true,
@@ -251,7 +251,7 @@ const initialTasks: {
           priceWord: "1,900",
           category: ["all", "luxury"],
           imgUrl:
-            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock8.jpg",
+            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock8.jpg?raw=true",
           showcase: ["string"],
           smallImgUrl: "string",
           available: true,
@@ -268,7 +268,7 @@ const initialTasks: {
           priceWord: "1,900",
           category: ["all", "luxury"],
           imgUrl:
-            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock9.jpg",
+            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock9.jpg?raw=true",
           showcase: ["string"],
           smallImgUrl: "string",
           available: true,
@@ -285,7 +285,7 @@ const initialTasks: {
           priceWord: "1,900",
           category: ["all", "luxury"],
           imgUrl:
-            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock10.jpg",
+            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock10.jpg?raw=true",
           showcase: ["string"],
           smallImgUrl: "string",
           available: true,
@@ -302,7 +302,7 @@ const initialTasks: {
           priceWord: "1,900",
           category: ["all", "luxury"],
           imgUrl:
-            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock11.jpg",
+            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock11.jpg?raw=true",
           showcase: ["string"],
           smallImgUrl: "string",
           available: true,
@@ -319,7 +319,7 @@ const initialTasks: {
           priceWord: "1,900",
           category: ["all", "luxury"],
           imgUrl:
-            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock12.jpg",
+            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock12.jpg?raw=true",
           showcase: ["string"],
           smallImgUrl: "string",
           available: true,
@@ -336,7 +336,7 @@ const initialTasks: {
           priceWord: "1,900",
           category: ["all", "luxury"],
           imgUrl:
-            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock13.jpg",
+            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock13.jpg?raw=true",
           showcase: ["string"],
           smallImgUrl: "string",
           available: true,
@@ -353,7 +353,7 @@ const initialTasks: {
           priceWord: "1,900",
           category: ["all", "luxury"],
           imgUrl:
-            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock14.jpg",
+            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock14.jpg?raw=true",
           showcase: ["string"],
           smallImgUrl: "string",
           available: true,
@@ -370,7 +370,7 @@ const initialTasks: {
           priceWord: "1,900",
           category: ["all", "luxury"],
           imgUrl:
-            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock15.jpg",
+            "https://github.com/Adebisi1234/eCommerce/blob/main/src/images/clock15.jpg?raw=true",
           showcase: ["string"],
           smallImgUrl: "string",
           available: true,
