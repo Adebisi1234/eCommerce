@@ -1,4 +1,4 @@
-import User from "../models/userModel";
+import User from "../models/userModel.js";
 
 const editFavorite = async (req, res, next) => {
   try {

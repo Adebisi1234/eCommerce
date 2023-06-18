@@ -6,7 +6,7 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 import cookies from "cookie-parser";
 
-import userRouter from "./routes/userRoutes";
+import userRouter from "./routes/userRoutes.js";
 import clockRouter from "./routes/clockRoutes.js";
 
 const app = express();

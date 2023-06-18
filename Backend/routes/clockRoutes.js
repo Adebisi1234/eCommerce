@@ -1,7 +1,7 @@
 import express from "express";
-import authController from "../controllers/authController";
-import clockController from "../controllers/clockController";
-import User from "../models/userModel";
+import authController from "../controllers/authController.js";
+import clockController from "../controllers/clockController.js";
+import User from "../models/userModel.js";
 const router = express.Router();
 
 const isAdmin = async (req, res, next) => {

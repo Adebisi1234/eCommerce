@@ -1,6 +1,5 @@
-import Clock from "../models/clockModel";
+import Clock from "../models/clockModel.js";
 import { Resend } from "resend";
-import Customer from "../emails/Customer";
 
 const resend = new Resend(process.env.EMAIL_API_KEY);
 
@@ -74,7 +73,7 @@ const sendEmailOnOrder = async (req, res, next) => {
       from: "ti.adebisi@gmail.com",
       to: req.body.email,
       subject: req.body.product.name,
-      react: <Customer />,
+      html: req.body.html,
     });
     res.status(200).json({ data });
   } catch (error) {
