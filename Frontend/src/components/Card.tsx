@@ -1,69 +1,83 @@
 import wishList from "../assets/wishList.svg";
 import wishListed from "../assets/wishListed.svg";
-import plus from "../assets/plus.svg";
 import { useNavigate } from "react-router-dom";
 import { useTasks, useTasksDispatch } from "../context/Store";
 const Card = ({ name }: { name: string }) => {
-  const { clocks } = useTasks();
+  const { clocks, user } = useTasks();
   const clock = clocks.find((clock) => clock?.name === name);
   const navigate = useNavigate();
   const dispatch = useTasksDispatch();
   return (
-    <div className="w-[144px] relative z-0 mb-6 h-[255px]">
-      <div className="image mb-3">
-        {/* before pseudo for small */}
+    <div className="w-[170px] pb-2 bg-[var(--bg-lightDark)] h-fit rounded-[25px]">
+      <div className="relative z-0 smallUrl">
         <img
+          className="img h-[250px] object-cover rounded-[25px]"
           src={clock?.imgUrl}
-          className="h-[194px] w-[144px] object-cover"
-          height={194}
-          width={144}
-          alt="product image"
+          height={250}
+          width={170}
+          alt={clock?.name}
           onClick={() => {
             navigate(`/product/${clock?.name}`);
           }}
         />
-        <div className="wishList absolute top-3 z-0 right-3 h-8 w-8 border-2 rounded-full flex justify-center items-center">
+        <div className="absolute z-0 p-2 border rounded-full right-3 top-4 favorite">
           <img
-            src={clock?.wishListed ? wishListed : wishList}
-            alt="add to wishlist"
+            src={
+              user?.favorites?.includes(
+                clock?.name ? clock.name : "lskdaldfkdalfnadsfk"
+              )
+                ? wishListed
+                : wishList
+            }
+            alt="favorite?"
+            className="w-5 h-5"
             onClick={() => {
+              console.log("clicked", user?.favorites);
               dispatch({
                 type: "wishList",
                 payload: clock?.name,
               });
-              // return (isWishListed = !isWishListed);
             }}
           />
         </div>
       </div>
-      <p
-        className="text-[#7B7B7B] font-semibold text-xs mb-1"
-        onClick={() => {
-          navigate(`/product/${clock?.name}`);
-        }}
-      >
-        {clock?.name}
-      </p>
-      <div className="price flex justify-between items-center w-full h-6">
-        <p
-          className="text-black text-sm font-bold"
+      <div className="flex items-end justify-between">
+        <div
+          className="pl-2 mt-4"
           onClick={() => {
             navigate(`/product/${clock?.name}`);
           }}
         >
-          {clock?.priceWord} NGN
-        </p>
-        <img
-          src={plus}
-          alt="add to cart"
-          className="h-6 w-6"
-          onClick={() => {
-            dispatch({
-              type: "addToCart",
-              payload: name,
-            });
-          }}
-        />
+          <h3 className="text-xs font-semibold">{clock?.name}</h3>
+          <p className="text-sm font-bold">NGN {clock?.priceWord}</p>
+        </div>
+        <div
+          className="plus w-[30px] h-full"
+          onClick={() => dispatch({ type: "addToCart", payload: clock?.name })}
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M12 5V19"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M5 12H19"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
       </div>
     </div>
   );

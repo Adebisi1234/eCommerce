@@ -13,7 +13,6 @@ export type clock = {
   description: string;
   discount: number;
   sold: string;
-  wishListed: boolean;
   createdAt?: string;
   updatedAt?: string;
   numSold?: number;
@@ -22,7 +21,7 @@ export type clock = {
 export type clocks = clock[];
 
 export type user = {
-  id: string;
+  id?: string;
   name: string;
   address: string;
   number: string;

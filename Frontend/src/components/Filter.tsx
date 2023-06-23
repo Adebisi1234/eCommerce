@@ -1,5 +1,3 @@
-import { clocks } from "../types/defaults";
-
 const Filter = ({
   setShow,
   setFilt,
@@ -9,7 +7,7 @@ const Filter = ({
 }) => {
   return (
     <div
-      className="flex flex-col gap-3 bg-white p-4"
+      className="flex flex-col gap-3 bg-black absolute text-white right-0 z-20 w-[200px] p-4"
       onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         console.log((e.target as HTMLDivElement).textContent);
         if ((e.target as HTMLDivElement).textContent?.includes("Low to High")) {
@@ -30,11 +28,21 @@ const Filter = ({
         setShow((pre) => !pre);
       }}
     >
-      <p>Popularity</p>
-      <p>Newest Arrivals</p>
-      <p>Price: Low to High</p>
-      <p>Price: High to Low</p>
-      <p>Product Rating</p>
+      <p className="hover:bg-[var(--bg-lightDark)] cursor-pointer">
+        Popularity
+      </p>
+      <p className="hover:bg-[var(--bg-lightDark)] cursor-pointer">
+        Newest Arrivals
+      </p>
+      <p className="hover:bg-[var(--bg-lightDark)] cursor-pointer">
+        Price: Low to High
+      </p>
+      <p className="hover:bg-[var(--bg-lightDark)] cursor-pointer">
+        Price: High to Low
+      </p>
+      <p className="hover:bg-[var(--bg-lightDark)] cursor-pointer">
+        Product Rating
+      </p>
     </div>
   );
 };

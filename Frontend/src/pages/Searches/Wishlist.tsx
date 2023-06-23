@@ -1,30 +1,17 @@
 import Card from "../../components/Card";
 import Filter from "../../components/Filter";
 import { useTasks } from "../../context/Store";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import back from "../../assets/back.svg";
 import slider from "../../assets/Slider.svg";
 const Search = () => {
-  const query = useParams().query;
   const navigate = useNavigate();
-  const { cart } = useTasks();
+  const { cart, user } = useTasks();
 
-  const Allclocks = useTasks().clocks.filter((clock) => {
-    if (clock?.name.toLowerCase().includes(query!.toLowerCase())) {
-      return true;
-    } else if (
-      typeof clock?.category === "object"
-        ? clock?.category.some((el) =>
-            el.toLowerCase().includes(query!.toLowerCase())
-          )
-        : clock?.category.toLowerCase().includes(query!.toLowerCase())
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  });
+  const Allclocks = useTasks().clocks.filter((clock) =>
+    user?.favorites.includes(clock.name)
+  );
 
   const [clocks, setClocks] = useState(Allclocks);
   const num = clocks.length;
@@ -67,7 +54,7 @@ const Search = () => {
         <div className="name flex items-center gap-[9px] ml-2">
           <img src={back} alt="back arrow" onClick={() => navigate("..")} />
           <h1 className="ml-[9px] font-extrabold text-xl text-[#e2e2e2]">
-            {query}
+            Wishlist
           </h1>
         </div>
         <div className="filter relative">
@@ -84,15 +71,12 @@ const Search = () => {
           })
         ) : (
           <div className="h-full w-full flex justify-center items-center">
-            No Items found
+            No Items found, please add some products to your wishlist
           </div>
         )}
       </div>
 
-      <div
-        className="bg-[var(--highlight)] rounded-full h-[75px] w-[75px] flex items-center fixed bottom-[54px] right-[23px] justify-center"
-        onClick={() => navigate("/cart")}
-      >
+      <div className="bg-[var(--highlight)] rounded-full h-[75px] w-[75px] flex items-center fixed bottom-[54px] right-[23px] justify-center">
         <div className="relative w-fit h-fit">
           <svg
             width="30"

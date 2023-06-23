@@ -1,4 +1,3 @@
-import Header from "../../components/Header";
 import edit from "../../assets/edit.svg";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTasks, useTasksDispatch } from "../../context/Store";
@@ -8,8 +7,8 @@ const Checkout = () => {
   const navigate = useNavigate();
   const { user } = useTasks();
   const dispatch = useTasksDispatch();
-  const items: string[] | string = JSON.parse(useLocation().state)[1];
-  const total = JSON.parse(useLocation().state)[0];
+
+  const total = useLocation().state;
 
   const componentProps = {
     email: user!.email,
@@ -57,7 +56,7 @@ const Checkout = () => {
         <button
           className="flex items-center justify-center w-full h-12 gap-3 px-6 py-3 mx-auto text-black border-2 border-black"
           onClick={() => {
-            navigate("/details", { state: JSON.stringify(items) });
+            navigate("/details");
           }}
         >
           <img src={edit} alt="edit icon" />

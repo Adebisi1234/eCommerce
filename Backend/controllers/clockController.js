@@ -71,9 +71,9 @@ const sendEmailOnOrder = async (req, res, next) => {
   try {
     const data = await resend.emails.send({
       from: "ti.adebisi@gmail.com",
-      to: req.body.email,
-      subject: req.body.product.name,
-      html: req.body.html,
+      to: "oluwatobilobaadebisi6@gmail.com", //req.body.email,
+      subject: "this is sht", //req.body.product.name,
+      html: "<strong>It works!</strong>",
     });
     res.status(200).json({ data });
   } catch (error) {

@@ -6,47 +6,20 @@ import Checkout from "./pages/Payment/Checkout";
 import Details from "./pages/Payment/Details";
 import Product from "./pages/Product/Product";
 import Search from "./pages/Searches/Search";
-import { Route, Routes, useLocation } from "react-router-dom";
-// import { useState, createContext } from "react";
-import { TasksProvider, useTasks } from "./context/Store";
-import Sidebar from "./components/Sidebar";
-import Header from "./components/Header";
-import { useEffect, useRef, useState } from "react";
+import { Link, Route, Routes } from "react-router-dom";
+import { TasksProvider } from "./context/Store";
 import Orders from "./pages/Order/Orders";
-import Wishlist from "./pages/Order/Wishlist";
+import Wishlist from "./pages/Searches/Wishlist";
+import User from "./pages/User/User";
+import Login from "./pages/Login/Login";
 
 function App() {
-  // const [cartItem, setCartItems]: [
-  //   string[],
-  //   React.Dispatch<React.SetStateAction<string[]>>
-  // ] = useState<string[]>(["Family"]);
-  let location = useLocation();
-  const { cart } = useTasks();
-  const [showSidebar, setShowSidebar] = useState(true);
-  const sideRef = useRef<HTMLDivElement>(null!);
-
   return (
     <>
       <TasksProvider>
         <div>
-          <div
-            className={`w-full fixed z-50 inset-0 ${
-              !showSidebar ? "-translate-x-full hidden" : "translate-x-0"
-            } transition-all`}
-            ref={sideRef}
-            onClick={(e) => {
-              console.log(e.target, sideRef.current);
-              if (e.target === sideRef.current) {
-                setShowSidebar(!showSidebar);
-              }
-            }}
-          >
-            <div className="sidebar bg-white w-2/3">
-              <Sidebar />
-            </div>
-          </div>
           <Routes>
-            <Route
+            {/* <Route
               path="/"
               element={
                 <Header
@@ -68,17 +41,28 @@ function App() {
                   rightIcon="cart"
                 />
               }
-            >
-              <Route index element={<Home />} />
-              <Route path="/search/:query?" element={<Search />} />
-              <Route path="/categories/" element={<Categories />} />
-              <Route path="/product/:name" element={<Product />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/checkout/*?" element={<Checkout />} />
-              <Route path="/orders" element={<Orders />} />
-              <Route path="/wishlist" element={<Wishlist />} />
-              <Route path="/details" element={<Details disabled={false} />} />
-            </Route>
+            > */}
+            <Route index element={<Home />} />
+            <Route path="/search/:query?" element={<Search />} />
+            <Route path="/categories/" element={<Categories />} />
+            <Route path="/product/:name" element={<Product />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/checkout/*?" element={<Checkout />} />
+            <Route path="/orders" element={<Orders />} />
+            <Route path="/wishlist" element={<Wishlist />} />
+            <Route path="/details" element={<Details />} />
+            <Route path="/user" element={<User />} />
+            <Route path="/login" element={<Login />} />
+
+            <Route
+              path="*"
+              element={
+                <h1>
+                  Wrong page, <Link to="/">click here to redirect home</Link>{" "}
+                </h1>
+              }
+            />
+            {/* </Route> */}
           </Routes>
         </div>
       </TasksProvider>
@@ -91,5 +75,5 @@ function App() {
     </>
   );
 }
-
+export const BACKEND_URL = "https://ecommerce-x0we.onrender.com/";
 export default App;
