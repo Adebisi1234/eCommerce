@@ -20,6 +20,7 @@ import AllOrders from "./pages/admin/AllOrders";
 import Payment from "./pages/admin/Payment";
 import Products from "./pages/admin/Products";
 import Shippings from "./pages/admin/Shippings";
+import Layout from "./pages/admin/Layout";
 
 export const BACKEND_URL = "http://localhost:6001";
 function App() {
@@ -43,7 +44,7 @@ function App() {
         <>
           {location.includes("/admin") ? (
             <Routes>
-              <Route path="/admin">
+              <Route path="/admin" element={<Layout />}>
                 <Route index element={<Admin />} />
                 <Route path="orders" element={<AllOrders />} />
                 <Route path="payments" element={<Payment />} />

@@ -1,136 +1,136 @@
-import { Link } from "react-router-dom";
-import Search from "../../components/SearchComp";
-import useWindowSize from "../../hooks/useWindowSize";
-import watch from "../../assets/watch.png";
-
 const Shippings = () => {
-  const width = useWindowSize();
   return (
-    <div className="grid grid-cols-[200px_minmax(900px,_1fr)] gap-x-8 h-full w-full">
-      {width > 768 ? (
-        <>
-          <div className="sidebar border-r-2 -2 flex flex-col gap-y-10 pt-7">
-            <img
-              src={watch}
-              alt="logo"
-              className="w-16 h-16 mx-auto object-cover"
-            />
-            <Link className="hover:bg-[var(--bg-lightDark)]" to="">
-              <div className=" flex gap-3 h-10 items-center  image">
-                <img
-                  src={watch}
-                  alt="placeholder"
-                  className="h-full object-cover"
-                />
-                <p>Dashboard</p>
-              </div>
-            </Link>
-            <Link className="hover:bg-[var(--bg-lightDark)]" to="orders">
-              <div className=" flex gap-3 h-10 items-center  order">
-                <img
-                  src={watch}
-                  alt="placeholder"
-                  className="h-full object-cover"
-                />
-                <p>Orders</p>
-              </div>
-            </Link>
-            <Link className="hover:bg-[var(--bg-lightDark)]" to="products">
-              <div className=" flex gap-3 h-10 items-center  products">
-                <img
-                  src={watch}
-                  alt="placeholder"
-                  className="h-full object-cover"
-                />
-                <p>Products</p>
-              </div>
-            </Link>
-            <Link className="hover:bg-[var(--bg-lightDark)]" to="shippings">
-              <div className=" flex gap-3 h-10 items-center  shipping">
-                <img
-                  src={watch}
-                  alt="placeholder"
-                  className="h-full object-cover"
-                />
-                <p>Shipping</p>
-              </div>
-            </Link>
-            <Link className="hover:bg-[var(--bg-lightDark)]" to="payments">
-              <div className=" flex gap-3 h-10 items-center  payments">
-                <img
-                  src={watch}
-                  alt="placeholder"
-                  className="h-full object-cover"
-                />
-                <p>Payments</p>
-              </div>
-            </Link>
+    <>
+      <div className="grid grid-cols-3 gap-x-3 w-full h-full">
+        <div className="border active p-3">
+          <div className="header">
+            <h2 className="font-extrabold text-2xl">Active Shippings</h2>
+            <p>25 open shippings</p>
           </div>
-          <div className="main flex flex-col gap-7 ">
-            <header className=" header mt-7 h-12 flex items-center gap-5 justify-between">
-              <div className="h-full  w-full revenue">
-                <p className="font-light text-xs ">Total revenue</p>
-                <h2 className="font-extrabold text-lg leading-5">
-                  NGN 630,000
-                </h2>
+          <div className="mt-3 shippings flex flex-col gap-6">
+            {/* Shipping card something */}
+            <div className="prod flex justify-between items-center">
+              <div className="img w-12 h-12 bg-green-400"></div>
+              <div className="name  overflow-hidden text-ellipsis">
+                <h3>Arian Grande</h3>
+                <address title="1234 streets something">
+                  1234 streets something
+                </address>
               </div>
-              <div className="h-full  w-full search">
-                <Search />
-              </div>
-              <div className="h-full flex justify-between items-center  w-full icon">
-                <img src={watch} alt="placeholder" className="fav" />
-                <img src={watch} alt="placeholder" className="fav" />
-                <img src={watch} alt="placeholder" className="fav" />
-              </div>
-            </header>
-            <div className="grid grid-cols-3 gap-x-3 w-full h-full">
-              <div className="border active p-3">
-                <div className="header">
-                  <h2 className="font-extrabold text-2xl">Active Shippings</h2>
-                  <p>25 open shippings</p>
-                </div>
-                <div className="shippings flex flex-col gap-3">
-                  <div className="prod flex justify-between items-center">
-                    <div className="img w-12 h-12 bg-green-400"></div>
-                    <div className="name  overflow-hidden text-ellipsis">
-                      <h3>Arian Grande</h3>
-                      <address title="1234 streets something">
-                        1234 streets something
-                      </address>
-                    </div>
-                    <div className="time">13/09/2023</div>
-                  </div>
-                </div>
-              </div>
-              <div className="border shipped p-3">
-                <div className="header">
-                  <h2 className="font-extrabold text-2xl">Closed Shippings</h2>
-                  <p>26 open shippings</p>
-                </div>
-                <div className="shippings flex flex-col gap-3">
-                  <div className="prod flex justify-between items-center">
-                    <div className="img w129 h12 bg-green-400"></div>
-                    <div className="name  overflow-hidden text-ellipsis">
-                      <h3>Arian Grande</h3>
-                      <address title="1234 streets something">
-                        1234 streets something
-                      </address>
-                    </div>
-                    <div className="time">13/09/2023</div>
-                  </div>
-                </div>
-              </div>
-              <div className="border details">
-                <div className="image"></div>
-                <div className="details"></div>
-              </div>
+              <div className="time">13/09/2023</div>
             </div>
-          </div>{" "}
-        </>
-      ) : (
-        <div>Please open this route on a larger screen</div>
-      )}
-    </div>
+            <div className="prod flex justify-between items-center">
+              <div className="img w-12 h-12 bg-green-400"></div>
+              <div className="name  overflow-hidden text-ellipsis">
+                <h3>Arian Grande</h3>
+                <address title="1234 streets something">
+                  1234 streets something
+                </address>
+              </div>
+              <div className="time">13/09/2023</div>
+            </div>
+            <div className="prod flex justify-between items-center">
+              <div className="img w-12 h-12 bg-green-400"></div>
+              <div className="name  overflow-hidden text-ellipsis">
+                <h3>Arian Grande</h3>
+                <address title="1234 streets something">
+                  1234 streets something
+                </address>
+              </div>
+              <div className="time">13/09/2023</div>
+            </div>
+            <div className="prod flex justify-between items-center">
+              <div className="img w-12 h-12 bg-green-400"></div>
+              <div className="name  overflow-hidden text-ellipsis">
+                <h3>Arian Grande</h3>
+                <address title="1234 streets something">
+                  1234 streets something
+                </address>
+              </div>
+              <div className="time">13/09/2023</div>
+            </div>
+          </div>
+        </div>
+        <div className="border shipped p-3">
+          <div className="header">
+            <h2 className="font-extrabold text-2xl">Closed Shippings</h2>
+            <p>26 open shippings</p>
+          </div>
+          <div className="mt-3 shippings flex flex-col gap-6">
+            {/* Shipping card something */}
+            <div className="prod flex justify-between items-center">
+              <div className="img w-12 h-12 bg-green-400"></div>
+              <div className="name  overflow-hidden text-ellipsis">
+                <h3>Arian Grande</h3>
+                <address title="1234 streets something">
+                  1234 streets something
+                </address>
+              </div>
+              <div className="time">13/09/2023</div>
+            </div>
+            <div className="prod flex justify-between items-center">
+              <div className="img w-12 h-12 bg-green-400"></div>
+              <div className="name  overflow-hidden text-ellipsis">
+                <h3>Arian Grande</h3>
+                <address title="1234 streets something">
+                  1234 streets something
+                </address>
+              </div>
+              <div className="time">13/09/2023</div>
+            </div>
+            <div className="prod flex justify-between items-center">
+              <div className="img w-12 h-12 bg-green-400"></div>
+              <div className="name  overflow-hidden text-ellipsis">
+                <h3>Arian Grande</h3>
+                <address title="1234 streets something">
+                  1234 streets something
+                </address>
+              </div>
+              <div className="time">13/09/2023</div>
+            </div>
+            <div className="prod flex justify-between items-center">
+              <div className="img w-12 h-12 bg-green-400"></div>
+              <div className="name  overflow-hidden text-ellipsis">
+                <h3>Arian Grande</h3>
+                <address title="1234 streets something">
+                  1234 streets something
+                </address>
+              </div>
+              <div className="time">13/09/2023</div>
+            </div>
+          </div>
+        </div>
+        <div className="border details">
+          {/* <h1>Click on a item to check out it's details</h1> */}
+          <div className="image h-1/2 border"></div>
+          <div className="details px-2">
+            <div className="flex justify-between items-center font-bold my-2">
+              <h2>Product Name</h2>
+              <p>Family</p>
+            </div>
+            <div className="flex justify-between items-center font-bold my-2">
+              <h2>Customer name</h2>
+              <p>Tobiloba </p>
+            </div>
+            <div className="flex justify-between items-center font-bold my-2">
+              <h2>Customer's Address</h2>
+              <p>1234 Bolanle street</p>
+            </div>
+            <div className="flex justify-between items-center font-bold my-2">
+              <h2>Purchased</h2>
+              <p>12/22/2023</p>
+            </div>
+            <div className="flex justify-between items-center font-bold my-2">
+              <h2>Delivered?</h2>
+              <p>False</p>
+            </div>
+            <button className="w-full px-3 py-2 bg-[var(--highlight)] rounded-md text-center">
+              Mark as Delivered
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 
