@@ -1,132 +1,171 @@
-// import Header from "../../components/Header";
 import Card from "../../components/Card";
-// import filter from "../../assets/filter.svg";
-// import search from "../../assets/search.svg";
-// import discount from "../../assets/discount.svg";
-// import dashboard from "../../assets/dashboard.svg";
-// import luxury from "../../assets/luxury.png";
-// import fashion from "../../assets/fashion.svg";
-// import sport from "../../assets/sport.png";
-// import smart from "../../assets/smart.png";
-// import Cat from "../../components/Cat";
-// import Box from "../../components/Box";
-import { Link, useNavigate } from "react-router-dom";
-import { useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { useTasks } from "../../context/Store";
-// import Filter from "../../components/Filter";
-import { clocks } from "../../types/defaults";
-import favorite from "../../assets/Favorite.svg";
-import search from "../../assets/Search.svg";
-import userIcon from "../../assets/User.png";
-import Footer from "../../components/Footer";
-const Home = () => {
-  const navigate = useNavigate();
-  const { user } = useTasks();
-  const clocksArr = useTasks().clocks;
-  const clocks = useRef<clocks>(clocksArr);
-  const [query, setQuery]: [
-    string,
-    React.Dispatch<React.SetStateAction<string>>
-  ] = useState<string>("");
 
-  const showDialog = useRef<HTMLDialogElement>(null);
+import Footer from "../../components/Footer";
+import Search from "../../components/SearchComp";
+import Header from "./Header";
+import useWindowSize from "../../hooks/useWindowSize";
+
+const Home = () => {
+  const { clocks } = useTasks();
+  const width = useWindowSize();
+  const luxury = clocks.filter((clock) => clock.category.includes("luxury"));
+  const forMen = clocks.filter((clock) => clock.category.includes("forMen"));
+  const forWomen = clocks.filter((clock) =>
+    clock.category.includes("forWomen")
+  );
+  const forKids = clocks.filter((clock) => clock.category.includes("forKids"));
+  const trending = clocks.filter((clock) =>
+    clock.category.includes("trending")
+  );
+  const forCouples = clocks.filter((clock) =>
+    clock.category.includes("forCouples")
+  );
+  const budget = clocks.filter((clock) => clock.category.includes("budget"));
   return (
     <div className="relative z-0">
-      <header className="flex justify-between items-center h-[30px] mt-6 bg-[var(--bg-dark)]">
-        <h1 className="text-[22px] leading-8 font-medium text-[var(--highlight)]">
-          Clocks
-        </h1>
-        <div className="flex items-center gap-5 icons">
-          <img
-            src={favorite}
-            className="w-5 h-5 wishlists"
-            onClick={() => navigate("/wishlist")}
-          />
-          <div className="profile h-[30px] w-[30px] relative rounded-full shadow shadow-[var(--highlight)] border">
-            <img
-              src={userIcon}
-              alt="user icon"
-              onClick={() => {
-                console.log(user?.name, user?.name.length);
-                if (user!.name.length < 3) {
-                  showDialog.current?.show();
-                } else {
-                  navigate("/user");
-                }
-              }}
-            />
-            <dialog
-              className="absolute w-fit top-10 -translate-x-full tra z-10 p-0 bg-[var(--bg-dark)] text-inherit"
-              ref={showDialog}
-            >
-              <p
-                className="bg-[var(--bg-lightDark)] p-2 w-full mb-2 border"
-                onClick={() => {
-                  navigate("/login");
-                }}
-              >
-                Login
-              </p>
-              <p
-                className="bg-[var(--bg-lightDark)] p-2 w-full mb-2 border"
-                onClick={() => {
-                  navigate("/details");
-                }}
-              >
-                Sign in
-              </p>
-              <button
-                className="py-2 px-12 bg-[var(--highlight)] rounded-[30px] mb-2"
-                onClick={() => {
-                  showDialog.current?.close();
-                }}
-              >
-                Close
-              </button>
-            </dialog>
-          </div>
-        </div>
-      </header>
-      <div className="search h-[55px] rounded-3xl mt-6 flex pl-4 items-center gap-5 bg-[var(--bg-lightDark)]">
-        <img
-          src={search}
-          alt="search icon"
-          className="w-[30px] h-[30px]"
-          onClick={() => {
-            navigate(`/search/${query}`);
-          }}
-        />
-        <input
-          type="text"
-          placeholder="Search Products"
-          className="w-full h-full bg-transparent outline-none text-white/90"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setQuery(e.target.value);
-          }}
-          onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-            if (e.key === "Enter") {
-              navigate(`/search/${query}`);
-            }
-          }}
-        />
-      </div>
+      <Header />
+      {width <= 640 && <Search />}
 
-      <div className="buttons mb-[30px] w-full justify-between flex">
-        <Link to="/search/trending">
-          <button className="bg-[var(--highlight)] h-[55px] rounded-[30px] w-[172px] mt-6 text-white">
-            Trending
-          </button>
-        </Link>
-        <Link to="/categories">
-          <button className=" bg-[var(--bg-lightDark)] h-[55px] rounded-[30px] w-[172px] mt-6 text-white">
-            Category
-          </button>
-        </Link>
-      </div>
-      <div className="flex flex-wrap justify-between w-full gap-y-5">
-        {clocks.current.map((clock) => {
-          return <Card name={clock?.name} key={clock?.name} />;
-        })}
+      {width <= 640 && (
+        <div className="buttons mb-[30px] w-full justify-between flex">
+          <Link to="/search/trending">
+            <button className="bg-[var(--highlight)] h-[40px] rounded-[30px] w-[120px] mt-6 text-white">
+              Trending
+            </button>
+          </Link>
+          <Link to="/categories">
+            <button className=" bg-[var(--bg-lightDark)] h-[40px] rounded-[30px] w-[120px] mt-6 ">
+              Category
+            </button>
+          </Link>
+        </div>
+      )}
+      <div
+        className={`grid grid-cols-2 sm:block gap-x-2 w-full gap-y-5 ${
+          clocks?.length <= 0 ? "animate-pulse" : ""
+        } mb-[58px] mt-6`}
+      >
+        {width <= 640 ? (
+          clocks?.length > 0 ? (
+            clocks.map((clock) => {
+              return <Card name={clock?.name} key={clock?.name} />;
+            })
+          ) : (
+            "No clocks found"
+          )
+        ) : (
+          <>
+            {luxury.length > 0 && (
+              <div className="Luxury overflow-scroll w-full">
+                <h1 className="ml-3 font-bold text-lg">Luxury watches</h1>
+                <hr />
+                <div
+                  className={`grid pb-2 grid-rows-1 grid-flow-col sm:grid-cols-[repeat(auto-fit,_minmax(160px,_1fr))] gap-x-4 w-full overflow-scroll ${
+                    clocks?.length <= 0 ? "animate-pulse" : ""
+                  } mb-3 mt-6`}
+                >
+                  {luxury.map((clock) => {
+                    return <Card name={clock.name} key={clock?.name} />;
+                  })}
+                </div>
+              </div>
+            )}
+            {forMen.length > 0 && (
+              <div className="men">
+                <h1 className="ml-3 font-bold text-lg">For men watches</h1>
+                <hr />
+                <div
+                  className={`grid pb-2 grid-rows-1 grid-flow-col sm:grid-cols-[repeat(auto-fit,_minmax(160px,_1fr))] gap-x-4 w-full overflow-scroll ${
+                    clocks?.length <= 0 ? "animate-pulse" : ""
+                  } mb-3 mt-6`}
+                >
+                  {forMen.map((clock) => {
+                    return <Card name={clock.name} key={clock?.name} />;
+                  })}
+                </div>
+              </div>
+            )}
+            {forWomen.length > 0 && (
+              <div className="women">
+                <h1 className="ml-3 font-bold text-lg">For women watches</h1>
+                <hr />
+                <div
+                  className={`grid pb-2 grid-rows-1 grid-flow-col sm:grid-cols-[repeat(auto-fit,_minmax(160px,_1fr))] gap-x-4 w-full overflow-scroll ${
+                    clocks?.length <= 0 ? "animate-pulse" : ""
+                  } mb-3 mt-6`}
+                >
+                  {forWomen.map((clock) => {
+                    return <Card name={clock.name} key={clock?.name} />;
+                  })}
+                </div>
+              </div>
+            )}
+            {forKids.length > 0 && (
+              <div className="Kids">
+                <h1 className="ml-3 font-bold text-lg">For Kids watches</h1>
+                <hr />
+                <div
+                  className={`grid pb-2 grid-rows-1 grid-flow-col sm:grid-cols-[repeat(auto-fit,_minmax(160px,_1fr))] gap-x-4 w-full overflow-scroll ${
+                    clocks?.length <= 0 ? "animate-pulse" : ""
+                  } mb-3 mt-6`}
+                >
+                  {forKids.map((clock) => {
+                    return <Card name={clock.name} key={clock?.name} />;
+                  })}
+                </div>
+              </div>
+            )}
+            {forCouples.length > 0 && (
+              <div className="couples">
+                <h1 className="ml-3 font-bold text-lg">For couples watches</h1>
+                <hr />
+                <div
+                  className={`grid pb-2 grid-rows-1 grid-flow-col sm:grid-cols-[repeat(auto-fit,_minmax(160px,_1fr))] gap-x-4 w-full overflow-scroll ${
+                    clocks?.length <= 0 ? "animate-pulse" : ""
+                  } mb-3 mt-6`}
+                >
+                  {forCouples.map((clock) => {
+                    return <Card name={clock.name} key={clock?.name} />;
+                  })}
+                </div>
+              </div>
+            )}
+            {budget.length > 0 && (
+              <div className="Budget-Friendly">
+                <h1 className="ml-3 font-bold text-lg">
+                  Budget-Friendly watches
+                </h1>
+                <hr />
+                <div
+                  className={`grid pb-2 grid-rows-1 grid-flow-col sm:grid-cols-[repeat(auto-fit,_minmax(160px,_1fr))] gap-x-4 w-full overflow-scroll ${
+                    clocks?.length <= 0 ? "animate-pulse" : ""
+                  } mb-3 mt-6`}
+                >
+                  {budget.map((clock) => {
+                    return <Card name={clock.name} key={clock?.name} />;
+                  })}
+                </div>
+              </div>
+            )}
+            {trending.length > 0 && (
+              <div className="Trending">
+                <h1 className="ml-3 font-bold text-lg">Trending watches</h1>
+                <hr />
+                <div
+                  className={`grid pb-2 grid-rows-1 grid-flow-col sm:grid-cols-[repeat(auto-fit,_minmax(160px,_1fr))] gap-x-4 w-full overflow-scroll ${
+                    clocks?.length <= 0 ? "animate-pulse" : ""
+                  } mb-3 mt-6`}
+                >
+                  {trending.map((clock) => {
+                    return <Card name={clock.name} key={clock?.name} />;
+                  })}
+                </div>
+              </div>
+            )}
+          </>
+        )}
       </div>
       <Footer />
     </div>

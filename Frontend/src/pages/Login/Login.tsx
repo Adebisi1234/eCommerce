@@ -1,11 +1,16 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import watch from "../../assets/watch.png";
 
 const Login = () => {
   const navigate = useNavigate();
   return (
     <div className="text-center">
-      <header className="h-10 mt-8">
+      <header
+        className="h-10 mt-8"
+        onClick={() => {
+          navigate("..");
+        }}
+      >
         <svg
           className="fav"
           height={10}
@@ -48,6 +53,9 @@ const Login = () => {
           Log in
         </button>
       </form>
+      <p>
+        Don't have an account? <Link to="/details">Sign up</Link>
+      </p>
     </div>
   );
 };

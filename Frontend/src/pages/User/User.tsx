@@ -1,4 +1,5 @@
-import userIcon from "../../assets/User.png";
+import { useEffect } from "react";
+import userIcon from "../../assets/User.svg";
 import Footer from "../../components/Footer";
 import { useTasks } from "../../context/Store";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +7,11 @@ import { useNavigate } from "react-router-dom";
 const User = () => {
   const { user } = useTasks();
   const navigate = useNavigate();
+  useEffect(() => {
+    if (typeof user === "undefined" || user?.name.length < 3) {
+      navigate("/details");
+    }
+  });
   return (
     <>
       <header className="flex items-center h-[30px] mt-[30px] gap-[91px]">
@@ -82,7 +88,7 @@ const User = () => {
           </p>
         </div>
       </div>
-      <div className="shared mt-10 bg-[var(--bg-lightDark)]">
+      <div className="shared mt-10 p-3 rounded-2xl bg-[var(--bg-lightDark)]">
         <h1>Shared review</h1>
         <p className="mt-5">Work in progress....</p>
       </div>

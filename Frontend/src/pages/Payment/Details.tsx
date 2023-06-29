@@ -34,8 +34,14 @@ const Details = () => {
           className="w-[60px] h-[60px] object-cover mx-auto mb-5"
         />
         <h1 className="text-center text-red-500 italic">
-          Please enter every details correctly and crosscheck on error
+          Please enter every details correctly and crosscheck for error
         </h1>
+        <h2 className="mt-3 text-center">
+          Already have an account{" "}
+          <Link to="/login" replace className="italic underline">
+            login{" "}
+          </Link>
+        </h2>
 
         <form
           onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
@@ -55,9 +61,10 @@ const Details = () => {
                   address: address.current!.value,
                   number: number.current!.value,
                   delivery: delivery.current!.value,
+                  password: password.current!.value,
                 },
               });
-              navigate("..");
+              navigate(-1);
             }
           }}
         >
@@ -117,17 +124,11 @@ const Details = () => {
               <option value="pick-up">Pick-up delivery</option>
             </select>
           </div>
-          <button className="bg-[var(--highlight)] h-[60px] rounded-[30px] shadow-[var(--highlight)] shadow-sm flex gap-3 justify-center items-center w-full">
+          <button className="bg-[var(--highlight)] h-10 mt-3 rounded-[30px] shadow-[var(--highlight)] shadow-sm flex gap-3 justify-center items-center w-full">
             Continue
           </button>
         </form>
       </div>
-      <h2>
-        Already have an account{" "}
-        <Link to="/login" replace className="italic underline">
-          login{" "}
-        </Link>
-      </h2>
     </>
   );
 };

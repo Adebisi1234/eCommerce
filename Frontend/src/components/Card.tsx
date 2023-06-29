@@ -2,16 +2,20 @@ import wishList from "../assets/wishList.svg";
 import wishListed from "../assets/wishListed.svg";
 import { useNavigate } from "react-router-dom";
 import { useTasks, useTasksDispatch } from "../context/Store";
+import { useState } from "react";
 const Card = ({ name }: { name: string }) => {
   const { clocks, user } = useTasks();
   const clock = clocks.find((clock) => clock?.name === name);
   const navigate = useNavigate();
   const dispatch = useTasksDispatch();
+  const [isInCart, setIsInCart] = useState<boolean>(
+    Boolean(user?.cart.includes(clock!.name))
+  );
   return (
-    <div className="w-[170px] pb-2 bg-[var(--bg-lightDark)] h-fit rounded-[25px]">
+    <div className="max-w-[170px] pb-2 bg-[var(--bg-lightDark)] h-fit rounded-[25px]">
       <div className="relative z-0 smallUrl">
         <img
-          className="img h-[250px] object-cover rounded-[25px]"
+          className="img h-[200px] object-cover rounded-[25px]"
           src={clock?.imgUrl}
           height={250}
           width={170}
@@ -52,8 +56,20 @@ const Card = ({ name }: { name: string }) => {
           <p className="text-sm font-bold">NGN {clock?.priceWord}</p>
         </div>
         <div
-          className="plus w-[30px] h-full"
-          onClick={() => dispatch({ type: "addToCart", payload: clock?.name })}
+          className={`plus w-[30px] h-full ${
+            isInCart ? "rotate-45" : ""
+          } transition-all`}
+          onClick={() => {
+            if (isInCart) {
+              dispatch({ type: "removeFromCart", payload: clock?.name });
+              console.log("removed from cart");
+              setIsInCart(false);
+            } else {
+              console.log("fuck");
+              dispatch({ type: "addToCart", payload: clock?.name });
+              setIsInCart(true);
+            }
+          }}
         >
           <svg
             width="24"

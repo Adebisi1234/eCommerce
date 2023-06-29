@@ -5,28 +5,35 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import back from "../../assets/back.svg";
 import slider from "../../assets/Slider.svg";
+import { clocks } from "../../types/defaults";
 const Search = () => {
   const query = useParams().query;
   const navigate = useNavigate();
   const { cart } = useTasks();
 
-  const Allclocks = useTasks().clocks.filter((clock) => {
-    if (clock?.name.toLowerCase().includes(query!.toLowerCase())) {
-      return true;
-    } else if (
-      typeof clock?.category === "object"
-        ? clock?.category.some((el) =>
-            el.toLowerCase().includes(query!.toLowerCase())
-          )
-        : clock?.category.toLowerCase().includes(query!.toLowerCase())
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  });
+  const temp = useTasks().clocks;
 
-  const [clocks, setClocks] = useState(Allclocks);
+  const [clocks, setClocks] = useState<clocks>([]);
+
+  useEffect(() => {
+    const result = temp.filter((clock) => {
+      if (clock?.name.toLowerCase().includes(query!.toLowerCase())) {
+        return true;
+      } else if (
+        typeof clock?.category === "object"
+          ? clock?.category.some((el) =>
+              el.toLowerCase().includes(query!.toLowerCase())
+            )
+          : clock?.category.toLowerCase().includes(query!.toLowerCase())
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+
+    setClocks(result);
+  }, [temp]);
   const num = clocks.length;
   const [show, setShow] = useState(false);
   const [filt, setFilt] = useState<string>("");
@@ -63,34 +70,53 @@ const Search = () => {
   }, [filt]);
   return (
     <>
-      <header className="h-[35px] flex items-center justify-between">
+      <header className="h-[35px] mt-8 flex items-center justify-between">
         <div className="name flex items-center gap-[9px] ml-2">
-          <img src={back} alt="back arrow" onClick={() => navigate("..")} />
-          <h1 className="ml-[9px] font-extrabold text-xl text-[#e2e2e2]">
+          <svg
+            className="fav"
+            viewBox="0 0 1024 1024"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            onClick={() => {
+              navigate("..");
+            }}
+          >
+            <path d="M674.891852 133.404444 322.275556 498.536296c-1.137778 1.232593-2.085926 2.56-2.939259 3.982222-4.361481 7.205926-3.508148 16.592593 2.56 22.945185l352.616296 365.131852c7.395556 7.68 19.816296 7.774815 27.306667 0 7.205926-7.395556 6.826667-19.342222-0.379259-26.737778l-339.626667-351.762963c0 0 0 0 0-0.094815l340.005926-352.047407c7.205926-7.395556 7.49037-19.342222 0.379259-26.737778C694.708148 125.62963 682.287407 125.724444 674.891852 133.404444z" />
+          </svg>
+          <h1 className="ml-[9px] font-extrabold text-xl text-[var(--color-dark)]">
             {query}
           </h1>
         </div>
-        <div className="filter relative">
-          <img src={slider} alt="filter icon" onClick={() => setShow(!show)} />
+        <div className="relative filter">
+          <img
+            src={slider}
+            alt="filter icon"
+            onClick={() => setShow(!show)}
+            className="shadow-2xl shadow-[var(--color-dark)]"
+          />
           {show && <Filter setShow={setShow} setFilt={setFilt} />}
         </div>
       </header>
       <div className="mt-3 ml-4">{num} items</div>
 
-      <div className="flex flex-wrap mt-6 justify-between w-full gap-y-5">
+      <div
+        className={`grid grid-cols-2 sm:grid-cols-[repeat(auto-fit,_minmax(160px,_1fr))] lg:grid-cols-4 gap-x-2 w-full gap-y-5 mb-[58px] ${
+          clocks.length <= 0 ? "animate-pulse" : ""
+        } `}
+      >
         {clocks.length > 0 ? (
           clocks.map((clock) => {
             return <Card name={clock?.name} key={clock?.name} />;
           })
         ) : (
-          <div className="h-full w-full flex justify-center items-center">
+          <div className="flex items-center justify-center w-full h-full">
             No Items found
           </div>
         )}
       </div>
 
       <div
-        className="bg-[var(--highlight)] rounded-full h-[75px] w-[75px] flex items-center fixed bottom-[54px] right-[23px] justify-center"
+        className="bg-[var(--highlight)] rounded-full h-[75px] lg:hidden w-[75px] flex items-center fixed bottom-[54px] right-[23px] justify-center"
         onClick={() => navigate("/cart")}
       >
         <div className="relative w-fit h-fit">
@@ -107,7 +133,7 @@ const Search = () => {
             />
           </svg>
           {cart.length ? (
-            <div className="absolute right-0 -top-1 rounded-full h-2 w-2 bg-black"></div>
+            <div className="absolute right-0 w-2 h-2 bg-[var(--color-dark)] rounded-full -top-1"></div>
           ) : (
             ""
           )}

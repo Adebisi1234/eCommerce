@@ -1,7 +1,5 @@
 import Clock from "../models/clockModel.js";
-import { Resend } from "resend";
-
-const resend = new Resend(process.env.EMAIL_API_KEY);
+import { Worker } from "worker_threads";
 
 const getAllProducts = async (req, res, next) => {
   try {
@@ -23,11 +21,29 @@ const getAllProducts = async (req, res, next) => {
 
 const getProduct = async (req, res, next) => {
   try {
-    const id = req.params.id;
-    const clock = await Clock.findOne({ _id: id });
+    const name = req.params.name;
+    const clock = await Clock.findOne({ name });
     return res.status(200).json({
       status: "success",
       message: clock,
+    });
+  } catch (error) {
+    console.log(error);
+    next();
+  }
+};
+const search = async (req, res, next) => {
+  try {
+    const name = req.params.name;
+    const nameQuery = await Clock.find({
+      name: { $regex: name, $options: "i" },
+    });
+    const cateQuery = await Clock.find({
+      category: { $regex: name, $options: "i" },
+    });
+    return res.status(200).json({
+      status: "success",
+      message: [...nameQuery, ...cateQuery],
     });
   } catch (error) {
     console.log(error);
@@ -81,10 +97,23 @@ const sendEmailOnOrder = async (req, res, next) => {
   }
 };
 
+const smallImgUrl = async (req, res, next) => {
+  try {
+    const worker = new Worker("./worker.js", { workerData: req.body.imgUrl });
+    worker.on("message", (data) => {
+      req, (body.smallImgUrl = data);
+      next();
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
 export default {
   getAllProducts,
   getProduct,
   newProduct,
   updateProduct,
   sendEmailOnOrder,
+  search,
 };

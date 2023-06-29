@@ -12,7 +12,7 @@ export type clock = {
   amount: number;
   description: string;
   discount: number;
-  sold: string;
+  sold: number;
   createdAt?: string;
   updatedAt?: string;
   numSold?: number;

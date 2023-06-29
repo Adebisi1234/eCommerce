@@ -18,7 +18,7 @@ const isAdmin = async (req, res, next) => {
 };
 
 router.post("/success", clockController.sendEmailOnOrder);
-router.get("/:id", clockController.getProduct);
+router.get("/:name", clockController.getProduct);
 router.get("/", clockController.getAllProducts);
 router.use(authController.protect);
 router.use(isAdmin);

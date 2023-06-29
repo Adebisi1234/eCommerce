@@ -42,6 +42,8 @@ const Cart = () => {
       )
     );
   });
+
+  console.log(cart.length, cart);
   return (
     <div className=" flex flex-col">
       <header className="flex items-center mt-4">
@@ -88,7 +90,16 @@ const Cart = () => {
         <div className="total h-14 flex justify-between flex-col">
           <div className="subt flex justify-between">
             <p>Subtotal:</p>
-            <p>NGN {total ? total : "..."}</p>
+            <p>
+              NGN{" "}
+              {total ? (
+                total
+              ) : (
+                <span className=" animate-pulse text-2xl font-extrabold inline-block text-[var(--color-dark)]">
+                  ...
+                </span>
+              )}
+            </p>
           </div>
           <div className="del flex justify-between">
             <p>Estimated shipping:</p>
@@ -109,7 +120,7 @@ const Cart = () => {
           </button>
         ) : (
           <PaystackButton
-            className="flex items-center justify-center w-full h-12 gap-3 px-6 py-3 mx-auto text-white bg-black"
+            className="w-full bg-[var(--highlight)] mt-3 h-14 flex items-center justify-center rounded-[30px] "
             {...componentProps}
           />
         )}

@@ -1,60 +1,68 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap');
 
-body {
+html {
   --bg-dark: #121212;
   --bg-lightDark: #212121;
   --color-dark: white;
   --highlight:#7EA1C1;
-  --bg-img: url("https://github.com/Adebisi1234/eCommerce/blob/main/Frontend/src/images/clock13.jpg?raw=true");
+}
 
-  background-color: #121212;
-  color: white;
+body {
+  background-color: var(--bg-dark);
+  color: var(--color-dark);
   min-height: 100vh;
   padding: 0;
   margin: 0;
   display: flex;
   justify-content: center;
-  
-  
   font-family: 'Manrope', sans-serif;
 }
+
+ @media (prefers-color-scheme: light) {
+  html {
+    --bg-dark: #ddd9d9;
+  --bg-lightDark: #f8f8f8;
+  --color-dark: #1f1f1f;
+  --highlight:#3884cb;
+  }
+} 
+
 .fav {
   width: 30px; height: 30px;vertical-align: middle;fill: currentColor;overflow: hidden;
 }
+input {
+  color: var(--color-dark);
+}
 svg {
-  color: white;
+  color: var(--color-dark);
   fill: currentColor;
 }
 
 #root {
- width: 428px;
+  width: 100%;
   padding: 0 16px;
   /* border: 1px solid black; */
   
 }
 
 *::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
   border-radius: 16px;
 }
 
 /* Track */
-*::-webkit-scrollbar-track {
-  background-color:#D9D9D9;
-}
- 
 
+*::-webkit-scrollbar-track {
+  background-color: none;
+}
 
 /* Handle */
 *::-webkit-scrollbar-thumb {
-  background: #888; 
+  background: var(--color-dark);
+  border-radius: 30px;
 }
 
-/* Handle on hover */
-*::-webkit-scrollbar-thumb:hover {
-  background: #555; 
-}
 .scrollbar::-webkit-scrollbar {
   display: none;
   height: 5px;
@@ -85,34 +93,6 @@ svg {
 
 
 
-.contain {
-  display: flex;
-  overflow: auto;
-  
-  flex: none;
-}
-
-.contain.x {
-  width: 100%;
-  height:100%;
-  flex-flow: row nowrap;
-}
-
-/* scroll-snap */
-.x.mandatory-scroll-snapping {
-  scroll-snap-type: x mandatory;
-}
-
-.x.proximity-scroll-snapping {
-  scroll-snap-type: x proximity;
-}
-
-
-.contain > div {
-  scroll-snap-align: center;
-  flex: none;
-  width: 100%;
-}
 
 .mySwiper {
   width: 100%;
