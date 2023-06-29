@@ -91,7 +91,7 @@ const Shippings = () => {
                 </div>
                 <div className="shippings flex flex-col gap-3">
                   <div className="prod flex justify-between items-center">
-                    <div className="img w-9 h-full bg-green-400"></div>
+                    <div className="img w-12 h-12 bg-green-400"></div>
                     <div className="name  overflow-hidden text-ellipsis">
                       <h3>Arian Grande</h3>
                       <address title="1234 streets something">
@@ -109,7 +109,7 @@ const Shippings = () => {
                 </div>
                 <div className="shippings flex flex-col gap-3">
                   <div className="prod flex justify-between items-center">
-                    <div className="img w-9 h-full bg-green-400"></div>
+                    <div className="img w129 h12 bg-green-400"></div>
                     <div className="name  overflow-hidden text-ellipsis">
                       <h3>Arian Grande</h3>
                       <address title="1234 streets something">
