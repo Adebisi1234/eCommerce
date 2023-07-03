@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useReducer } from "react";
+import { createContext, useContext, useReducer } from "react";
 import { user, clocks, cart } from "../types/defaults";
 import axios from "axios";
 import { BACKEND_URL } from "../App";

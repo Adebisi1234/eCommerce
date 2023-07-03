@@ -29,7 +29,7 @@ const Product = () => {
           }}
         />
         <h1
-          className="text-[#e2e2e2] font-bold text-lg"
+          className="font-bold text-lg"
           onClick={() => {
             navigate("..");
           }}
@@ -37,7 +37,7 @@ const Product = () => {
           Close
         </h1>
       </header>
-      <div className="top h-[60vh] mb-[30px] w-full mt-6  bg-white">
+      <div className="top h-[60vh] mb-[30px] w-full mt-6">
         {/* WIP */}
         <Showcase />
       </div>

@@ -47,7 +47,7 @@ const Home = () => {
           clocks?.length <= 0 ? "animate-pulse" : ""
         } mb-[58px] mt-6`}
       >
-        {width <= 640 ? (
+        {width < 640 ? (
           clocks?.length > 0 ? (
             clocks.map((clock) => {
               return <Card name={clock?.name} key={clock?.name} />;
@@ -62,7 +62,7 @@ const Home = () => {
                 <h1 className="ml-3 font-bold text-lg">Luxury watches</h1>
                 <hr />
                 <div
-                  className={`grid pb-2 grid-rows-1 grid-flow-col sm:grid-cols-[repeat(auto-fit,_minmax(160px,_1fr))] gap-x-4 w-full overflow-scroll ${
+                  className={`grid pb-2 grid-rows-1 grid-flow-col sm:grid-cols-[repeat(auto-fit,_1fr)] gap-x-4 w-full overflow-scroll ${
                     clocks?.length <= 0 ? "animate-pulse" : ""
                   } mb-3 mt-6`}
                 >
@@ -77,7 +77,7 @@ const Home = () => {
                 <h1 className="ml-3 font-bold text-lg">For men watches</h1>
                 <hr />
                 <div
-                  className={`grid pb-2 grid-rows-1 grid-flow-col sm:grid-cols-[repeat(auto-fit,_minmax(160px,_1fr))] gap-x-4 w-full overflow-scroll ${
+                  className={`grid pb-2 grid-rows-1 grid-flow-col sm:grid-cols-[repeat(auto-fit,_1fr)] gap-x-4 w-full overflow-scroll ${
                     clocks?.length <= 0 ? "animate-pulse" : ""
                   } mb-3 mt-6`}
                 >
@@ -92,7 +92,7 @@ const Home = () => {
                 <h1 className="ml-3 font-bold text-lg">For women watches</h1>
                 <hr />
                 <div
-                  className={`grid pb-2 grid-rows-1 grid-flow-col sm:grid-cols-[repeat(auto-fit,_minmax(160px,_1fr))] gap-x-4 w-full overflow-scroll ${
+                  className={`grid pb-2 grid-rows-1 grid-flow-col sm:grid-cols-[repeat(auto-fit,_1fr)] gap-x-4 w-full overflow-scroll ${
                     clocks?.length <= 0 ? "animate-pulse" : ""
                   } mb-3 mt-6`}
                 >
@@ -107,7 +107,7 @@ const Home = () => {
                 <h1 className="ml-3 font-bold text-lg">For Kids watches</h1>
                 <hr />
                 <div
-                  className={`grid pb-2 grid-rows-1 grid-flow-col sm:grid-cols-[repeat(auto-fit,_minmax(160px,_1fr))] gap-x-4 w-full overflow-scroll ${
+                  className={`grid pb-2 grid-rows-1 grid-flow-col sm:grid-cols-[repeat(auto-fit,_1fr)] gap-x-4 w-full overflow-scroll ${
                     clocks?.length <= 0 ? "animate-pulse" : ""
                   } mb-3 mt-6`}
                 >
@@ -122,7 +122,7 @@ const Home = () => {
                 <h1 className="ml-3 font-bold text-lg">For couples watches</h1>
                 <hr />
                 <div
-                  className={`grid pb-2 grid-rows-1 grid-flow-col sm:grid-cols-[repeat(auto-fit,_minmax(160px,_1fr))] gap-x-4 w-full overflow-scroll ${
+                  className={`grid pb-2 grid-rows-1 grid-flow-col sm:grid-cols-[repeat(auto-fit,_1fr)] gap-x-4 w-full overflow-scroll ${
                     clocks?.length <= 0 ? "animate-pulse" : ""
                   } mb-3 mt-6`}
                 >
@@ -139,7 +139,7 @@ const Home = () => {
                 </h1>
                 <hr />
                 <div
-                  className={`grid pb-2 grid-rows-1 grid-flow-col sm:grid-cols-[repeat(auto-fit,_minmax(160px,_1fr))] gap-x-4 w-full overflow-scroll ${
+                  className={`grid pb-2 grid-rows-1 grid-flow-col sm:grid-cols-[repeat(auto-fit,_1fr)] gap-x-4 w-full overflow-scroll ${
                     clocks?.length <= 0 ? "animate-pulse" : ""
                   } mb-3 mt-6`}
                 >
@@ -154,7 +154,7 @@ const Home = () => {
                 <h1 className="ml-3 font-bold text-lg">Trending watches</h1>
                 <hr />
                 <div
-                  className={`grid pb-2 grid-rows-1 grid-flow-col sm:grid-cols-[repeat(auto-fit,_minmax(160px,_1fr))] gap-x-4 w-full overflow-scroll ${
+                  className={`grid pb-2 grid-rows-1 grid-flow-col sm:grid-cols-[repeat(auto-fit,_1fr)] gap-x-4 w-full overflow-scroll ${
                     clocks?.length <= 0 ? "animate-pulse" : ""
                   } mb-3 mt-6`}
                 >

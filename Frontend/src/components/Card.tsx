@@ -12,7 +12,7 @@ const Card = ({ name }: { name: string }) => {
     Boolean(user?.cart.includes(clock!.name))
   );
   return (
-    <div className="max-w-[170px] pb-2 bg-[var(--bg-lightDark)] h-fit rounded-[25px]">
+    <div className="max-w-[170px] w-[140px] pb-2 bg-[var(--bg-lightDark)] h-fit rounded-[25px]">
       <div className="relative z-0 smallUrl">
         <img
           className="img h-[200px] object-cover rounded-[25px]"

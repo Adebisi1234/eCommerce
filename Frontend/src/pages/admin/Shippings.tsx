@@ -54,7 +54,7 @@ const Shippings = () => {
         <div className="border shipped p-3">
           <div className="header">
             <h2 className="font-extrabold text-2xl">Closed Shippings</h2>
-            <p>26 open shippings</p>
+            <p>26 closed shippings</p>
           </div>
           <div className="mt-3 shippings flex flex-col gap-6">
             {/* Shipping card something */}

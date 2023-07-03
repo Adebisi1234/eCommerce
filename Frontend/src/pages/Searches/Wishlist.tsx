@@ -3,7 +3,6 @@ import Filter from "../../components/Filter";
 import { useTasks } from "../../context/Store";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import back from "../../assets/back.svg";
 import slider from "../../assets/Slider.svg";
 const Search = () => {
   const navigate = useNavigate();

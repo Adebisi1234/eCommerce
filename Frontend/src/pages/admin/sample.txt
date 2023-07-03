@@ -1,0 +1,60 @@
+html
+<label for="test">
+  <div>Click or drop something here</div>
+  <input type="file" id="test">
+</label>
+<p id="filename"></p>
+
+
+
+js
+var fileInput = document.querySelector('input[type=file]');
+var filenameContainer = document.querySelector('#filename');
+var dropzone = document.querySelector('div');
+
+fileInput.addEventListener('change', function() {
+	filenameContainer.innerText = fileInput.value.split('\\').pop();
+});
+
+fileInput.addEventListener('dragenter', function() {
+	dropzone.classList.add('dragover');
+});
+
+fileInput.addEventListener('dragleave', function() {
+	dropzone.classList.remove('dragover');
+});
+
+
+css
+input[type="file"] {
+  position: absolute;
+  left: 0;
+  opacity: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+div {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ccc;
+  border: 3px dotted #bebebe;
+  border-radius: 10px;
+}
+
+label {
+  display: inline-block;
+  position: relative;
+  height: 100px;
+  width: 400px;
+}
+
+div.dragover {
+  background-color: #aaa;
+}

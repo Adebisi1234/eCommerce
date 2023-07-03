@@ -5,7 +5,7 @@ const Footer = () => {
   const { cart } = useTasks();
   return (
     <>
-      <div className="flex md:hidden justify-evenly items-center w-full rounded-lg h-[58px] bg-[var(--bg-lightDark)] right-2 left-1 fixed z-0 bottom-0 opacity-80">
+      <div className="flex lg:hidden justify-evenly items-center w-full rounded-lg h-[58px] bg-[var(--bg-lightDark)] right-2 left-1 fixed z-0 bottom-0 opacity-80">
         <Link to="/">
           <div className="h-[30px] w-[30px] home">
             <svg
