@@ -26,6 +26,11 @@ export const BACKEND_URL = "http://localhost:6001";
 function App() {
   const location = useLocation().pathname;
   useEffect(() => {
+    if (!localStorage.getItem("THEME")) {
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? localStorage.setItem("THEME", "dark")
+        : localStorage.setItem("THEME", "light");
+    }
     if (localStorage.getItem("THEME") === "light") {
       document.documentElement.style.setProperty("--bg-dark", "#121212");
       document.documentElement.style.setProperty("--bg-lightDark", "#212121");
