@@ -2,14 +2,11 @@ import mongoose, { Schema } from "mongoose";
 
 const paymentSchema = new Schema(
   {
-    _id: {
-      type: Schema.Types.ObjectId,
-    },
-    user_id: {
+    userId: {
       type: Schema.Types.ObjectId,
       ref: "User",
     },
-    bank_account: {
+    bankAccount: {
       type: Number,
       required: true,
     },

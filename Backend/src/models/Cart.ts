@@ -2,12 +2,11 @@ import mongoose, { Schema } from "mongoose";
 
 const CartSchema = new Schema(
   {
-    _id: Schema.Types.ObjectId,
-    user_id: {
+    userId: {
       type: Schema.Types.ObjectId,
       required: true,
     },
-    item_ids: [
+    itemIds: [
       {
         type: Schema.Types.ObjectId,
       },

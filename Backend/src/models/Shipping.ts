@@ -1,23 +1,26 @@
 import { Schema, model } from "mongoose";
 
 const ShippingSchema = new Schema({
-  _id: Schema.Types.ObjectId,
-  order_id: {
+  orderId: {
     type: Schema.Types.ObjectId,
     ref: "Order",
+    required: true,
   },
-  customer_id: {
+  customerId: {
     type: Schema.Types.ObjectId,
     ref: "User",
+    required: true,
   },
-  seller_id: {
+  sellerId: {
     type: Schema.Types.ObjectId,
     ref: "User",
+    required: true,
   },
   status: String,
   address: {
     type: Schema.Types.ObjectId,
     ref: "Address",
+    required: true,
   },
 });
 

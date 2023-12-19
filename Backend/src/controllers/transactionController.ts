@@ -1,13 +1,25 @@
 import { type Request, type Response } from "express";
 
-export const getOrders = (req: Request, res: Response) => {};
+export const getOrders = async (req: Request, res: Response) => {
+  console.log("getOrders");
+};
 
-export const orderProduct = (req: Request, res: Response) => {};
+export const orderProduct = async (req: Request, res: Response) => {
+  console.log("orderProduct");
+};
 
-export const cancelOrder = (req: Request, res: Response) => {};
+export const cancelOrder = async (req: Request, res: Response) => {
+  console.log("cancelOrder");
+};
 
-export const getShippings = (req: Request, res: Response) => {};
+export const getShippings = async (req: Request, res: Response) => {
+  console.log("getShippings");
+};
 
-export const shipProduct = (req: Request, res: Response) => {};
+export const shipProduct = async (req: Request, res: Response) => {
+  console.log("shipProduct");
+};
 
-export const purchaseProduct = (req: Request, res: Response) => {};
+export const purchaseProduct = async (req: Request, res: Response) => {
+  console.log("purchaseProduct");
+};

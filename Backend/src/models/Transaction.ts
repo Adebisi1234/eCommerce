@@ -1,18 +1,18 @@
 import { model, Schema } from "mongoose";
 
 const TransactionSchema = new Schema({
-  _id: Schema.Types.ObjectId,
-  order_id: {
+  
+  orderId: {
     type: Schema.Types.ObjectId,
     ref: "Order",
   },
-  user_id: {
+  userId: {
     type: Schema.Types.ObjectId,
     ref: "User",
   },
-  payment_method: String,
+  paymentMethod: String,
   status: String,
-  payment_log: String,
+  paymentLog: String,
 });
 
 export const Transaction = model("Transaction", TransactionSchema);

@@ -2,12 +2,8 @@ import mongoose, { Schema } from "mongoose";
 
 const UserSchema = new Schema(
   {
-    _id: {
-      type: Schema.Types.ObjectId,
-    },
     phone: {
-      type: String,
-      required: true,
+      type: Number,
     },
     email: {
       type: String,
@@ -16,14 +12,15 @@ const UserSchema = new Schema(
     password: {
       type: String,
       required: true,
+      select: false,
     },
-    user_type: {
+    userType: {
       type: String,
       required: true,
+      default: "Buyer",
     },
     name: {
       type: String,
-      required: true,
     },
     address: {
       type: Schema.Types.ObjectId,

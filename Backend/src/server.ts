@@ -2,9 +2,9 @@ import "dotenv/config";
 import mongoose from "mongoose";
 import app from "./app.js";
 
-const DB = process.env.DATABASE_URI;
+const DB = process.env.DATABASE_URI!;
 
-// mongoose.connect(DB).then(() => console.log("DB connected successfully!"));
+mongoose.connect(DB).then(() => console.log("DB connected successfully!"));
 
 const port = process.env.PORT || 6001;
 
@@ -25,4 +25,3 @@ process.on("uncaughtException", (err) => {
   console.log(err.name, err.message);
   process.exit(1);
 });
-export {};
