@@ -2,25 +2,21 @@ import mongoose, { Schema, SchemaType } from "mongoose";
 
 const addressSchema = new Schema(
   {
-    _id: {
-      type: Schema.Types.ObjectId,
-      required: true,
-    },
-    user_id: {
+    userId: {
       type: Schema.Types.ObjectId,
       ref: "User",
     },
-    address_line_1: {
+    addressLine1: {
       type: String,
       required: true,
     },
-    address_line_2: {
+    addressLine2: {
       type: String,
     },
     city: {
       type: String,
     },
-    post_code: {
+    postCode: {
       type: String,
     },
     country: {

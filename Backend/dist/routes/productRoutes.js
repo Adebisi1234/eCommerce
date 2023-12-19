@@ -1,19 +1,5 @@
 import { Router } from "express";
-import {
-  addCategory,
-  addDeals,
-  addProduct,
-  deleteDeals,
-  deleteProduct,
-  getAllProducts,
-  getCategory,
-  getProduct,
-  updateCategory,
-  updateDeals,
-  updateProduct,
-  getAllCategories,
-} from "../controllers/productController.js";
-
+import { addCategory, addDeals, addProduct, deleteDeals, deleteProduct, getAllProducts, getCategory, getProduct, updateCategory, updateDeals, updateProduct, getAllCategories, } from "../controllers/productController.js";
 const productRoutes = Router();
 productRoutes.get("/category/", getAllCategories);
 productRoutes.get("/category/?:id", getCategory);
@@ -27,5 +13,4 @@ productRoutes.delete("/:id", deleteProduct);
 productRoutes.post("/deals", addDeals);
 productRoutes.put("/deals", updateDeals);
 productRoutes.delete("/deals", deleteDeals);
-
 export default productRoutes;

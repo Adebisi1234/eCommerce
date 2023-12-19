@@ -1,13 +1,8 @@
 import { Schema, model } from "mongoose";
-
-const CategorySchema = new Schema(
-  {
+const CategorySchema = new Schema({
     name: {
-      required: true,
-      type: String,
+        required: true,
+        type: String,
     },
-  },
-  { timestamps: true }
-);
-
+}, { timestamps: true });
 export const Category = model("Category", CategorySchema);
