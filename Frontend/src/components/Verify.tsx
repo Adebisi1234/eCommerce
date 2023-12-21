@@ -13,8 +13,23 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { BACKEND_URL } from "@/App";
+import { useNavigate } from "react-router-dom";
 
-export default function Verify() {
+export default function Verify({
+  user,
+}: {
+  user: {
+    name: string;
+    password: string;
+    number: string;
+    email: string;
+    address: string;
+  };
+}) {
+  const [otp, setOtp] = useState({ code: "", number: user.number });
+  const navigate = useNavigate();
   return (
     <Card>
       <CardHeader>
@@ -27,11 +42,33 @@ export default function Verify() {
       <CardContent className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="otp">OTP</Label>
-          <Input id="otp" placeholder="Enter OTP" required type="text" />
+          <Input
+            id="otp"
+            placeholder="Enter OTP"
+            required
+            type="text"
+            onInput={(ev) => {
+              setOtp((prev) => {
+                return { ...prev, code: (ev.target as HTMLInputElement).value };
+              });
+            }}
+          />
         </div>
       </CardContent>
       <CardFooter>
-        <Button className="w-full">Verify</Button>
+        <Button
+          className="w-full"
+          onClick={() => {
+            fetch(BACKEND_URL + "/user/verify", {
+              method: "POST",
+              body: JSON.stringify(otp),
+            }).then(() => {
+              navigate("/home");
+            });
+          }}
+        >
+          Verify
+        </Button>
       </CardFooter>
     </Card>
   );
