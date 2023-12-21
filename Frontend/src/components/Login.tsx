@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { BACKEND_URL } from "@/App";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function Login({
   user,
@@ -23,7 +24,7 @@ export default function Login({
   user: {
     name: string;
     password: string;
-    number: string;
+    phone: string;
     email: string;
     address: string;
   };
@@ -31,7 +32,7 @@ export default function Login({
     React.SetStateAction<{
       name: string;
       password: string;
-      number: string;
+      phone: string;
       email: string;
       address: string;
     }>
@@ -58,7 +59,7 @@ export default function Login({
               setUser((prev) => {
                 return {
                   ...prev,
-                  number: (ev.target as HTMLInputElement).value,
+                  phone: (ev.target as HTMLInputElement).value,
                 };
               });
             }}
@@ -85,11 +86,11 @@ export default function Login({
         <Button
           className="w-full"
           onClick={() => {
-            fetch(BACKEND_URL + "/user/login", {
-              method: "POST",
-              body: JSON.stringify(user),
-            }).then(() => {
-              navigate("/verify");
+            axios.post(BACKEND_URL + "/user/login", user).then((res) => {
+              console.log(res);
+              if (res.status < 400) {
+                navigate("/login");
+              }
             });
           }}
         >

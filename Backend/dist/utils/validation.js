@@ -6,9 +6,12 @@ export const validateAuth = (input) => {
             .pattern(new RegExp("^[a-zA-z0-9]{3,30}$"))
             .required(),
         name: Joi.string().required(),
+        email: Joi.string(),
+        address: Joi.string(),
     });
     const result = schema.validate(input);
     if (result.error) {
+        console.log(result.error);
         throw Error(schema.validate(input).error?.message);
     }
     else
@@ -21,6 +24,7 @@ export const validateVerify = (input) => {
     });
     const result = schema.validate(input);
     if (result.error) {
+        console.log(result.error);
         throw Error(schema.validate(input).error?.message);
     }
     else

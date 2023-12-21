@@ -5,13 +5,13 @@ import Login from "./components/Login";
 import Verify from "./components/Verify";
 import Home from "./components/Home";
 import { useState } from "react";
-export const BACKEND_URL = "https://clock-backend-v8eh.onrender.com";
+export const BACKEND_URL = "http://localhost:6001";
 function App() {
   // Just to test a concept
   const [user, setUser] = useState({
     name: "",
     password: "",
-    number: "",
+    phone: "",
     email: "",
     address: "",
   });
