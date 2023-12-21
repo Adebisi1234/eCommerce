@@ -25,5 +25,3 @@ vite.config.ts
 tailwind.config.js
 postcss.config.js
 .eslintrc.cjs
-tsconfig.json
-tsconfig.node.json
