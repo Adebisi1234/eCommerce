@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { BACKEND_URL } from "@/App";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function Verify({
   user,
@@ -23,12 +24,15 @@ export default function Verify({
   user: {
     name: string;
     password: string;
-    number: string;
+    phone: string;
     email: string;
     address: string;
   };
 }) {
-  const [otp, setOtp] = useState({ code: "", number: user.number });
+  const [otp, setOtp] = useState({
+    code: "",
+    phone: user.phone ?? 2348114779597,
+  });
   const navigate = useNavigate();
   return (
     <Card>
@@ -59,11 +63,11 @@ export default function Verify({
         <Button
           className="w-full"
           onClick={() => {
-            fetch(BACKEND_URL + "/user/verify", {
-              method: "POST",
-              body: JSON.stringify(otp),
-            }).then(() => {
-              navigate("/home");
+            axios.post(BACKEND_URL + "/user/verify", otp).then((res) => {
+              console.log(res);
+              if (res.status < 400) {
+                navigate("/login");
+              }
             });
           }}
         >

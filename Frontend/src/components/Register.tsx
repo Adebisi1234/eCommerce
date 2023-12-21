@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 import { BACKEND_URL } from "@/App";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function Register({
   user,
@@ -24,7 +25,7 @@ export default function Register({
   user: {
     name: string;
     password: string;
-    number: string;
+    phone: string;
     email: string;
     address: string;
   };
@@ -32,20 +33,19 @@ export default function Register({
     React.SetStateAction<{
       name: string;
       password: string;
-      number: string;
+      phone: string;
       email: string;
       address: string;
     }>
   >;
 }) {
   const navigate = useNavigate();
-  const handleSubmit = (ev: React.FormEvent<HTMLButtonElement>) => {
-    ev.preventDefault();
-    fetch(BACKEND_URL + "/user/signup", {
-      method: "POST",
-      body: JSON.stringify(user),
-    }).then(() => {
-      navigate("/login");
+  const handleSubmit = (ev: React.MouseEvent<HTMLButtonElement>) => {
+    axios.post(BACKEND_URL + "/user/signup", user).then((res) => {
+      console.log(res);
+      if (res.status < 400) {
+        navigate("/login");
+      }
     });
   };
   return (
@@ -120,7 +120,7 @@ export default function Register({
                 setUser((prev) => {
                   return {
                     ...prev,
-                    number: (ev.target as HTMLInputElement).value,
+                    phone: (ev.target as HTMLInputElement).value,
                   };
                 });
               }}
@@ -144,11 +144,7 @@ export default function Register({
           </div>
         </CardContent>
         <CardFooter className="flex justify-center">
-          <Button
-            className="w-full sm:w-auto"
-            type="submit"
-            onSubmit={handleSubmit}
-          >
+          <Button className="w-full sm:w-auto" onClick={handleSubmit}>
             Register
           </Button>
         </CardFooter>
