@@ -1,41 +1,48 @@
-const BASE_URL = "https://api.sendchamp.com/api/v1/";
-export const sendOTP = async (email: string, name: string, Bearer: string) => {
-  try {
-    const data = await fetch(`${BASE_URL}verification/create`, {
-      body: JSON.stringify({
-        channel: "email",
-        token_type: "numeric",
-        sender: "Sendchamp",
-        token_length: 5,
-        expiration_time: 6,
-        customer_email_address: email,
+import client from "twilio";
+const accountSid = process.env.TWILIO_SID as string;
+const authToken = process.env.TWILIO_AUTH_TOKEN as string;
+const verifySid = process.env.TWILIO_VERIFY_SID as string;
+const cl = client(accountSid, authToken);
 
-        meta_data: { first_name: name },
-      }),
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${Bearer}`,
-      },
-    });
-    return data.json();
-  } catch (err) {}
+export const sendOTP = async (phone: string) => {
+  try {
+    const { status } = await cl.verify.v2
+      .services(verifySid)
+      .verifications.create({ to: `+${phone}`, channel: "sms" });
+    console.log(status);
+    return status;
+  } catch (err: any) {
+    throw new Error(err.message);
+  }
 };
 
-export const verifyOTP = async (code: number, ref: string, bearer: string) => {
+export const verifyOTP = async (phone: string, otpCode: string) => {
   try {
-    const data = await fetch(`${BASE_URL}verification/confirm`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${bearer}`,
-      },
-      body: JSON.stringify({
-        verification_code: code,
-        verification_reference: ref,
-      }),
-    });
-    return data.json();
-  } catch (err) {}
+    const { status } = await cl.verify.v2
+      .services(verifySid)
+      .verificationChecks.create({ to: `+${phone}`, code: otpCode });
+    console.log(status);
+    return status;
+  } catch (err: any) {
+    throw new Error(err.message);
+  }
 };
+// cl.verify.v2
+//   .services(verifySid)
+//   .verifications.create({ to: "+2348114779597", channel: "sms" })
+//   .then((verification: any) => console.log(verification.status))
+//   .then(() => {
+//     const rl = readline.createInterface({
+//       input: process.stdin,
+//       output: process.stdout,
+//     });
+//     rl.question("Please enter the OTP:", (otpCode: any) => {
+//       cl.verify.v2
+//         .services(verifySid)
+//         .verificationChecks.create({ to: "+2348114779597", code: otpCode })
+//         .then((verification_check: any) =>
+//           console.log(verification_check.status)
+//         )
+//         .then(() => rl.close());
+//     });
+//   });

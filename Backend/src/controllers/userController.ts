@@ -1,42 +1,52 @@
 import { type Request, type Response } from "express";
 import { User } from "../models/User.js";
-import { validateAuth } from "../utils/validation.js";
+import { validateAuth, validateVerify } from "../utils/validation.js";
 import { comparePassword, hashPassword } from "../utils/password.js";
-import { sendOTP } from "../utils/OTP.js";
+import { sendOTP, verifyOTP } from "../utils/OTP.js";
 
 export const signup = async (req: Request, res: Response) => {
   try {
-    const { email, password, name } = validateAuth(req.body);
+    const { phone, password, name } = validateAuth(req.body);
     const hashedPassword = await hashPassword(password);
-    const newUser = new User({ email, password: hashedPassword, name });
+    const newUser = new User({ phone, password: hashedPassword, name });
     await newUser.save();
-    res.status(200).json(newUser);
+    return res.status(200).json(newUser);
   } catch (err) {
     let error = err as { message: string };
-    res.status(400).json(error.message);
+    return res.sendStatus(400);
   }
 };
 
 export const login = async (req: Request, res: Response) => {
-  console.log("login");
   try {
-    const bearer = process.env.SENDCHAMP_BEARER;
-    if (!bearer) return res.sendStatus(500);
-    const { email, password, name } = validateAuth(req.body);
-    const user = await User.findOne({ email }).select("password");
+    const { phone, password } = validateAuth(req.body);
+    const user = await User.findOne({ phone }).select("password");
     if (!user) return res.status(400).json("user not found");
     const compare = await comparePassword(password, user.password);
     if (!compare) return res.status(400).json("Incorrect input");
-    const result = await sendOTP(email, name, bearer);
-    res.status(200).json(result);
+    const status = await sendOTP(phone);
+    if (!status || status !== "pending") {
+      return res.status(500).json("OTP was not created");
+    }
+    return res.status(200).json("OTP created");
   } catch (err) {
-    let error = err as { message: string };
-    res.status(400).json(error.message);
+    return res.status(400).json("OTP was not created");
   }
 };
 
 export const verify = async (req: Request, res: Response) => {
-  console.log("verify");
+  try {
+    const { phone, code } = validateVerify(req.body);
+    const user = await User.findOne({ phone });
+    if (!user) return res.status(400).json("user not found");
+    const status = await verifyOTP(phone, code);
+    if (!status || status !== "approved") {
+      return res.status(400).json("OTP verification failed");
+    }
+    return res.status(200).json(user);
+  } catch (err) {
+    return res.status(400).json("OTP verification failed");
+  }
 };
 
 export const getProfile = async (req: Request, res: Response) => {

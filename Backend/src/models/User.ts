@@ -1,13 +1,13 @@
-import mongoose, { Schema } from "mongoose";
+import { Schema, model } from "mongoose";
 
 const UserSchema = new Schema(
   {
     phone: {
       type: Number,
+      required: true,
     },
     email: {
       type: String,
-      required: true,
     },
     password: {
       type: String,
@@ -32,4 +32,4 @@ const UserSchema = new Schema(
   }
 );
 
-export const User = mongoose.model("User", UserSchema);
+export const User = model("User", UserSchema);
