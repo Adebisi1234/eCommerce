@@ -3,7 +3,7 @@ export const validateAuth = (input) => {
     const schema = Joi.object({
         phone: Joi.string().pattern(new RegExp("^[0-9]{3,15}$")).required(),
         password: Joi.string()
-            .pattern(new RegExp("^[a-zA-z0-9]{3,30}$"))
+            .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
             .required(),
         name: Joi.string().required(),
         email: Joi.string(),
@@ -33,17 +33,17 @@ export const validateVerify = (input) => {
 export const validateUser = (input) => {
     const schema = Joi.object({
         _id: Joi.string().alphanum(),
-        phone: Joi.number().min(111).max(9999999999999).required(),
+        phone: Joi.string().pattern(new RegExp("^[0-9]{3,15}$")).required(),
         email: Joi.string()
             .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
             .required(),
-        password: Joi.string()
-            .pattern(new RegExp("^[a-zA-z0-9]{3,30}$"))
-            .required(),
+        password: Joi.string().pattern(new RegExp("^[*]{3,30}$")).required(),
         repeatPassword: Joi.ref("password"),
         userType: Joi.string().required(),
         name: Joi.string().required(),
-        address: Joi.string().required(),
+        address: Joi.string(),
+        order: Joi.string(),
+        cart: Joi.array(),
     });
     const result = schema.validate(input);
     if (result.error) {
@@ -54,9 +54,9 @@ export const validateUser = (input) => {
 };
 export const validateTransaction = (input) => {
     const schema = Joi.object({
-        _id: Joi.string().alphanum().required(),
-        orderId: Joi.ref("_id"),
-        userId: Joi.ref("_id"),
+        _id: Joi.string().alphanum(),
+        orderId: Joi.string().alphanum().required(),
+        userId: Joi.string().alphanum().required(),
         paymentMethod: Joi.string().required(),
         status: Joi.string().required(),
         paymentLog: Joi.string().required(),
@@ -70,10 +70,10 @@ export const validateTransaction = (input) => {
 };
 export const validateShipping = (input) => {
     const schema = Joi.object({
-        _id: Joi.string().alphanum().required(),
-        orderId: Joi.ref("_id"),
-        customerId: Joi.ref("_id"),
-        sellerId: Joi.ref("_id"),
+        _id: Joi.string().alphanum(),
+        orderId: Joi.string().alphanum().required(),
+        customerId: Joi.string().alphanum().required(),
+        sellerId: Joi.string().alphanum().required(),
         status: Joi.string().required(),
         address: Joi.string().required(),
     });
@@ -86,8 +86,8 @@ export const validateShipping = (input) => {
 };
 export const validatePayment = (input) => {
     const schema = Joi.object({
-        _id: Joi.string().alphanum().required(),
-        userId: Joi.ref("_id"),
+        _id: Joi.string().alphanum(),
+        userId: Joi.string().alphanum().required(),
         bankAccount: Joi.number().required(),
         payment: Joi.string().required(),
     });
@@ -100,10 +100,10 @@ export const validatePayment = (input) => {
 };
 export const validateOrder = (input) => {
     const schema = Joi.object({
-        _id: Joi.string().alphanum().required(),
-        userId: Joi.ref("_id"),
-        cartId: Joi.ref("_Id"),
-        status: Joi.string().required,
+        _id: Joi.string().alphanum(),
+        userId: Joi.string().alphanum().required(),
+        cartId: Joi.string().alphanum().required(),
+        status: Joi.string().required(),
         amount: Joi.number().required(),
     });
     const result = schema.validate(input);
@@ -115,15 +115,13 @@ export const validateOrder = (input) => {
 };
 export const validateProduct = (input) => {
     const schema = Joi.object({
-        _id: Joi.string().alphanum().required(),
-        name: Joi.string().required,
-        desc: Joi.string().required,
-        categoryId: Joi.ref("_id"),
-        price: Joi.number().required,
-        availability: Joi.boolean().required,
-        sellerId: Joi.ref("_id"),
-        dealId: Joi.ref("_id"),
-        stockUnit: Joi.number().required,
+        _id: Joi.string().alphanum(),
+        name: Joi.string().required(),
+        desc: Joi.string().required(),
+        price: Joi.number().required(),
+        availability: Joi.boolean().required(),
+        sellerId: Joi.string().alphanum().required(),
+        stockUnit: Joi.number().required(),
     });
     const result = schema.validate(input);
     if (result.error) {
@@ -134,7 +132,7 @@ export const validateProduct = (input) => {
 };
 export const validateCategory = (input) => {
     const schema = Joi.object({
-        _id: Joi.string().alphanum().required(),
+        _id: Joi.string().alphanum(),
         name: Joi.string().required(),
     });
     const result = schema.validate(input);
@@ -146,9 +144,9 @@ export const validateCategory = (input) => {
 };
 export const validateCartItem = (input) => {
     const schema = Joi.object({
-        _id: Joi.string().alphanum().required(),
-        cartId: Joi.ref("_id"),
-        itemId: Joi.ref("_id"),
+        _id: Joi.string().alphanum(),
+        cartId: Joi.string().alphanum().required(),
+        itemId: Joi.string().alphanum().required(),
         itemQty: Joi.number(),
     });
     const result = schema.validate(input);
@@ -160,8 +158,8 @@ export const validateCartItem = (input) => {
 };
 export const validateCart = (input) => {
     const schema = Joi.object({
-        _id: Joi.string().alphanum().required(),
-        userId: Joi.ref("_id"),
+        _id: Joi.string().alphanum(),
+        userId: Joi.string().alphanum().required(),
         itemIds: Joi.array(),
     });
     const result = schema.validate(input);
@@ -173,8 +171,8 @@ export const validateCart = (input) => {
 };
 export const validateAddress = (input) => {
     const schema = Joi.object({
-        _id: Joi.string().alphanum().required(),
-        userId: Joi.ref("_id"),
+        _id: Joi.string().alphanum(),
+        userId: Joi.string().alphanum().required(),
         addressLine1: Joi.string().required(),
         addressLine2: Joi.string(),
         city: Joi.string(),

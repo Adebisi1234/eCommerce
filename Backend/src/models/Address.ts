@@ -1,4 +1,4 @@
-import mongoose, { Schema, SchemaType } from "mongoose";
+import { Schema, model } from "mongoose";
 
 const addressSchema = new Schema(
   {
@@ -26,4 +26,4 @@ const addressSchema = new Schema(
   { timestamps: true }
 );
 
-export const Address = mongoose.model("Address", addressSchema);
+export const Address = model("Address", addressSchema);

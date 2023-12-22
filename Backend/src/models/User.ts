@@ -27,6 +27,18 @@ const UserSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Address",
     },
+    cart: {
+      type: Schema.Types.ObjectId,
+      ref: "Cart",
+    },
+    order: {
+      type: Schema.Types.ObjectId,
+      ref: "Order",
+    },
+    payment: {
+      type: Schema.Types.ObjectId,
+      ref: "payment",
+    },
   },
   {
     timestamps: true,

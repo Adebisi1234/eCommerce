@@ -8,6 +8,6 @@ const CartItemSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Item",
     },
-    itemQty: { type: Number },
+    itemQty: { type: Number, default: 1 },
 }, { timestamps: true });
 export const CartItem = model("CartItem", CartItemSchema);
