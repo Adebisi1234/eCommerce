@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import { Schema, model } from "mongoose";
 const addressSchema = new Schema({
     userId: {
         type: Schema.Types.ObjectId,
@@ -21,4 +21,4 @@ const addressSchema = new Schema({
         type: String,
     },
 }, { timestamps: true });
-export const Address = mongoose.model("Address", addressSchema);
+export const Address = model("Address", addressSchema);
