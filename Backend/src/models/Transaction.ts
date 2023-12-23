@@ -1,7 +1,13 @@
-import { model, Schema } from "mongoose";
+import { model, Schema, Document } from "mongoose";
+import { OrderDoc } from "./Order.js";
+import { UserDoc } from "./User.js";
+
+export type TransactionDoc = {
+  orderId: Schema.Types.ObjectId | OrderDoc;
+  userId: Schema.Types.ObjectId | UserDoc;
+};
 
 const TransactionSchema = new Schema({
-  
   orderId: {
     type: Schema.Types.ObjectId,
     ref: "Order",

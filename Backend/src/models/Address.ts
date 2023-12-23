@@ -1,4 +1,14 @@
 import { Schema, model } from "mongoose";
+import { UserDoc } from "./User.js";
+
+export type AddressDoc = {
+  userId: Schema.Types.ObjectId | UserDoc;
+  addressLine1: string;
+  addressLine2?: string;
+  city: string;
+  postCode: string;
+  country: string;
+};
 
 const addressSchema = new Schema(
   {

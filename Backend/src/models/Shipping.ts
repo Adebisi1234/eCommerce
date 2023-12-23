@@ -1,4 +1,15 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Document } from "mongoose";
+import { OrderDoc } from "./Order.js";
+import { UserDoc } from "./User.js";
+import { AddressDoc } from "./Address.js";
+
+export type ShippingDoc = {
+  orderId: Schema.Types.ObjectId | OrderDoc;
+  customerId: Schema.Types.ObjectId | UserDoc;
+  sellerId: Schema.Types.ObjectId | UserDoc;
+  status: string;
+  address: Schema.Types.ObjectId | AddressDoc;
+};
 
 const ShippingSchema = new Schema({
   orderId: {
