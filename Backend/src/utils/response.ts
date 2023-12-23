@@ -1,3 +1,12 @@
+/* 
+
+Response: {
+  message: string;
+  data: unknown;
+  error: string | undefined
+}
+*/
+
 export const formatResponse = (
   statusCode: number,
   message: string,
