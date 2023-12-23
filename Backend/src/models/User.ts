@@ -8,6 +8,7 @@ export type UserDoc = {
   verified: boolean;
   name: string;
   profilePic?: string;
+  refreshToken?: string;
 };
 
 const UserSchema = new Schema(
@@ -54,6 +55,10 @@ const UserSchema = new Schema(
     verified: {
       type: Boolean,
       default: false,
+    },
+    refreshToken: {
+      type: String,
+      select: false,
     },
   },
   {
