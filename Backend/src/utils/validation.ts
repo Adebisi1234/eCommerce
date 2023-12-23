@@ -113,12 +113,25 @@ export const validateProduct = (input: object) => {
     _id: Joi.string().alphanum(),
     name: Joi.string().required(),
     desc: Joi.string().required(),
-
     price: Joi.number().required(),
     availability: Joi.boolean().required(),
     sellerId: Joi.string().alphanum().required(),
-
     stockUnit: Joi.number().required(),
+  });
+  const result = schema.validate(input);
+  if (result.error) {
+    throw Error(schema.validate(input).error?.message);
+  } else return schema.validate(input).value;
+};
+export const validateUpdateProduct = (input: object) => {
+  const schema = Joi.object({
+    _id: Joi.string().alphanum(),
+    name: Joi.string(),
+    desc: Joi.string(),
+    price: Joi.number(),
+    availability: Joi.boolean(),
+    sellerId: Joi.string().alphanum(),
+    stockUnit: Joi.number(),
   });
   const result = schema.validate(input);
   if (result.error) {
@@ -130,6 +143,16 @@ export const validateCategory = (input: object) => {
   const schema = Joi.object({
     _id: Joi.string().alphanum(),
     name: Joi.string().required(),
+  });
+  const result = schema.validate(input);
+  if (result.error) {
+    throw Error(schema.validate(input).error?.message);
+  } else return schema.validate(input).value;
+};
+export const validateUpdateCategory = (input: object) => {
+  const schema = Joi.object({
+    _id: Joi.string().alphanum(),
+    name: Joi.string(),
   });
   const result = schema.validate(input);
   if (result.error) {
