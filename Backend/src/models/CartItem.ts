@@ -1,5 +1,11 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Document } from "mongoose";
+import { CartDoc } from "./Cart.js";
+import { ProductDoc } from "./Product.js";
 
+export type CartItemDoc = {
+  cartId: Schema.Types.ObjectId | CartDoc;
+  itemId: Schema.Types.ObjectId | ProductDoc;
+};
 const CartItemSchema = new Schema(
   {
     cartId: {
@@ -8,7 +14,7 @@ const CartItemSchema = new Schema(
     },
     itemId: {
       type: Schema.Types.ObjectId,
-      ref: "Item",
+      ref: "Product",
     },
     itemQty: { type: Number, default: 1 },
   },

@@ -1,4 +1,11 @@
-import mongoose, { Schema } from "mongoose";
+import { model, Schema, Document } from "mongoose";
+import { UserDoc } from "./User.js";
+
+export type PaymentDoc = {
+  userId: Schema.Types.ObjectId | UserDoc;
+  bankAccount: number;
+  payment: string;
+};
 
 const paymentSchema = new Schema(
   {
@@ -18,4 +25,4 @@ const paymentSchema = new Schema(
   { timestamps: true }
 );
 
-export const Payment = mongoose.model("Payment", paymentSchema);
+export const Payment = model("Payment", paymentSchema);

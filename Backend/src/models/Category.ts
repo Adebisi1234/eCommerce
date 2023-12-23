@@ -1,5 +1,8 @@
 import { Schema, model } from "mongoose";
 
+export type CategoryDoc = {
+  name: string;
+};
 const CategorySchema = new Schema(
   {
     name: {

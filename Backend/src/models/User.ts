@@ -1,5 +1,15 @@
 import { Schema, model } from "mongoose";
 
+export type UserDoc = {
+  phone: number;
+  email: string;
+  password: string;
+  user_type: "Buyer" | "Seller";
+  verified: boolean;
+  name: string;
+  profilePic?: string;
+};
+
 const UserSchema = new Schema(
   {
     phone: {
@@ -31,18 +41,20 @@ const UserSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Cart",
     },
-    order: {
-      type: Schema.Types.ObjectId,
-      ref: "Order",
-    },
+    order: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Order",
+      },
+    ],
     payment: {
       type: Schema.Types.ObjectId,
       ref: "payment",
     },
     verified: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   {
     timestamps: true,
