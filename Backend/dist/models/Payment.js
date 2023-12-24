@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 const paymentSchema = new Schema({
     userId: {
         type: Schema.Types.ObjectId,
@@ -13,4 +13,4 @@ const paymentSchema = new Schema({
         required: true,
     },
 }, { timestamps: true });
-export const Payment = mongoose.model("Payment", paymentSchema);
+export const Payment = model("Payment", paymentSchema);

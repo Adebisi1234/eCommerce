@@ -8,6 +8,7 @@ import cookies from "cookie-parser";
 import userRouter from "./routes/userRoutes.js";
 import transactionRouter from "./routes/transactionRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
+import { verifyToken } from "./utils/jwt.js";
 const app = express();
 app.use(cors());
 // log requests
@@ -22,6 +23,7 @@ app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 app.use(cookies());
 // 3) ROUTES
 app.use("/user", userRouter);
+app.use(verifyToken);
 app.use("/transaction", transactionRouter);
 app.use("/", productRoutes);
 app.all("/*", (req, res, next) => {

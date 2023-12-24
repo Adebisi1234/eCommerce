@@ -29,13 +29,23 @@ const UserSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Cart",
     },
-    order: {
-        type: Schema.Types.ObjectId,
-        ref: "Order",
-    },
+    order: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Order",
+        },
+    ],
     payment: {
         type: Schema.Types.ObjectId,
         ref: "payment",
+    },
+    verified: {
+        type: Boolean,
+        default: false,
+    },
+    refreshToken: {
+        type: String,
+        select: false,
     },
 }, {
     timestamps: true,
