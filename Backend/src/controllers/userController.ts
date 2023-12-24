@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import { type Request, type Response } from "express";
 import { User, UserDoc } from "../models/User.js";
 import {
@@ -17,6 +18,7 @@ import { Address, AddressDoc } from "../models/Address.js";
 import { Order } from "../models/Order.js";
 import { Payment, PaymentDoc } from "../models/Payment.js";
 import { ErrorResponse } from "../utils/response.js";
+import { signToken } from "../utils/jwt.js";
 
 export const signup = async (req: Request, res: Response) => {
   try {
@@ -32,9 +34,12 @@ export const signup = async (req: Request, res: Response) => {
     if (!status || status !== "pending") {
       return res.status(500).json("OTP was not created");
     }
-    return res.status(200).json("OTP created");
+    return res.json("OTP created");
   } catch (err) {
-    ErrorResponse(err);
+    if (err instanceof Error) {
+      return res.status(400).json(err.message);
+    }
+    return res.status(400).json(err);
   }
 };
 
@@ -45,13 +50,55 @@ export const login = async (req: Request, res: Response) => {
     if (!user) return res.status(400).json("user not found");
     const compare = await comparePassword(password, user.password);
     if (!compare) return res.status(400).json("Incorrect input");
-    const status = await sendOTP(phone);
-    if (!status || status !== "pending") {
-      return res.status(500).json("OTP was not created");
+    if (process.env.NODE_ENV === "production") {
+      const status = await sendOTP(phone);
+      if (!status || status !== "pending") {
+        return res.status(500).json("OTP was not created");
+      }
     }
-    return res.status(200).json(user);
+    return res.json("Otp created");
   } catch (err) {
-    ErrorResponse(err);
+    if (err instanceof Error) {
+      return res.status(400).json(err.message);
+    }
+    return res.status(400).json(err);
+  }
+};
+
+export const refreshTokens = async (req: Request, res: Response) => {
+  try {
+    const refreshTokenCookie = req.cookies?.refreshToken;
+    if (!refreshTokenCookie) {
+      return res.status(403).json("refresh cookie not found");
+    }
+
+    const { id } = jwt.decode(refreshTokenCookie) as { id: any };
+
+    if (!id) {
+      return res.status(403).json("invalid credentials");
+    }
+    const user = await User.findById(id).select("refreshToken");
+    if (!user) {
+      return res.status(403).json("User not found");
+    }
+    if (refreshTokenCookie !== user?.refreshToken) {
+      return res.status(401).json("Wrong credentials, please try logging in ");
+    }
+    const { accessToken, refreshToken } = signToken(id);
+    user.refreshToken = refreshToken;
+    res.cookie("refreshToken", refreshToken, {
+      secure: process.env.NODE_ENV === "production" ? true : false,
+      httpOnly: true,
+      sameSite: "lax",
+      maxAge: 10 * 24 * 60 * 60 * 1000,
+    });
+    await user.save();
+    return res.json({ accessToken });
+  } catch (err) {
+    if (err instanceof Error) {
+      return res.status(403).json(err.message);
+    }
+    return res.status(403).json(err);
   }
 };
 
@@ -60,15 +107,30 @@ export const verify = async (req: Request, res: Response) => {
     const { phone, code } = validateVerify(req.body);
     const user = await User.findOne({ phone });
     if (!user) return res.status(400).json("user not found");
-    const status = await verifyOTP(phone, code);
-    if (!status || status !== "approved") {
-      return res.status(400).json("OTP verification failed");
+    // Saving the trial, will roll my own auth soon
+    if (process.env.NODE_ENV === "production") {
+      const status = await verifyOTP(phone, code);
+      if (!status || status !== "approved") {
+        return res.status(400).json("OTP verification failed");
+      }
     }
     user.verified = true;
+    const { accessToken, refreshToken } = signToken(user._id);
+    user.refreshToken = refreshToken;
     user.save();
-    return res.status(200).json(user);
+    res.cookie("refreshToken", refreshToken, {
+      secure: process.env.NODE_ENV === "production" ? true : false,
+      httpOnly: true,
+      sameSite: "lax",
+      maxAge: 10 * 24 * 60 * 60 * 1000,
+    });
+    // There's definitely a better way to do this
+    return res.json({ ...user.toObject(), accessToken, refreshToken: null });
   } catch (err) {
-    ErrorResponse(err);
+    if (err instanceof Error) {
+      return res.status(400).json(err.message);
+    }
+    return res.status(400).json(err);
   }
 };
 
@@ -81,9 +143,13 @@ export const getProfile = async (req: Request, res: Response) => {
     if (!user) {
       return res.status(400).json("User not found");
     }
-    return res.status(200).json(user);
+
+    return res.json(user);
   } catch (err) {
-    ErrorResponse(err);
+    if (err instanceof Error) {
+      return res.status(400).json(err.message);
+    }
+    return res.status(400).json(err);
   }
 };
 export const createProfile = async (req: Request, res: Response) => {
@@ -93,6 +159,7 @@ export const createProfile = async (req: Request, res: Response) => {
       return res.sendStatus(400);
     }
     await new Address({ ...body }).save();
+    res.sendStatus(200);
   } catch (err) {
     return res.sendStatus(400);
   }
@@ -108,9 +175,12 @@ export const updateProfile = async (req: Request, res: Response) => {
     if (!user) {
       return res.status(400).json("user not found");
     }
-    return res.status(200).json(user);
+    return res.json(user);
   } catch (err) {
-    ErrorResponse(err);
+    if (err instanceof Error) {
+      return res.status(400).json(err.message);
+    }
+    return res.status(400).json(err);
   }
 };
 
@@ -126,9 +196,12 @@ export const getCart = async (req: Request, res: Response) => {
         userId,
       }).save());
     await User.findOneAndUpdate({ _id: userId }, { cart: cart._id });
-    return res.status(200).json(cart);
+    return res.json(cart);
   } catch (err) {
-    ErrorResponse(err);
+    if (err instanceof Error) {
+      return res.status(400).json(err.message);
+    }
+    return res.status(400).json(err);
   }
 };
 export const addToCart = async (req: Request, res: Response) => {
@@ -160,14 +233,17 @@ export const addToCart = async (req: Request, res: Response) => {
       cartItem.itemQty += 1;
       await cartItem.save();
       await cart.save();
-      return res.status(200).json(cart);
+      return res.json(cart);
     }
 
     cart.itemIds.push(cartItem._id);
     await cart.save();
-    return res.status(200).json(cart);
+    return res.json(cart);
   } catch (err) {
-    ErrorResponse(err);
+    if (err instanceof Error) {
+      return res.status(400).json(err.message);
+    }
+    return res.status(400).json(err);
   }
 };
 
@@ -184,9 +260,12 @@ export const addPaymentDetails = async (req: Request, res: Response) => {
     }).save();
     user.payment = paymentDetails._id;
     user.save();
-    return res.status(200).json("payment details added successfully");
+    return res.json("payment details added successfully");
   } catch (err) {
-    ErrorResponse(err);
+    if (err instanceof Error) {
+      return res.status(400).json(err.message);
+    }
+    return res.status(400).json(err);
   }
 };
 export const updatePaymentDetails = async (req: Request, res: Response) => {
@@ -198,9 +277,12 @@ export const updatePaymentDetails = async (req: Request, res: Response) => {
     if (!payment) {
       return res.status(400).json("payment details not updated");
     }
-    return res.status(200).json("Payment updated");
+    return res.json("Payment updated");
   } catch (err) {
-    ErrorResponse(err);
+    if (err instanceof Error) {
+      return res.status(400).json(err.message);
+    }
+    return res.status(400).json(err);
   }
 };
 export const getPaymentDetails = async (req: Request, res: Response) => {
@@ -211,9 +293,12 @@ export const getPaymentDetails = async (req: Request, res: Response) => {
     if (!details) {
       return res.status(400).json("payment details not found");
     }
-    return res.status(200).json(details);
+    return res.json(details);
   } catch (err) {
-    ErrorResponse(err);
+    if (err instanceof Error) {
+      return res.status(400).json(err.message);
+    }
+    return res.status(400).json(err);
   }
 };
 
@@ -223,9 +308,12 @@ export const updateCartItem = async (req: Request, res: Response) => {
 
     const update: CartItemDoc = validateCartItem(req.body);
     const updatedCartItem = await CartItem.findByIdAndUpdate(id, { ...update });
-    return res.status(200).json(updatedCartItem);
+    return res.json(updatedCartItem);
   } catch (err) {
-    ErrorResponse(err);
+    if (err instanceof Error) {
+      return res.status(400).json(err.message);
+    }
+    return res.status(400).json(err);
   }
 };
 export const deleteCartItem = async (req: Request, res: Response) => {
@@ -233,9 +321,12 @@ export const deleteCartItem = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     await CartItem.findByIdAndDelete(id);
-    return res.status(200).json("deleted cartItem");
+    return res.json("deleted cartItem");
   } catch (err) {
-    ErrorResponse(err);
+    if (err instanceof Error) {
+      return res.status(400).json(err.message);
+    }
+    return res.status(400).json(err);
   }
 };
 
@@ -251,9 +342,12 @@ export const clearCart = async (req: Request, res: Response) => {
     });
     cart.itemIds = [];
     await cart.save();
-    return res.status(200).json("Cart cleared");
+    return res.json("Cart cleared");
   } catch (err) {
-    ErrorResponse(err);
+    if (err instanceof Error) {
+      return res.status(400).json(err.message);
+    }
+    return res.status(400).json(err);
   }
 };
 
@@ -276,8 +370,11 @@ export const deleteAccount = async (req: Request, res: Response) => {
       await Address.findByIdAndDelete(user.address._id);
     }
     user.deleteOne();
-    return res.status(200).json("Account deleted");
+    return res.json("Account deleted");
   } catch (err) {
-    ErrorResponse(err);
+    if (err instanceof Error) {
+      return res.status(400).json(err.message);
+    }
+    return res.status(400).json(err);
   }
 };

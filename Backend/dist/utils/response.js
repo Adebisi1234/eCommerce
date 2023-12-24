@@ -1,3 +1,11 @@
+/*
+
+Response: {
+  message: string;
+  data: unknown;
+  error: string | undefined
+}
+*/
 export const formatResponse = (statusCode, message, data) => {
     if (data) {
         return {
@@ -26,11 +34,9 @@ export const formatResponse = (statusCode, message, data) => {
 export const SuccessResponse = (data) => {
     return formatResponse(200, "success", data);
 };
-export const ErrorResponse = (code = 404, error) => {
-    if (Array.isArray(error)) {
-        const errorObject = error[0].constraints;
-        const errorMessage = errorObject[Object.keys(errorObject)[0]] || "Error Occurred";
-        return formatResponse(code, errorMessage, error);
+export const ErrorResponse = (error, code = 404) => {
+    if (error instanceof Error) {
+        return formatResponse(code, error.message, error.cause);
     }
     return formatResponse(code, `${error}`, error);
 };

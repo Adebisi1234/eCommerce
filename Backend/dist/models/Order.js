@@ -9,6 +9,10 @@ const OrderSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Cart",
     },
+    productId: {
+        type: Schema.Types.ObjectId,
+        ref: "Product",
+    },
     status: String,
     amount: Number,
 }, { timestamps: true });

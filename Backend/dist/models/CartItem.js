@@ -6,7 +6,7 @@ const CartItemSchema = new Schema({
     },
     itemId: {
         type: Schema.Types.ObjectId,
-        ref: "Item",
+        ref: "Product",
     },
     itemQty: { type: Number, default: 1 },
 }, { timestamps: true });
