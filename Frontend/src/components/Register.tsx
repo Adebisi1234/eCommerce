@@ -40,7 +40,7 @@ export default function Register({
   >;
 }) {
   const navigate = useNavigate();
-  const handleSubmit = (ev: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = () => {
     axios.post(BACKEND_URL + "/user/signup", user).then((res) => {
       console.log(res);
       if (res.status < 400) {
