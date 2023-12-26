@@ -13,34 +13,10 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { BACKEND_URL } from "@/App";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
-export default function Login({
-  user,
-  setUser,
-}: {
-  user: {
-    name: string;
-    password: string;
-    phone: string;
-    email: string;
-    address: string;
-  };
-  setUser: React.Dispatch<
-    React.SetStateAction<{
-      name: string;
-      password: string;
-      phone: string;
-      email: string;
-      address: string;
-    }>
-  >;
-}) {
-  const navigate = useNavigate();
+export default function Login() {
   return (
-    <Card>
+    <Card className="max-w-md mx-auto">
       <CardHeader>
         <CardTitle className="text-2xl">Login</CardTitle>
         <CardDescription>
@@ -50,52 +26,15 @@ export default function Login({
       <CardContent className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="Phone">Phone</Label>
-          <Input
-            id="Phone"
-            placeholder="Phone"
-            required
-            type="text"
-            onInput={(ev) => {
-              setUser((prev) => {
-                return {
-                  ...prev,
-                  phone: (ev.target as HTMLInputElement).value,
-                };
-              });
-            }}
-          />
+          <Input id="Phone" placeholder="Phone" required type="text" />
         </div>
         <div className="space-y-2">
           <Label htmlFor="password">Password</Label>
-          <Input
-            id="password"
-            required
-            type="password"
-            onInput={(ev) => {
-              setUser((prev) => {
-                return {
-                  ...prev,
-                  password: (ev.target as HTMLInputElement).value,
-                };
-              });
-            }}
-          />
+          <Input id="password" required type="password" />
         </div>
       </CardContent>
       <CardFooter>
-        <Button
-          className="w-full"
-          onClick={() => {
-            axios.post(BACKEND_URL + "/user/login", user).then((res) => {
-              console.log(res);
-              if (res.status < 400) {
-                navigate("/login");
-              }
-            });
-          }}
-        >
-          Sign in
-        </Button>
+        <Button className="w-full">Sign in</Button>
       </CardFooter>
     </Card>
   );

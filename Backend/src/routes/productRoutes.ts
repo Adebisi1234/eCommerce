@@ -16,16 +16,16 @@ import {
 
 const productRoutes = Router();
 productRoutes.get("/category/", getAllCategories);
-productRoutes.get("/category/?:id", getCategory);
+productRoutes.get("/category/:id", getCategory);
 productRoutes.post("/category/", addCategory);
-productRoutes.put("/category/?:id", updateCategory);
-productRoutes.get("/?:id", getProduct);
+productRoutes.put("/category/:id", updateCategory);
+productRoutes.post("/deals", addDeals);
+productRoutes.put("/deals", updateDeals);
+productRoutes.delete("/deals", deleteDeals);
+productRoutes.get("/:id", getProduct);
 productRoutes.get("/", getAllProducts);
 productRoutes.post("/", addProduct);
 productRoutes.put("/:id", updateProduct);
 productRoutes.delete("/:id", deleteProduct);
-productRoutes.post("/deals", addDeals);
-productRoutes.put("/deals", updateDeals);
-productRoutes.delete("/deals", deleteDeals);
 
 export default productRoutes;

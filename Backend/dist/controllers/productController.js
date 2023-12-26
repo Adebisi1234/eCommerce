@@ -3,7 +3,14 @@ import { Product } from "../models/Product.js";
 import { Category } from "../models/Category.js";
 export const getAllProducts = async (req, res) => {
     try {
-        const products = await Product.find();
+        const { limit, skip, sort } = req.query;
+        const products = await Product.find()
+            .skip(skip && isNaN(+skip) ? +skip : 0)
+            .limit(limit && isNaN(+limit) ? +limit : 0)
+            .sort(typeof sort === "string" &&
+            ["asc", "desc", "ascending", "descending", 1, -1].includes(sort)
+            ? `${sort}`
+            : "");
         if (!products) {
             return res.status(500).json("No product found");
         }

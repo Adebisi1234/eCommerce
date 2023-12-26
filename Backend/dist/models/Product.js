@@ -2,10 +2,17 @@ import { model, Schema } from "mongoose";
 const ProductSchema = new Schema({
     name: String,
     desc: String,
-    categoryId: Schema.Types.ObjectId,
-    imageUrl: String,
+    category: String,
+    rating: Number,
+    thumbnail: String,
+    images: [String],
     price: Number,
-    availability: Boolean,
+    discount: Number,
+    brand: String,
+    availability: {
+        type: Boolean,
+        default: true,
+    },
     sellerId: {
         type: Schema.Types.ObjectId,
         ref: "User",

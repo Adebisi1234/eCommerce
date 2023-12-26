@@ -29,12 +29,13 @@ const UserSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Cart",
     },
-    order: [
-        {
+    order: {
+        products: {
             type: Schema.Types.ObjectId,
             ref: "Order",
         },
-    ],
+        total: Number,
+    },
     payment: {
         type: Schema.Types.ObjectId,
         ref: "payment",
