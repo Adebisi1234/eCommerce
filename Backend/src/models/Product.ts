@@ -5,9 +5,12 @@ export type ProductDoc = {
   _id: string;
   name: string;
   desc: string;
-  categoryId: Schema.Types.ObjectId;
-  imageUrl: string;
+  category: string;
+  rating: number;
+  thumbnail: string;
+  images: String[];
   price: number;
+  discount: number;
   availability: boolean;
   sellerId: Schema.Types.ObjectId | UserDoc;
   dealId: Schema.Types.ObjectId;
@@ -17,10 +20,17 @@ const ProductSchema = new Schema(
   {
     name: String,
     desc: String,
-    categoryId: Schema.Types.ObjectId,
-    imageUrl: String,
+    category: String,
+    rating: Number,
+    thumbnail: String,
+    images: [String],
     price: Number,
-    availability: Boolean,
+    discount: Number,
+    brand: String,
+    availability: {
+      type: Boolean,
+      default: true,
+    },
     sellerId: {
       type: Schema.Types.ObjectId,
       ref: "User",

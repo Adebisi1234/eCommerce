@@ -1,23 +1,16 @@
-import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import Register from "./components/Register";
-import Login from "./components/Login";
-import Verify from "./components/Verify";
+// import Register from "./components/Register";
+// import Login from "./components/Login";
+// import Verify from "./components/Verify";
 import Home from "./components/Home";
-import { useState } from "react";
+// import Sidebar from "./components/Sidebar";
+// import CategoriesList from "./components/CategoriesList";
+// import Dashboard from "./components/Dashboard";
 export const BACKEND_URL = "http://localhost:6001";
 function App() {
-  // Just to test a concept
-  const [user, setUser] = useState({
-    name: "",
-    password: "",
-    phone: "",
-    email: "",
-    address: "",
-  });
   return (
-    <div className="max-w-lg mx-auto">
-      <Routes>
+    <div className="max-w-7xl mx-auto">
+      {/* <Routes>
         <Route path="/">
           <Route index element={<Register user={user} setUser={setUser} />} />
           <Route
@@ -27,7 +20,10 @@ function App() {
           <Route path="verify" element={<Verify user={user} />} />
           <Route path="home" element={<Home />} />
         </Route>
-      </Routes>
+      </Routes> */}
+      {/* <CategoriesList /> */}
+
+      <Home />
     </div>
   );
 }

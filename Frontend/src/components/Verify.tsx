@@ -13,29 +13,9 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { BACKEND_URL } from "@/App";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-
-export default function Verify({
-  user,
-}: {
-  user: {
-    name: string;
-    password: string;
-    phone: string;
-    email: string;
-    address: string;
-  };
-}) {
-  const [otp, setOtp] = useState({
-    code: "",
-    phone: user.phone ?? 2348114779597,
-  });
-  const navigate = useNavigate();
+export default function Verify() {
   return (
-    <Card>
+    <Card className="max-w-md mx-auto">
       <CardHeader>
         <CardTitle className="text-2xl">Verify OTP</CardTitle>
         <CardDescription>
@@ -46,33 +26,11 @@ export default function Verify({
       <CardContent className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="otp">OTP</Label>
-          <Input
-            id="otp"
-            placeholder="Enter OTP"
-            required
-            type="text"
-            onInput={(ev) => {
-              setOtp((prev) => {
-                return { ...prev, code: (ev.target as HTMLInputElement).value };
-              });
-            }}
-          />
+          <Input id="otp" placeholder="Enter OTP" required type="text" />
         </div>
       </CardContent>
       <CardFooter>
-        <Button
-          className="w-full"
-          onClick={() => {
-            axios.post(BACKEND_URL + "/user/verify", otp).then((res) => {
-              console.log(res);
-              if (res.status < 400) {
-                navigate("/login");
-              }
-            });
-          }}
-        >
-          Verify
-        </Button>
+        <Button className="w-full">Verify</Button>
       </CardFooter>
     </Card>
   );
