@@ -1,29 +1,36 @@
 import "./App.css";
-// import Register from "./components/Register";
-// import Login from "./components/Login";
-// import Verify from "./components/Verify";
-import Home from "./components/Home";
-// import Sidebar from "./components/Sidebar";
-// import CategoriesList from "./components/CategoriesList";
-// import Dashboard from "./components/Dashboard";
-export const BACKEND_URL = "http://localhost:6001";
+import Register from "./pages/Auth/Register/Register";
+import Login from "./pages/Auth/Login/Login";
+import Verify from "./pages/Auth/Verify";
+import Home from "./pages/Home/Home";
+import Categories from "./pages/Shop/Categories/Categories";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import { Route, Routes } from "react-router-dom";
+import { Shop } from "./pages/Shop/Shop";
+import { Profile } from "./pages/Home/Profile/Profile";
+import { Cart } from "./components/Cart";
 function App() {
   return (
-    <div className="max-w-7xl mx-auto">
-      {/* <Routes>
+    <div className="mx-auto max-w-7xl">
+      <Routes>
         <Route path="/">
-          <Route index element={<Register user={user} setUser={setUser} />} />
-          <Route
-            path="login"
-            element={<Login user={user} setUser={setUser} />}
-          />
-          <Route path="verify" element={<Verify user={user} />} />
+          <Route index element={<Home />} />
           <Route path="home" element={<Home />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="categories" element={<Categories />} />
         </Route>
-      </Routes> */}
-      {/* <CategoriesList /> */}
-
-      <Home />
+        <Route path="/auth">
+          <Route path="register" element={<Register />} />
+          <Route path="login" element={<Login />} />
+          <Route path="verify" element={<Verify />} />
+        </Route>
+        <Route path="/shop">
+          <Route index element={<Shop />} />
+          <Route path=":categories" element={<Shop />} />
+        </Route>
+      </Routes>
+      <Cart />
     </div>
   );
 }
