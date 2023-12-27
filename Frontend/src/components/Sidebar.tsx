@@ -6,7 +6,7 @@ import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
 
 export default function Sidebar() {
   return (
-    <aside className="h-full w-60 border-r-2 px-4 py-6">
+    <aside className="h-full w-60 absolute -translate-x-full md:translate-x-0 md:static px-4 py-6">
       <div className="flex items-center mb-6">
         <Avatar className="h-9 w-9 mr-2">
           <AvatarImage alt="User Avatar" src="/placeholder-avatar.jpg" />

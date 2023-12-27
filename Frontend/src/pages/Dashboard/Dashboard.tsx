@@ -103,12 +103,11 @@ export default function Dashboard() {
                   <Button className="rounded-full" size="icon" variant="ghost">
                     <img
                       alt="Avatar"
-                      className="rounded-full"
+                      className="rounded-full bg-gradient-to-r from-gray-700 via-gray-900 to-black animate-pulse aspect-square object-cover"
                       height="32"
                       src="/placeholder.svg"
-                      style={{
-                        aspectRatio: "32/32",
-                        objectFit: "cover",
+                      onLoad={(ev) => {
+                        ev.currentTarget.classList.remove("animate-pulse");
                       }}
                       width="32"
                     />

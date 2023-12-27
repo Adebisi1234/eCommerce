@@ -9,15 +9,19 @@ import { Badge } from "@/components/ui/badge";
 export default function ProductCart() {
   return (
     <Card className="max-w-sm mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-      <div
-        className="flex items-end justify-end h-56 w-full bg-cover"
-        style={{
-          backgroundImage: "url(/placeholder.svg?height=200&width=200)",
-        }}
-      >
+      <div className="flex items-end justify-end h-56 w-full bg-cover relative">
+        <img
+          src="https://via.placeholder.com/600/92c952"
+          alt="product image"
+          className="absolute inset-0 h-full w-full object-cover animate-pulse bg-slate-200"
+          onLoad={(ev) => {
+            ev.currentTarget.complete &&
+              ev.currentTarget.classList.remove("animate-pulse");
+          }}
+        />
         <Button
           aria-label="Add to Cart"
-          className="p-2 rounded-full bg-blue-600 text-white mx-5 -mb-4 hover:bg-blue-500 focus:outline-none focus:bg-blue-500"
+          className="p-2 rounded-full bg-blue-600 z-20 text-white mx-5 -mb-4 hover:bg-blue-500 focus:outline-none focus:bg-blue-500"
         >
           <ShoppingCartIcon className="w-5 h-5" />
         </Button>
@@ -28,7 +32,7 @@ export default function ProductCart() {
       </CardContent>
       <div className="px-5 py-3 grid grid-cols-2 gap-4 items-center">
         <span className="text-gray-900 font-bold">$129</span>
-        <Badge className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-red-600 bg-red-200 last:mr-0 mr-1">
+        <Badge className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-red-600 bg-red-200 last:mr-0 mr-1 w-fit ml-auto">
           10% off
         </Badge>
         <div className="flex items-center gap-0.5">

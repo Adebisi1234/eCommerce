@@ -4,19 +4,19 @@
  */
 import { Button } from "@/components/ui/button";
 import { CardContent, Card } from "@/components/ui/card";
-import { Header } from "./Header";
+import { Header } from "../../../components/Header";
+import { useNavigate } from "react-router-dom";
 
-export default function CategoriesList() {
+export default function Categories() {
+  const navigate = useNavigate();
   return (
     <>
       <Header />
-      <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8">
-        <div className="grid gap-1">
-          <h1 className="text-2xl font-bold tracking-tight">
-            Product Categories
-          </h1>
-        </div>
-      </div>
+
+      <h1 className="text-2xl font-bold tracking-tight mb-2">
+        Product Categories
+      </h1>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
         <Card className="transition-transform hover:scale-105">
           <CardContent className="flex flex-col items-center gap-4 p-4">
@@ -26,7 +26,13 @@ export default function CategoriesList() {
               Explore the latest trends and essentials designed for any and
               every occasion!
             </p>
-            <a className="mt-auto" href="#">
+            <a
+              className="mt-auto"
+              href="#"
+              onClick={() => {
+                navigate("/shop/Fashion");
+              }}
+            >
               <Button variant="outline">Shop Now</Button>
             </a>
           </CardContent>
@@ -39,7 +45,13 @@ export default function CategoriesList() {
               Immerse yourself in a diverse range of books and ebooks from every
               genre.
             </p>
-            <a className="mt-auto" href="#">
+            <a
+              className="mt-auto"
+              href="#"
+              onClick={() => {
+                navigate("/shop/Books");
+              }}
+            >
               <Button variant="outline">Shop Now</Button>
             </a>
           </CardContent>
@@ -52,7 +64,13 @@ export default function CategoriesList() {
               Get your hands on the latest gaming consoles, video games, and
               accessories.
             </p>
-            <a className="mt-auto" href="#">
+            <a
+              className="mt-auto"
+              href="#"
+              onClick={() => {
+                navigate("/shop/Gaming");
+              }}
+            >
               <Button variant="outline">Shop Now</Button>
             </a>
           </CardContent>
@@ -65,7 +83,13 @@ export default function CategoriesList() {
               Discover a wide assortment of electronics from top brands at
               discounted prices.
             </p>
-            <a className="mt-auto" href="#">
+            <a
+              className="mt-auto"
+              href="#"
+              onClick={() => {
+                navigate("/shop/Electronics");
+              }}
+            >
               <Button variant="outline">Shop Now</Button>
             </a>
           </CardContent>
@@ -78,7 +102,13 @@ export default function CategoriesList() {
               Upgrade your home with our range of kitchen appliances, decorative
               items, and more.
             </p>
-            <a className="mt-auto" href="#">
+            <a
+              className="mt-auto"
+              href="#"
+              onClick={() => {
+                navigate("/shop/Kitchen");
+              }}
+            >
               <Button variant="outline">Shop Now</Button>
             </a>
           </CardContent>
@@ -91,7 +121,13 @@ export default function CategoriesList() {
               Discover our range of fitness equipment and accessories to help
               you stay fit and active.
             </p>
-            <a className="mt-auto" href="#">
+            <a
+              className="mt-auto"
+              href="#"
+              onClick={() => {
+                navigate("/shop/Fitness");
+              }}
+            >
               <Button variant="outline">Shop Now</Button>
             </a>
           </CardContent>
