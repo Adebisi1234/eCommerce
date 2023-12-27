@@ -4,6 +4,7 @@ import {
   addToCart,
   clearCart,
   createProfile,
+  deleteCartItem,
   getCart,
   getPaymentDetails,
   getProfile,
@@ -18,7 +19,7 @@ import {
 import { verifyToken } from "../utils/jwt.js";
 const userRouter = Router();
 
-userRouter.post("/signup", signup);
+userRouter.post("/register", signup);
 userRouter.post("/login", login);
 userRouter.post("/verify", verify);
 userRouter.get("/refresh", refreshTokens);
@@ -31,7 +32,8 @@ userRouter.get("/account", getPaymentDetails);
 userRouter.post("/cart", addToCart);
 userRouter.delete("/cart", clearCart);
 userRouter.post("/account", addPaymentDetails);
-userRouter.put("/cart", updateCartItem);
+userRouter.put("/cart/item/:id", updateCartItem);
+userRouter.delete("/cart/item/:id", deleteCartItem);
 userRouter.put("/account", updatePaymentDetails);
 
 export default userRouter;

@@ -7,8 +7,6 @@ import {
 } from "../utils/validation.js";
 import { Product } from "../models/Product.js";
 import { Category } from "../models/Category.js";
-import products from "./products.json" assert { type: "json" };
-import { Document } from "mongoose";
 
 export const getAllProducts = async (req: Request, res: Response) => {
   try {

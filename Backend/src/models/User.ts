@@ -1,11 +1,19 @@
 import { Schema, model } from "mongoose";
+import { AddressDoc } from "./Address.js";
+import { CartDoc } from "./Cart.js";
+import { OrderDoc } from "./Order.js";
+import { PaymentDoc } from "./Payment.js";
 
 export type UserDoc = {
   phone: number;
   email: string;
   password: string;
-  user_type: "Buyer" | "Seller";
+  userType: "Buyer" | "Seller";
   verified: boolean;
+  address: Schema.Types.ObjectId | AddressDoc;
+  cart: Schema.Types.ObjectId | CartDoc;
+  order: Schema.Types.ObjectId | OrderDoc;
+  payment: Schema.Types.ObjectId | PaymentDoc;
   name: string;
   profilePic?: string;
   refreshToken?: string;
@@ -19,6 +27,10 @@ const UserSchema = new Schema(
       unique: true,
     },
     email: {
+      type: String,
+      unique: true,
+    },
+    profilePic: {
       type: String,
     },
     password: {
