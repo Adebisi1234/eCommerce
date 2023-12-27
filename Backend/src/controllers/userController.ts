@@ -17,20 +17,19 @@ import { CartItem, CartItemDoc } from "../models/CartItem.js";
 import { Address, AddressDoc } from "../models/Address.js";
 import { Order } from "../models/Order.js";
 import { Payment, PaymentDoc } from "../models/Payment.js";
-import { ErrorResponse } from "../utils/response.js";
 import { signToken } from "../utils/jwt.js";
 
 export const signup = async (req: Request, res: Response) => {
   try {
-    const { phone, password, name } = validateAuth(req.body);
-    const userExist = await User.findOne({ phone });
+    const { email, password, name } = validateAuth(req.body);
+    const userExist = await User.findOne({ email });
     if (userExist) {
       return res.status(400).json("User exists");
     }
     const hashedPassword = await hashPassword(password);
-    const newUser = new User({ phone, password: hashedPassword, name });
+    const newUser = new User({ email, password: hashedPassword, name });
     await newUser.save();
-    const status = await sendOTP(phone);
+    const status = await sendOTP(email);
     if (!status || status !== "pending") {
       return res.status(500).json("OTP was not created");
     }
@@ -45,13 +44,13 @@ export const signup = async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response) => {
   try {
-    const { phone, password } = validateAuth(req.body);
-    const user = await User.findOne({ phone }).select("password");
+    const { email, password } = validateAuth(req.body);
+    const user = await User.findOne({ email }).select("password");
     if (!user) return res.status(400).json("user not found");
     const compare = await comparePassword(password, user.password);
     if (!compare) return res.status(400).json("Incorrect input");
     if (process.env.NODE_ENV === "production") {
-      const status = await sendOTP(phone);
+      const status = await sendOTP(email);
       if (!status || status !== "pending") {
         return res.status(500).json("OTP was not created");
       }
@@ -93,7 +92,7 @@ export const refreshTokens = async (req: Request, res: Response) => {
       maxAge: 10 * 24 * 60 * 60 * 1000,
     });
     await user.save();
-    return res.json({ accessToken });
+    return res.json({ token: accessToken });
   } catch (err) {
     if (err instanceof Error) {
       return res.status(403).json(err.message);
@@ -104,12 +103,12 @@ export const refreshTokens = async (req: Request, res: Response) => {
 
 export const verify = async (req: Request, res: Response) => {
   try {
-    const { phone, code } = validateVerify(req.body);
-    const user = await User.findOne({ phone });
+    const { email, code } = validateVerify(req.body);
+    const user = await User.findOne({ email });
     if (!user) return res.status(400).json("user not found");
     // Saving the trial, will roll my own auth soon
     if (process.env.NODE_ENV === "production") {
-      const status = await verifyOTP(phone, code);
+      const status = await verifyOTP(email, code);
       if (!status || status !== "approved") {
         return res.status(400).json("OTP verification failed");
       }
@@ -169,7 +168,7 @@ export const updateProfile = async (req: Request, res: Response) => {
   try {
     const userObj: UserDoc = validateUser(req.body);
     const user = await User.findOneAndUpdate(
-      { phone: userObj.phone },
+      { email: userObj.email },
       { ...userObj }
     );
     if (!user) {
@@ -225,20 +224,15 @@ export const addToCart = async (req: Request, res: Response) => {
     if (!cart) {
       return res.status(400).json("Cart not found");
     }
-    // If cart already contain it don't check it in product else check
     const itemIndex = cart.itemIds.findIndex((item) => {
       return item._id.equals(cartItem._id);
     });
     if (itemIndex !== -1) {
-      cartItem.itemQty += 1;
-      await cartItem.save();
-      await cart.save();
-      return res.json(cart);
+      return res.status(200).json(cart);
     }
-
     cart.itemIds.push(cartItem._id);
     await cart.save();
-    return res.json(cart);
+    return res.json(cart.toObject());
   } catch (err) {
     if (err instanceof Error) {
       return res.status(400).json(err.message);
@@ -307,7 +301,9 @@ export const updateCartItem = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     const update: CartItemDoc = validateCartItem(req.body);
-    const updatedCartItem = await CartItem.findByIdAndUpdate(id, { ...update });
+    const updatedCartItem = await CartItem.findByIdAndUpdate(id, {
+      ...update,
+    });
     return res.json(updatedCartItem);
   } catch (err) {
     if (err instanceof Error) {
@@ -320,7 +316,11 @@ export const deleteCartItem = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    await CartItem.findByIdAndDelete(id);
+    const item = await CartItem.findByIdAndDelete(id);
+    if (!item.value) {
+      return res.sendStatus(200);
+    }
+    await Cart.findByIdAndUpdate(item.value.cartId, { $pop: { itemIds: id } });
     return res.json("deleted cartItem");
   } catch (err) {
     if (err instanceof Error) {
