@@ -18,7 +18,7 @@ export const getOrders = async (req: Request, res: Response) => {
       .limit(20)
       .sort("asc");
     if (!orders) {
-      res.status(400).json("No orders");
+      res.json([]);
     }
     res.status(200).json(orders);
   } catch (err) {
@@ -72,7 +72,7 @@ export const getShippings = async (req: Request, res: Response) => {
       .limit(20)
       .sort("asc");
     if (!shippings) {
-      return res.status(400).json("No shippings found");
+      return res.json([]);
     }
 
     return res.status(200).json(shippings);

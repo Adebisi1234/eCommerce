@@ -21,17 +21,19 @@ import { signToken } from "../utils/jwt.js";
 
 export const signup = async (req: Request, res: Response) => {
   try {
-    const { email, password, name } = validateAuth(req.body);
-    const userExist = await User.findOne({ email });
+    const body = validateAuth(req.body);
+    const userExist = await User.findOne({ email: body.email });
     if (userExist) {
       return res.status(400).json("User exists");
     }
-    const hashedPassword = await hashPassword(password);
-    const newUser = new User({ email, password: hashedPassword, name });
+    const hashedPassword = await hashPassword(body.password);
+    const newUser = new User({ ...body, password: hashedPassword });
     await newUser.save();
-    const status = await sendOTP(email);
-    if (!status || status !== "pending") {
-      return res.status(500).json("OTP was not created");
+    if (process.env.NODE_ENV === "production") {
+      const status = await sendOTP(body.email);
+      if (!status || status !== "pending") {
+        return res.status(500).json("OTP was not created");
+      }
     }
     return res.json("OTP created");
   } catch (err) {
@@ -124,7 +126,11 @@ export const verify = async (req: Request, res: Response) => {
       maxAge: 10 * 24 * 60 * 60 * 1000,
     });
     // There's definitely a better way to do this
-    return res.json({ ...user.toObject(), accessToken, refreshToken: null });
+    return res.json({
+      ...user.toObject(),
+      token: accessToken,
+      refreshToken: null,
+    });
   } catch (err) {
     if (err instanceof Error) {
       return res.status(400).json(err.message);

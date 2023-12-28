@@ -10,16 +10,12 @@ import { Category } from "../models/Category.js";
 
 export const getAllProducts = async (req: Request, res: Response) => {
   try {
-    const { limit, skip, sort } = req.query;
+    const { limit, skip } = req.query;
+
     const products = await Product.find()
-      .skip(skip && isNaN(+skip) ? +skip : 0)
-      .limit(limit && isNaN(+limit) ? +limit : 0)
-      .sort(
-        typeof sort === "string" &&
-          ["asc", "desc", "ascending", "descending", 1, -1].includes(sort)
-          ? `${sort}`
-          : ""
-      );
+      .skip(skip && !isNaN(+skip) ? +skip : 0)
+      .limit(limit && !isNaN(+limit) ? +limit : 0);
+
     if (!products) {
       return res.status(500).json("No product found");
     }
@@ -67,8 +63,9 @@ export const addProduct = async (req: Request, res: Response) => {
 };
 export const updateProduct = async (req: Request, res: Response) => {
   try {
+    const { id } = req.params;
     const validObj = validateUpdateProduct(req.body);
-    const product = await Product.findByIdAndUpdate(validObj._id, {
+    const product = await Product.findByIdAndUpdate(id, {
       ...validObj,
     });
     if (!product) {
@@ -95,15 +92,23 @@ export const deleteProduct = async (req: Request, res: Response) => {
     return res.status(400).json(err);
   }
 };
-export const getCategory = async (req: Request, res: Response) => {
+export const getCategoryProducts = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
-
-    const category = await Category.findById(id);
-    if (!category) {
-      return res.status(400).json("Category not found");
+    const { limit, skip, sort } = req.query;
+    const { name } = req.params;
+    const products = Product.find({ category: name })
+      .skip(skip && isNaN(+skip) ? +skip : 0)
+      .limit(limit && isNaN(+limit) ? +limit : 0)
+      .sort(
+        typeof sort === "string" &&
+          ["asc", "desc", "ascending", "descending", 1, -1].includes(sort)
+          ? `${sort}`
+          : ""
+      );
+    if (!products) {
+      return res.status(400).json("products not found");
     }
-    return res.status(200).json(category);
+    return res.status(200).json(products);
   } catch (err) {
     if (err instanceof Error) {
       return res.status(400).json(err.message);
@@ -145,10 +150,14 @@ export const addCategory = async (req: Request, res: Response) => {
 };
 export const updateCategory = async (req: Request, res: Response) => {
   try {
+    const { name } = req.params;
     const validObj = validateUpdateCategory(req.body);
-    const product = await Product.findByIdAndUpdate(validObj._id, {
-      ...validObj,
-    });
+    const product = await Category.findOneAndUpdate(
+      { name },
+      {
+        ...validObj,
+      }
+    );
     if (!product) {
       return res.status(400).json("Product not found");
     }
@@ -161,24 +170,7 @@ export const updateCategory = async (req: Request, res: Response) => {
   }
 };
 
-export const addDeals = async (req: Request, res: Response) => {
-  // try {
-  //   const body = validateDeal(req.body);
-  //   if (!body) {
-  //     return res.sendStatus(400);
-  //   }
-  //   const newDeal= await new Deal({ ...body }).save();
-  //   if (!newDeal) {
-  //     return res.sendStatus(500);
-  //   }
-  //   return res.status(200).json(newDeal);
-  // } catch (err) {
-  //   if (err instanceof Error) {
-  //     return res.status(400).json(err.message);
-  //   }
-  //   return res.status(400).json(err);
-  // }
-};
+export const addDeals = async (req: Request, res: Response) => {};
 export const updateDeals = async (req: Request, res: Response) => {
   console.log("updateDeals");
 };

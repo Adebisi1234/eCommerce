@@ -7,7 +7,7 @@ export const Shop = () => {
   return (
     <>
       <Header />
-      <div className="mid:grid mid:grid-cols-[240px_1fr] h-[calc(100vh_-_80px)]">
+      <div className="md:grid md:grid-cols-[240px_1fr] h-[calc(100vh_-_80px)]">
         <Sidebar />
         <main>
           <Deals />

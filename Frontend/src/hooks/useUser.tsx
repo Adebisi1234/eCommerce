@@ -1,58 +1,71 @@
 import { type Res, useAxios } from "./useAxios";
 import { CartDoc, CartItemDoc, UserDoc, auth } from "@/types/types";
 
-export const useLogin = (input: auth) => {
-  const { loading, error }: Res<string> = useAxios("POST", "login", input);
-  return { loading, error };
+export const useLogin = (input?: auth) => {
+  if (!input || input.email === "" || input.password === "") {
+    const response: Res<string> = useAxios("IGNORE", "/user/login", input);
+    return response;
+  }
+  const response: Res<string> = useAxios("POST", "/user/login", input);
+  return response;
 };
-export const useRegister = (input: auth) => {
-  const { loading, error }: Res<string> = useAxios("POST", "register", input);
-  return { loading, error };
+export const useRegister = (input?: auth) => {
+  if (!input || input.email === "" || input.password === "") {
+    const response: Res<string> = useAxios("IGNORE", "/user/register", input);
+    return response;
+  }
+  const response: Res<string> = useAxios("POST", "/user/register", input);
+  return response;
 };
-export const useVerify = (input: auth) => {
-  const { loading, error }: Res<string> = useAxios("POST", "verify", input);
-  return { loading, error };
+export const useVerify = (input?: auth) => {
+  if (!input || input.email === "" || input.code === "") {
+    const response: Res<UserDoc> = useAxios("IGNORE", "/user/register", input);
+    return response;
+  }
+  const response: Res<UserDoc> = useAxios("POST", "/user/verify", input);
+  return response;
 };
 export const useGetProfile = (id: string) => {
-  const response: Res<string> = useAxios("GET", `profile/${id}`);
+  const response: Res<string> = useAxios("GET", `/user/profile/${id}`);
   return response;
 };
 export const useCreateProfile = (input: UserDoc) => {
-  const { loading, error }: Res<string> = useAxios("POST", `profile`, input);
-  return { loading, error };
+  const response: Res<string> = useAxios("POST", `/user/profile`, input);
+  return response;
 };
 export const useUpdateProfile = (input: UserDoc) => {
-  const response: Res<UserDoc> = useAxios("PUT", `profile`, input);
+  const response: Res<UserDoc> = useAxios("PUT", `/user/profile`, input);
   return response;
 };
 export const useGetCart = (id: string) => {
-  const response: Res<CartDoc> = useAxios("GET", `cart/${id}`);
+  const response: Res<CartDoc> = useAxios("GET", `/user/cart/${id}`);
   return response;
 };
 export const useAddToCart = (input: CartItemDoc) => {
-  const response: Res<CartDoc> = useAxios("POST", `cart`, input);
+  const response: Res<CartDoc> = useAxios("POST", `/user/cart`, input);
   return response;
 };
-export const useUpdateCartItem = (input: CartItemDoc) => {
+export const useUpdateCartItem = (id: string, input: CartItemDoc) => {
   const response: Res<CartDoc> = useAxios(
     "PUT",
-    `cart/item/${(input as any)._id}`,
+    `/user/cart/item/${id}`,
     input
   );
   return response;
 };
 export const useDeleteCartItem = (id: string) => {
-  const { loading, error }: Res<string> = useAxios("DELETE", `cart/item/${id}`);
-  return { loading, error };
+  const response: Res<string> = useAxios("DELETE", `/user/cart/item/${id}`);
+  return response;
 };
 export const useClearCart = (id: string) => {
-  const { loading, error }: Res<string> = useAxios("DELETE", `cart/${id}`);
-  return { loading, error };
+  const response: Res<string> = useAxios("DELETE", `/user/cart/${id}`);
+  return response;
 };
 export const useRefreshToken = () => {
+  console.log("wtf");
   const { loading, data, error }: Res<{ token: string }> = useAxios(
     "GET",
-    "refresh"
+    "/user/refresh"
   );
   if (!loading && !error && typeof data === "object") {
     localStorage.setItem("token", `Bearer ${data.token}`);
