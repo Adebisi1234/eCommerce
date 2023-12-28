@@ -2,12 +2,10 @@ import Joi from "joi";
 
 export const validateAuth = (input: object) => {
   const schema = Joi.object({
-    phone: Joi.string().pattern(new RegExp("^[0-9]{3,15}$")).required(),
-    password: Joi.string()
-      .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
-      .required(),
-    name: Joi.string().required(),
-    email: Joi.string(),
+    phone: Joi.string().pattern(new RegExp("^[0-9]{3,15}$")),
+    password: Joi.string().required(),
+    name: Joi.string(),
+    email: Joi.string().required(),
     address: Joi.string(),
   });
 
@@ -20,7 +18,9 @@ export const validateAuth = (input: object) => {
 
 export const validateVerify = (input: object) => {
   const schema = Joi.object({
-    phone: Joi.string().pattern(new RegExp("^[0-9]{3,15}$")).required(),
+    email: Joi.string()
+      .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
+      .required(),
     code: Joi.string().pattern(new RegExp("^[0-9]{6}$")).required(),
   });
   const result = schema.validate(input);
@@ -37,8 +37,7 @@ export const validateUser = (input: object) => {
     email: Joi.string()
       .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
       .required(),
-    password: Joi.string().pattern(new RegExp("^[*]{3,30}$")).required(),
-    repeatPassword: Joi.ref("password"),
+    password: Joi.string().required(),
     userType: Joi.string().required(),
     name: Joi.string().required(),
     address: Joi.string(),

@@ -1,5 +1,5 @@
 export type auth = {
-  phone?: number;
+  phone?: string;
   email?: string;
   password?: string;
   name?: string;
@@ -13,7 +13,7 @@ export type ProductDoc = {
   category: string;
   rating: number;
   thumbnail: string;
-  images: String[];
+  images: string[];
   price: number;
   discount: number;
   availability: boolean;
@@ -48,7 +48,7 @@ export type UserDoc = {
   payment: string | PaymentDoc;
   name: string;
   profilePic?: string;
-  refreshToken?: string;
+  token: string;
 };
 
 export type CartItemDoc = {
@@ -68,4 +68,16 @@ export type AddressDoc = {
 export type CartDoc = {
   userId: string | UserDoc;
   itemIds: (string | CartItemDoc)[];
+};
+
+export type CategoryDoc = {
+  name: string;
+};
+
+export type ShippingDoc = {
+  orderId: string | OrderDoc;
+  customerId: string | UserDoc;
+  sellerId: string | UserDoc;
+  status: string;
+  address: string | AddressDoc;
 };

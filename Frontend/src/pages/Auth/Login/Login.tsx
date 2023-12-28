@@ -15,9 +15,29 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Header } from "../../../components/Header";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { useLogin } from "@/hooks/useUser";
+import { Loader2 } from "lucide-react";
 
+type userInput = {
+  email: string;
+  password: string;
+};
 export default function Login() {
   const navigate = useNavigate();
+  const [details, setDetails] = useState<userInput | undefined>(undefined);
+  const inputRef = useRef<Map<string, HTMLInputElement>>();
+  const { loading, data, error } = useLogin(details);
+  useEffect(() => {
+    if (data) {
+      navigate("/auth/verify", { state: details?.email });
+    }
+  }, [data]);
+  const getMap = () => {
+    if (inputRef.current) return inputRef.current;
+    inputRef.current = new Map<string, HTMLInputElement>();
+    return inputRef.current;
+  };
   return (
     <>
       <Header />
@@ -25,23 +45,35 @@ export default function Login() {
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
           <CardDescription>
-            Enter your Phone and password below to login to your account.
+            Enter your Email and password below to login to your account.
           </CardDescription>
         </CardHeader>
         <form
           onSubmit={(ev) => {
             ev.preventDefault();
+            setDetails({
+              email: inputRef.current?.get("email")?.value || "",
+              password: inputRef.current?.get("password")?.value || "",
+            });
           }}
         >
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="Phone">Phone</Label>
+              <Label htmlFor="Email">Email</Label>
               <Input
-                id="Phone"
-                placeholder="Phone"
+                id="Email"
+                placeholder="Email"
                 required
                 type="text"
-                autoComplete="phone"
+                autoComplete="Email"
+                disabled={loading ? true : false}
+                ref={(node) => {
+                  if (!node) {
+                    return;
+                  }
+                  const map = getMap();
+                  map.set("email", node);
+                }}
               />
             </div>
             <div className="space-y-2">
@@ -52,13 +84,28 @@ export default function Login() {
                 type="password"
                 placeholder="Password"
                 autoComplete="current-password"
+                disabled={loading ? true : false}
+                ref={(node) => {
+                  if (!node) {
+                    return;
+                  }
+                  const map = getMap();
+                  map.set("password", node);
+                }}
               />
             </div>
           </CardContent>
           <CardFooter>
-            <Button className="w-full">Sign in</Button>
+            <Button className="w-full flex items-center justify-center">
+              {!loading ? (
+                "Sign in"
+              ) : (
+                <Loader2 className="animate-spin fill-none stroke-white" />
+              )}
+            </Button>
           </CardFooter>
         </form>
+        {error && <p className="my-1 mx-auto w-fit text-red-500 ">{error}</p>}
         <div className="flex justify-center mb-2">
           <p className="text-sm text-gray-500 dark:text-gray-400">
             Don't have an account?

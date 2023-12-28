@@ -10,7 +10,11 @@ import transactionRouter from "./routes/transactionRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import { verifyToken } from "./utils/jwt.js";
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: ["localhost:5173", "http://localhost:5173"],
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization", "Origin"],
+}));
 // log requests
 if (process.env.NODE_ENV === "development") {
     app.use(morgan("dev"));
@@ -22,6 +26,12 @@ app.use(express.json({
 app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 app.use(cookies());
 // 3) ROUTES
+app.options("/login", function (req, res) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "*");
+    res.setHeader("Access-Control-Allow-Headers", "*");
+    res.end();
+});
 app.use("/user", userRouter);
 app.use(verifyToken);
 app.use("/transaction", transactionRouter);

@@ -20,63 +20,68 @@ export const Header = () => {
         }}
       >
         <MountainIcon className="h-6 w-6" />
-        <span className="sr-only">Acme Inc</span>
+        <span className="sr-only">Inc</span>
       </a>
-      <nav className="ml-auto flex gap-4 sm:gap-6 items-center">
-        <a
-          className="text-sm font-medium hover:underline underline-offset-4"
-          onClick={() => {
-            navigate("/");
-          }}
-        >
-          Home
-        </a>
-        <a
-          className="text-sm font-medium hover:underline underline-offset-4"
-          onClick={() => {
-            navigate("/shop");
-          }}
-        >
-          Shop
-        </a>
-        <a
-          className="text-sm font-medium hover:underline underline-offset-4"
-          onClick={() => {
-            navigate("/categories");
-          }}
-        >
-          Categories
-        </a>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button className="rounded-full" size="icon" variant="ghost">
-              <Avatar>
-                <AvatarImage>
-                  <img
-                    alt="Avatar"
-                    className="rounded-full bg-gradient-to-r from-gray-700 via-gray-900 to-black dark:from-black dark:via-gray-600 dark:to-gray-300 animate-pulse aspect-square object-cover"
-                    height="32"
-                    src="/placeholder.svg"
-                    onLoad={(ev) => {
-                      ev.currentTarget.classList.remove("animate-pulse");
-                    }}
-                    width="32"
-                  />
-                </AvatarImage>
-                <AvatarFallback>U</AvatarFallback>
-              </Avatar>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Settings</DropdownMenuItem>
-            <DropdownMenuItem>Support</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Logout</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </nav>
+      {localStorage.getItem("token") ? (
+        <nav className="ml-auto flex gap-4 sm:gap-6 items-center">
+          <a
+            className="text-sm font-medium hover:underline underline-offset-4"
+            onClick={() => {
+              navigate("/");
+            }}
+          >
+            Home
+          </a>
+
+          <a
+            className="text-sm font-medium hover:underline underline-offset-4"
+            onClick={() => {
+              navigate("/shop");
+            }}
+          >
+            Shop
+          </a>
+          <a
+            className="text-sm font-medium hover:underline underline-offset-4"
+            onClick={() => {
+              navigate("/categories");
+            }}
+          >
+            Categories
+          </a>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button className="rounded-full" size="icon" variant="ghost">
+                <Avatar>
+                  <AvatarImage>
+                    <img
+                      alt="Avatar"
+                      className="rounded-full bg-gradient-to-r from-gray-700 via-gray-900 to-black dark:from-black dark:via-gray-600 dark:to-gray-300 animate-pulse aspect-square object-cover"
+                      height="32"
+                      src="/placeholder.svg"
+                      onLoad={(ev) => {
+                        ev.currentTarget.classList.remove("animate-pulse");
+                      }}
+                      width="32"
+                    />
+                  </AvatarImage>
+                  <AvatarFallback>U</AvatarFallback>
+                </Avatar>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>Settings</DropdownMenuItem>
+              <DropdownMenuItem>Support</DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>Logout</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </nav>
+      ) : (
+        ""
+      )}
     </header>
   );
 };

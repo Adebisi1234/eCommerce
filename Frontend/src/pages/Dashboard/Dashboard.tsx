@@ -31,7 +31,7 @@ export default function Dashboard() {
             <div className="flex h-[60px] items-center px-6">
               <a className="flex items-center gap-2 font-semibold" href="#">
                 <Package2Icon className="h-6 w-6" />
-                <span>Acme Inc</span>
+                <span>Inc</span>
               </a>
             </div>
             <div className="flex-1">
