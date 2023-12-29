@@ -3,7 +3,6 @@
  * @see https://v0.dev/t/ySSKMasiqlp
  */
 import { CardTitle, CardHeader, CardContent, Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
 import {
   TableHead,
@@ -18,22 +17,22 @@ import Address from "./Address";
 
 export default function UserProfile() {
   return (
-    <div className="grid lg:grid-cols-2 gap-6 p-6">
+    <div className="grid gap-6 p-6 lg:grid-cols-2">
       <Card>
         <CardHeader>
-          <div className="flex justify-between items-center">
+          <div className="flex items-center justify-between">
             <CardTitle>User Details</CardTitle>
             <Address />
           </div>
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-3 mb-6">
-            <Avatar className="h-16 w-16">
+            <Avatar className="w-16 h-16">
               <AvatarImage alt="User Avatar" src="/placeholder-avatar.jpg" />
               <AvatarFallback>JD</AvatarFallback>
             </Avatar>
             <div className="grid gap-0.5">
-              <div className="font-medium text-lg">John Doe</div>
+              <div className="text-lg font-medium">John Doe</div>
               <div className="text-gray-500 dark:text-gray-400">
                 johndoe@example.com
               </div>
@@ -89,7 +88,7 @@ export default function UserProfile() {
                 <TableCell>Dec 22, 2023</TableCell>
                 <TableCell>$200.00</TableCell>
                 <TableCell>
-                  <Badge className="bg-red-500 text-white">Cancelled</Badge>
+                  <Badge className="text-white bg-red-500">Cancelled</Badge>
                 </TableCell>
                 <TableCell>
                   <a className="text-blue-600 underline" href="#">
