@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap');
+
+html {
+  --bg-dark: #121212;
+  --bg-lightDark: #212121;
+  --color-dark: white;
+  --highlight:#7EA1C1;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--color-dark);
+  min-height: 100vh;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  font-family: 'Manrope', sans-serif;
+}
+
+ @media (prefers-color-scheme: light) {
+  html {
+    --bg-dark: #ddd9d9;
+  --bg-lightDark: #f8f8f8;
+  --color-dark: #1f1f1f;
+  --highlight:#3884cb;
+  }
+} 
+
+.fav {
+  width: 30px; height: 30px;vertical-align: middle;fill: currentColor;overflow: hidden;
+}
+input {
+  color: var(--color-dark);
+}
+svg {
+  color: var(--color-dark);
+  fill: currentColor;
+}
+
+#root {
+  width: 100%;
+  padding: 0 16px;
+  /* border: 1px solid black; */
+  
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+
+/* Handle */
+*::-webkit-scrollbar-thumb {
+  background: var(--color-dark);
+  border-radius: 30px;
+}
+
+.scrollbar::-webkit-scrollbar {
+  display: none;}
+
+/* Track */
+.scrollbar::-webkit-scrollbar-track {
+  display: none;
+}
+ 
+/* Handle */
+.scrollbar::-webkit-scrollbar-thumb {
+  display: none;
+}
+
+/* Handle on hover */
+.scrollbar::-webkit-scrollbar-thumb:hover {
+  display: none;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  display: none;
+}
+
+
+
+
+
+.mySwiper {
+  width: 100%;
+  height: 100%;
+  outline: none;
+}
+.swiper-slide {
+  background: #000;
+  color: white;
+  outline: none;
+}
