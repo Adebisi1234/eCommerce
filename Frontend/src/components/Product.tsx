@@ -2,13 +2,13 @@
  * v0 by Vercel.
  * @see https://v0.dev/t/L8XuemfibzA
  */
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 
 export default function Product() {
   return (
     <div
       key="1"
-      className="flex flex-col md:flex-row bg-gray-100 dark:bg-gray-900 p-6 md:p-12 rounded-lg shadow-lg max-w-7xl mx-auto"
+      className="flex flex-col p-6 mx-auto bg-gray-100 rounded-lg shadow-lg md:flex-row dark:bg-gray-900 md:p-12 max-w-7xl"
     >
       <div className="md:w-1/2">
         <img
@@ -20,7 +20,7 @@ export default function Product() {
         />
       </div>
       <div className="md:w-1/2 md:pl-10">
-        <h1 className="font-bold text-3xl lg:text-4xl mb-4">Product Name</h1>
+        <h1 className="mb-4 text-3xl font-bold lg:text-4xl">Product Name</h1>
         <div className="flex items-center gap-2 mb-4">
           <StarIcon className="w-5 h-5 fill-primary" />
           <StarIcon className="w-5 h-5 fill-primary" />
@@ -30,16 +30,16 @@ export default function Product() {
         </div>
         <p className="mb-6">Product Description</p>
         <div className="flex items-center justify-between">
-          <div className="font-bold text-4xl">$99</div>
+          <div className="text-4xl font-bold">$99</div>
           <div className="text-sm font-bold text-red-500">10% OFF</div>
           <Button size="lg">Add to cart</Button>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-function StarIcon(props) {
+function StarIcon(props: { className: string }) {
   return (
     <svg
       {...props}
@@ -55,5 +55,5 @@ function StarIcon(props) {
     >
       <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
     </svg>
-  )
+  );
 }
