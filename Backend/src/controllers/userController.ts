@@ -33,12 +33,7 @@ export const signup = async (req: Request, res: Response) => {
       profilePic: `https://robohash.org/${body.email}`,
     });
     await newUser.save();
-    if (process.env.NODE_ENV === "production") {
-      const status = await sendOTP(body.email);
-      if (!status || status !== "pending") {
-        return res.status(500).json("OTP was not created");
-      }
-    }
+    
     return res.json("OTP created");
   } catch (err) {
     if (err instanceof Error) {
@@ -55,12 +50,7 @@ export const login = async (req: Request, res: Response) => {
     if (!user) return res.status(400).json("user not found");
     const compare = await comparePassword(password, user.password);
     if (!compare) return res.status(400).json("Incorrect input");
-    if (process.env.NODE_ENV === "production") {
-      const status = await sendOTP(email);
-      if (!status || status !== "pending") {
-        return res.status(500).json("OTP was not created");
-      }
-    }
+    
     return res.json("Otp created");
   } catch (err) {
     if (err instanceof Error) {
@@ -113,12 +103,7 @@ export const verify = async (req: Request, res: Response) => {
     const user = await User.findOne({ email });
     if (!user) return res.status(400).json("user not found");
     // Saving the trial, will roll my own auth soon
-    if (process.env.NODE_ENV === "production") {
-      const status = await verifyOTP(email, code);
-      if (!status || status !== "approved") {
-        return res.status(400).json("OTP verification failed");
-      }
-    }
+    
     user.verified = true;
     const { accessToken, refreshToken } = signToken(user._id);
     user.refreshToken = refreshToken;

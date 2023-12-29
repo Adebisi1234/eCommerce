@@ -4,8 +4,8 @@ import Login from "./pages/Auth/Login/Login";
 import Verify from "./pages/Auth/Verify";
 import Home from "./pages/Home/Home";
 import Categories from "./pages/Shop/Categories/Categories";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import Dashboard from "./pages/Dashboard/Dashboard";
-import { Route, Routes } from "react-router-dom";
 import { Shop } from "./pages/Shop/Shop";
 import { Profile } from "./pages/Home/Profile/Profile";
 import { CartIcon } from "./components/CartIcon";
@@ -14,33 +14,91 @@ import Cart from "./components/Cart";
 import UserProfile from "./components/Profile";
 import { Header } from "./components/Header";
 function App() {
+  const router = createBrowserRouter([
+    {
+      element: <Layout />,
+      children: [
+        {
+          path: "/",
+          children: [
+            {
+              index: true,
+              element: <Home />,
+            },
+            {
+              path: "profile",
+              element: <Profile />,
+            },
+            {
+              path: "dashboard",
+              element: <Dashboard />,
+            },
+            {
+              path: "categories",
+              element: <Categories />,
+            },
+          ],
+        },
+        {
+          path: "/auth",
+          children: [
+            {
+              path: "register",
+              element: <Register />,
+            },
+            {
+              path: "login",
+              element: <Login />,
+            },
+            {
+              path: "verify",
+              element: <Verify />,
+            },
+          ],
+        },
+        {
+          path: "/product/:id",
+          element: <Product />,
+        },
+        {
+          path: "cart",
+          element: <Cart />,
+        },
+        {
+          path: "/shop",
+          children: [
+            {
+              index: true,
+              element: <Shop />,
+            },
+            {
+              path: ":category",
+              element: <Shop />,
+            },
+          ],
+        },
+        {
+          path: "user",
+          children: [
+            {
+              path: ":id",
+              element: <UserProfile />,
+            },
+          ],
+        },
+      ],
+    },
+  ]);
+  return <RouterProvider router={router} />;
+}
+
+const Layout = () => {
   return (
     <div className="mx-auto max-w-7xl">
       <Header />
-      <Routes>
-        <Route path="/">
-          <Route index element={<Home />} />
-          <Route path="home" element={<Home />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="categories" element={<Categories />} />
-        </Route>
-        <Route path="/auth">
-          <Route path="register" element={<Register />} />
-          <Route path="login" element={<Login />} />
-          <Route path="verify" element={<Verify />} />
-        </Route>
-        <Route path="/product/:id" element={<Product />} />
-        <Route path="/cart" element={<Cart />} />
-
-        <Route path="/shop">
-          <Route index element={<Shop />} />
-          <Route path=":category" element={<Shop />} />
-        </Route>
-        <Route path="/user/:id" element={<UserProfile />} />
-      </Routes>
+      <Outlet />
       <CartIcon />
     </div>
   );
-}
+};
 export default App;

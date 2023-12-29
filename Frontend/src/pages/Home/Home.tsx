@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import ProductCard, { ProductSkeleton } from "../../components/ProductCard";
 
 import { useNavigate } from "react-router-dom";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useFetchProduct } from "@/hooks/useProduct";
 import { ProductDoc } from "@/types/types";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -15,7 +15,7 @@ export default function Home() {
   const navigate = useNavigate();
   const [products, setProducts] = useState<ProductDoc[]>([]);
   const { loading, data, error } = useFetchProduct("", 5, 0);
-  useLayoutEffect(() => {
+  useEffect(() => {
     !localStorage.getItem("token") && navigate("/auth/login");
   }, []);
   useLayoutEffect(() => {

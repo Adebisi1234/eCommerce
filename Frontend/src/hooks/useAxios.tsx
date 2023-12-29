@@ -36,7 +36,7 @@ export const useAxios = (method: Method, path: string, body?: object) => {
         if (err.status === 501) {
           getData();
         } else if (err.status === 502) {
-          navigate("/auth/login");
+          return navigate("/auth/login");
         }
         const errorMessage = err.response?.data;
         setResult((prev) => {

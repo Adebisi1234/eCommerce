@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
-import { BrowserRouter } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 axios.defaults.baseURL = BACKEND_URL;
@@ -43,9 +42,7 @@ axios.interceptors.response.use(
 );
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <BrowserRouter>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  </BrowserRouter>
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
 );
