@@ -72,7 +72,7 @@ export const Header = () => {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel
                 onClick={() => {
-                  navigate("/user");
+                  navigate("/user/asdfhksd");
                 }}
               >
                 My Account

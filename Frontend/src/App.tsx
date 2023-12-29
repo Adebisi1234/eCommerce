@@ -37,7 +37,7 @@ function App() {
           <Route index element={<Shop />} />
           <Route path=":category" element={<Shop />} />
         </Route>
-        <Route path="/user" element={<UserProfile />} />
+        <Route path="/user/:id" element={<UserProfile />} />
       </Routes>
       <CartIcon />
     </div>
