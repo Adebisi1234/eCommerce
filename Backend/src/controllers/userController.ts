@@ -10,7 +10,6 @@ import {
   validateVerify,
 } from "../utils/validation.js";
 import { comparePassword, hashPassword } from "../utils/password.js";
-import { sendOTP, verifyOTP } from "../utils/OTP.js";
 import { Cart } from "../models/Cart.js";
 import { Product } from "../models/Product.js";
 import { CartItem, CartItemDoc } from "../models/CartItem.js";
@@ -33,7 +32,7 @@ export const signup = async (req: Request, res: Response) => {
       profilePic: `https://robohash.org/${body.email}`,
     });
     await newUser.save();
-    
+
     return res.json("OTP created");
   } catch (err) {
     if (err instanceof Error) {
@@ -50,7 +49,7 @@ export const login = async (req: Request, res: Response) => {
     if (!user) return res.status(400).json("user not found");
     const compare = await comparePassword(password, user.password);
     if (!compare) return res.status(400).json("Incorrect input");
-    
+
     return res.json("Otp created");
   } catch (err) {
     if (err instanceof Error) {
@@ -103,7 +102,7 @@ export const verify = async (req: Request, res: Response) => {
     const user = await User.findOne({ email });
     if (!user) return res.status(400).json("user not found");
     // Saving the trial, will roll my own auth soon
-    
+
     user.verified = true;
     const { accessToken, refreshToken } = signToken(user._id);
     user.refreshToken = refreshToken;
