@@ -13,7 +13,7 @@ import { verifyToken } from "./utils/jwt.js";
 const app = express();
 app.use(
   cors({
-    origin: ["localhost:5173", "http://localhost:5173"],
+    origin: ["localhost:5173", "http://localhost:5173", "https://buysomething.vercel.app"],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization", "Origin"],
   })
