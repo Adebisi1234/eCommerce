@@ -5,45 +5,111 @@
 import { Button } from "@/components/ui/button";
 import { CardContent, Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "./ui/skeleton";
+import { useNavigate } from "react-router-dom";
 
-export default function ProductCart() {
+type ProdType = {
+  id: string;
+  img: string;
+  name: string;
+  rating: number;
+  desc: string;
+  price: number;
+  discount: number;
+};
+
+export function ProductSkeleton() {
   return (
-    <Card className="max-w-sm mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-      <div className="flex items-end justify-end h-56 w-full bg-cover relative">
-        <img
-          src="https://via.placeholder.com/600/92c952"
-          alt="product image"
-          className="absolute inset-0 h-full w-full object-cover animate-pulse bg-slate-200"
-          onLoad={(ev) => {
-            ev.currentTarget.complete &&
-              ev.currentTarget.classList.remove("animate-pulse");
-          }}
-        />
-        <Button
+    <Card className="max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg">
+      <div className="relative flex items-end justify-end w-full h-56 bg-cover">
+        <Skeleton className="absolute w-full h-full bg-black" />
+        <Skeleton
           aria-label="Add to Cart"
-          className="p-2 rounded-full bg-blue-600 z-20 text-white mx-5 -mb-4 hover:bg-blue-500 focus:outline-none focus:bg-blue-500"
-        >
-          <ShoppingCartIcon className="w-5 h-5" />
-        </Button>
+          className="z-20 w-10 h-10 p-2 mx-5 -mb-4 text-white bg-blue-600 rounded-full hover:bg-blue-500 focus:outline-none focus:bg-blue-500"
+        />
       </div>
       <CardContent className="px-5 py-3">
-        <h2 className="text-gray-900 text-lg">Product Name</h2>
-        <p className="text-gray-600">Product Description</p>
+        <Skeleton className="w-48 h-4 my-2 text-lg text-gray-900 bg-black" />
+        <Skeleton className="w-48 h-4 my-2 text-gray-600 bg-black" />
       </CardContent>
-      <div className="px-5 py-3 grid grid-cols-2 gap-4 items-center">
-        <span className="text-gray-900 font-bold">$129</span>
-        <Badge className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-red-600 bg-red-200 last:mr-0 mr-1 w-fit ml-auto">
-          10% off
-        </Badge>
+      <div className="grid items-center grid-cols-2 gap-4 px-5 py-3">
+        <Skeleton className="w-4 h-4 font-bold text-gray-900" />
+
         <div className="flex items-center gap-0.5">
-          <StarIcon className="w-5 h-5 fill-primary" />
-          <StarIcon className="w-5 h-5 fill-primary" />
-          <StarIcon className="w-5 h-5 fill-primary" />
-          <StarIcon className="w-5 h-5 fill-muted stroke-muted-foreground" />
-          <StarIcon className="w-5 h-5 fill-muted stroke-muted-foreground" />
+          <StarIcon className="w-5 h-5 fill-muted animate-pulse stroke-muted-foreground" />
+          <StarIcon className="w-5 h-5 fill-muted animate-pulse stroke-muted-foreground" />
+          <StarIcon className="w-5 h-5 fill-muted animate-pulse stroke-muted-foreground" />
+          <StarIcon className="w-5 h-5 fill-muted animate-pulse stroke-muted-foreground" />
+          <StarIcon className="w-5 h-5 fill-muted animate-pulse stroke-muted-foreground" />
         </div>
       </div>
     </Card>
+  );
+}
+
+export default function ProductCard({
+  id,
+  img,
+  name,
+  rating,
+  desc,
+  price,
+  discount,
+}: ProdType) {
+  const navigate = useNavigate();
+  const stars = new Array(5);
+  const starsComponent = stars.map((_v, i) => {
+    if (i < rating) {
+      return <StarIcon className="w-5 h-5 fill-primary" />;
+    }
+    return <StarIcon className="w-5 h-5 fill-muted stroke-muted-foreground" />;
+  });
+  return (
+    <>
+      <Card
+        className="max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg"
+        onClick={(ev) => {
+          console.log((ev.target as HTMLElement).tagName.toLowerCase());
+          if (
+            (ev.target as HTMLElement).tagName.toLowerCase() === "button" ||
+            (ev.target as HTMLElement).tagName.toLowerCase() === "svg" ||
+            (ev.target as HTMLElement).tagName.toLowerCase() === "path"
+          ) {
+            return;
+          }
+          navigate(`/product/${id}`);
+        }}
+      >
+        <div className="relative flex items-end justify-end w-full h-56 bg-cover">
+          <img
+            src={img}
+            alt="product image"
+            className="absolute inset-0 object-cover w-full h-full animate-pulse bg-slate-200"
+            onLoad={(ev) => {
+              ev.currentTarget.complete &&
+                ev.currentTarget.classList.remove("animate-pulse");
+            }}
+          />
+          <Button
+            aria-label="Add to Cart"
+            className="z-20 p-2 mx-5 -mb-4 text-white bg-blue-600 rounded-full hover:bg-blue-500 focus:outline-none focus:bg-blue-500"
+          >
+            <ShoppingCartIcon className="w-5 h-5" />
+          </Button>
+        </div>
+        <CardContent className="px-5 py-3">
+          <h2 className="text-lg text-gray-900">{name}</h2>
+          <p className="text-gray-600">{desc}</p>
+        </CardContent>
+        <div className="grid items-center grid-cols-2 gap-4 px-5 py-3">
+          <span className="font-bold text-gray-900">${price}</span>
+          <Badge className="inline-block px-2 py-1 ml-auto mr-1 text-xs font-semibold text-red-600 uppercase bg-red-200 rounded-full last:mr-0 w-fit">
+            {discount}% off
+          </Badge>
+          <div className="flex items-center gap-0.5">{starsComponent}</div>
+        </div>
+      </Card>
+    </>
   );
 }
 

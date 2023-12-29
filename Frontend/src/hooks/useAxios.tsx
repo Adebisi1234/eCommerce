@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export type Res<T> = {
   data: T;
@@ -9,6 +10,7 @@ export type Res<T> = {
 export type Method = "GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "IGNORE";
 
 export const useAxios = (method: Method, path: string, body?: object) => {
+  const navigate = useNavigate();
   const [result, setResult] = useState<Res<any>>({
     data: null,
     loading: true,
@@ -18,13 +20,13 @@ export const useAxios = (method: Method, path: string, body?: object) => {
     let data: any;
     try {
       if (method.toUpperCase() === "GET") {
-        data = (await axios.get(path)).data;
+        data = (await axios.get(path))?.data;
       } else if (method.toUpperCase() === "POST") {
-        data = (await axios.post(path, body)).data;
+        data = (await axios.post(path, body))?.data;
       } else if (method.toUpperCase() === "PUT") {
-        data = (await axios.put(path, body)).data;
+        data = (await axios.put(path, body))?.data;
       } else if (method.toUpperCase() === "PATCH") {
-        data = (await axios.patch(path, body)).data;
+        data = (await axios.patch(path, body))?.data;
       } else if (method.toUpperCase() === "DELETE") {
         data = (await axios.delete(path)).data;
       }
@@ -33,6 +35,8 @@ export const useAxios = (method: Method, path: string, body?: object) => {
       if (err instanceof AxiosError) {
         if (err.status === 501) {
           getData();
+        } else if (err.status === 502) {
+          navigate("/auth/login");
         }
         const errorMessage = err.response?.data;
         setResult((prev) => {
@@ -44,7 +48,7 @@ export const useAxios = (method: Method, path: string, body?: object) => {
         });
         return;
       }
-      console.log(err);
+
       setResult((prev) => {
         return { ...prev, error: err, loading: false } as Res<any> & {
           error: string;

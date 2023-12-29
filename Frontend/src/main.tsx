@@ -31,14 +31,13 @@ axios.interceptors.response.use(
         !error.config?.url?.includes("refresh")
       ) {
         const { data } = await axios.get("/user/refresh");
-        if (!data) return Promise.reject(error);
         localStorage.setItem("token", `Bearer ${data.token}`);
         error.status = 501;
       }
       return Promise.reject(error);
     } catch (err) {
-      Promise.reject(error);
-      Promise.reject(err);
+      error.status = 502;
+      return Promise.reject(error);
     }
   }
 );

@@ -8,10 +8,15 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import { Route, Routes } from "react-router-dom";
 import { Shop } from "./pages/Shop/Shop";
 import { Profile } from "./pages/Home/Profile/Profile";
-import { Cart } from "./components/Cart";
+import { CartIcon } from "./components/CartIcon";
+import Product from "./components/Product";
+import Cart from "./components/Cart";
+import UserProfile from "./components/Profile";
+import { Header } from "./components/Header";
 function App() {
   return (
     <div className="mx-auto max-w-7xl">
+      <Header />
       <Routes>
         <Route path="/">
           <Route index element={<Home />} />
@@ -25,12 +30,16 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="verify" element={<Verify />} />
         </Route>
+        <Route path="/product/:id" element={<Product />} />
+        <Route path="/cart" element={<Cart />} />
+
         <Route path="/shop">
           <Route index element={<Shop />} />
-          <Route path=":categories" element={<Shop />} />
+          <Route path=":category" element={<Shop />} />
         </Route>
+        <Route path="/user" element={<UserProfile />} />
       </Routes>
-      <Cart />
+      <CartIcon />
     </div>
   );
 }

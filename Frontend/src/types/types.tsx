@@ -72,6 +72,7 @@ export type CartDoc = {
 
 export type CategoryDoc = {
   name: string;
+  desc: string;
 };
 
 export type ShippingDoc = {

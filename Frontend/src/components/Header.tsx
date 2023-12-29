@@ -12,20 +12,20 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 export const Header = () => {
   const navigate = useNavigate();
   return (
-    <header className="flex h-20 w-full shrink-0 items-center px-4 md:px-6">
+    <header className="flex items-center w-full h-20 px-4 shrink-0 md:px-6">
       <a
         className="flex items-center justify-center"
         onClick={() => {
           navigate("/");
         }}
       >
-        <MountainIcon className="h-6 w-6" />
+        <MountainIcon className="w-6 h-6" />
         <span className="sr-only">Inc</span>
       </a>
       {localStorage.getItem("token") ? (
-        <nav className="ml-auto flex gap-4 sm:gap-6 items-center">
+        <nav className="flex items-center gap-4 ml-auto sm:gap-6">
           <a
-            className="text-sm font-medium hover:underline underline-offset-4"
+            className="text-sm font-medium cursor-pointer hover:underline underline-offset-4"
             onClick={() => {
               navigate("/");
             }}
@@ -34,7 +34,7 @@ export const Header = () => {
           </a>
 
           <a
-            className="text-sm font-medium hover:underline underline-offset-4"
+            className="text-sm font-medium cursor-pointer hover:underline underline-offset-4"
             onClick={() => {
               navigate("/shop");
             }}
@@ -42,7 +42,7 @@ export const Header = () => {
             Shop
           </a>
           <a
-            className="text-sm font-medium hover:underline underline-offset-4"
+            className="text-sm font-medium cursor-pointer hover:underline underline-offset-4"
             onClick={() => {
               navigate("/categories");
             }}
@@ -56,7 +56,7 @@ export const Header = () => {
                   <AvatarImage>
                     <img
                       alt="Avatar"
-                      className="rounded-full bg-gradient-to-r from-gray-700 via-gray-900 to-black dark:from-black dark:via-gray-600 dark:to-gray-300 animate-pulse aspect-square object-cover"
+                      className="object-cover rounded-full bg-gradient-to-r from-gray-700 via-gray-900 to-black dark:from-black dark:via-gray-600 dark:to-gray-300 animate-pulse aspect-square"
                       height="32"
                       src="/placeholder.svg"
                       onLoad={(ev) => {
@@ -70,12 +70,25 @@ export const Header = () => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel
+                onClick={() => {
+                  navigate("/user");
+                }}
+              >
+                My Account
+              </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
+              <DropdownMenuItem>Theme</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  navigate("/auth/login");
+                }}
+              >
+                Logout
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </nav>
@@ -86,7 +99,7 @@ export const Header = () => {
   );
 };
 
-function MountainIcon(props: any) {
+function MountainIcon(props: { className: string }) {
   return (
     <svg
       {...props}
