@@ -142,6 +142,7 @@ export const validateCategory = (input: object) => {
   const schema = Joi.object({
     _id: Joi.string().alphanum(),
     name: Joi.string().required(),
+    desc: Joi.string().required(),
   });
   const result = schema.validate(input);
   if (result.error) {

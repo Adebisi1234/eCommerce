@@ -17,7 +17,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useRef, useLayoutEffect, useState, useEffect } from "react";
 import { useVerify } from "@/hooks/useUser";
 import { Loader2 } from "lucide-react";
-import { Header } from "@/components/Header";
 type UserInput = {
   email: string;
   code: string;
@@ -37,13 +36,12 @@ export default function Verify() {
   useEffect(() => {
     if (data) {
       localStorage.setItem("token", `Bearer ${data.token}`);
-      navigate("/");
+      navigate(-1);
     }
   }, [data]);
 
   return (
     <>
-      <Header />
       <Card className="max-w-md mx-auto">
         <CardHeader>
           <CardTitle className="text-2xl">Verify OTP</CardTitle>
@@ -76,7 +74,7 @@ export default function Verify() {
               />
             </div>
           </CardContent>
-          <p className="text-blue-600 my-1 mx-auto w-fit">
+          <p className="mx-auto my-1 text-blue-600 w-fit">
             Enter any 6-digit number for now
           </p>
           <CardFooter>
@@ -89,7 +87,7 @@ export default function Verify() {
             </Button>
           </CardFooter>
         </form>
-        {error && <p className="my-1 mx-auto w-fit text-red-500 ">{error}</p>}
+        {error && <p className="mx-auto my-1 text-red-500 w-fit ">{error}</p>}
       </Card>
     </>
   );

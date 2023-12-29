@@ -13,7 +13,6 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Header } from "../../../components/Header";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useLogin } from "@/hooks/useUser";
@@ -30,7 +29,7 @@ export default function Login() {
   const { loading, data, error } = useLogin(details);
   useEffect(() => {
     if (data) {
-      navigate("/auth/verify", { state: details?.email });
+      navigate("/auth/verify", { state: details?.email, replace: true });
     }
   }, [data]);
   const getMap = () => {
@@ -40,7 +39,6 @@ export default function Login() {
   };
   return (
     <>
-      <Header />
       <Card className="max-w-md mx-auto">
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
@@ -96,7 +94,7 @@ export default function Login() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button className="w-full flex items-center justify-center">
+            <Button className="flex items-center justify-center w-full">
               {!loading ? (
                 "Sign in"
               ) : (
@@ -105,7 +103,7 @@ export default function Login() {
             </Button>
           </CardFooter>
         </form>
-        {error && <p className="my-1 mx-auto w-fit text-red-500 ">{error}</p>}
+        {error && <p className="mx-auto my-1 text-red-500 w-fit ">{error}</p>}
         <div className="flex justify-center mb-2">
           <p className="text-sm text-gray-500 dark:text-gray-400">
             Don't have an account?

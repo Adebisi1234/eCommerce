@@ -26,22 +26,21 @@ export const useDeleteProduct = (id: string) => {
   const response: Res<string> = useAxios("DELETE", `/${id}`);
   return response;
 };
-export const getCategoryProducts = (
-  name: string,
-  limit?: number,
-  skip?: number,
-  sort?: string
-) => {
-  const query = `?limit=${limit}&skip=${skip}&sort=${sort}`;
-  const response: Res<string> = useAxios("GET", `/category/${name}${query}`);
+
+export const useCreateCategory = (input: CategoryDoc) => {
+  const response: Res<CategoryDoc> = useAxios("PUT", `/category`, input);
   return response;
 };
-export const createCategory = (input: CategoryDoc) => {
-  const response: Res<ProductDoc> = useAxios("PUT", `/category`, input);
+export const useGetCategories = () => {
+  const response: Res<CategoryDoc[]> = useAxios("GET", `/category`);
   return response;
 };
-export const updateCategory = (name: string, input: CategoryDoc) => {
-  const response: Res<ProductDoc> = useAxios("PUT", `/category/${name}`, input);
+export const useUpdateCategory = (name: string, input: CategoryDoc) => {
+  const response: Res<CategoryDoc> = useAxios(
+    "PUT",
+    `/category/${name}`,
+    input
+  );
   return response;
 };
 export const getDeals = () => {};

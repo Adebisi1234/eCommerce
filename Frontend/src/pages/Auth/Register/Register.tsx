@@ -13,7 +13,6 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Header } from "../../../components/Header";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useRegister } from "@/hooks/useUser";
@@ -35,7 +34,7 @@ export default function Register() {
 
   useEffect(() => {
     if (data) {
-      navigate("/auth/verify", { state: details?.email });
+      navigate("/auth/verify", { state: details?.email, replace: true });
     }
   }, [data]);
   const getMap = () => {
@@ -45,7 +44,6 @@ export default function Register() {
   };
   return (
     <>
-      <Header />
       <main className="max-w-md p-4 mx-auto space-y-8">
         <Card className="space-y-4">
           <CardHeader>
@@ -156,7 +154,7 @@ export default function Register() {
               <div className="space-y-2">
                 <Label htmlFor="phone">Phone</Label>
                 <div className="flex">
-                  <div className="w-fit h-10 border mr-1 p-1 flex justify-center items-center">
+                  <div className="flex items-center justify-center h-10 p-1 mr-1 border w-fit">
                     +234
                   </div>
                   <Input
@@ -188,9 +186,9 @@ export default function Register() {
               </Button>
             </CardFooter>
           </form>
-          {error && <p className="my-1 mx-auto w-fit text-red-500 ">{error}</p>}
+          {error && <p className="mx-auto my-1 text-red-500 w-fit ">{error}</p>}
           {passwordErr && (
-            <p className="my-1 mx-auto w-fit text-red-500 ">{passwordErr}</p>
+            <p className="mx-auto my-1 text-red-500 w-fit ">{passwordErr}</p>
           )}
           <div className="flex justify-center pb-3">
             <p className="text-sm text-gray-500 dark:text-gray-400">

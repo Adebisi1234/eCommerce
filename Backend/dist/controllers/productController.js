@@ -88,15 +88,12 @@ export const deleteProduct = async (req, res) => {
 };
 export const getCategoryProducts = async (req, res) => {
     try {
-        const { limit, skip, sort } = req.query;
+        const { limit, skip } = req.query;
         const { name } = req.params;
-        const products = Product.find({ category: name })
-            .skip(skip && isNaN(+skip) ? +skip : 0)
-            .limit(limit && isNaN(+limit) ? +limit : 0)
-            .sort(typeof sort === "string" &&
-            ["asc", "desc", "ascending", "descending", 1, -1].includes(sort)
-            ? `${sort}`
-            : "");
+        console.log(name);
+        const products = await Product.find({ category: name })
+            .skip(skip && !isNaN(+skip) ? +skip : 0)
+            .limit(limit && !isNaN(+limit) ? +limit : 0);
         if (!products) {
             return res.status(400).json("products not found");
         }
@@ -104,6 +101,7 @@ export const getCategoryProducts = async (req, res) => {
     }
     catch (err) {
         if (err instanceof Error) {
+            console.log(err);
             return res.status(400).json(err.message);
         }
         return res.status(400).json(err);

@@ -27,7 +27,11 @@ export const signup = async (req: Request, res: Response) => {
       return res.status(400).json("User exists");
     }
     const hashedPassword = await hashPassword(body.password);
-    const newUser = new User({ ...body, password: hashedPassword });
+    const newUser = new User({
+      ...body,
+      password: hashedPassword,
+      profilePic: `https://robohash.org/${body.email}`,
+    });
     await newUser.save();
     if (process.env.NODE_ENV === "production") {
       const status = await sendOTP(body.email);

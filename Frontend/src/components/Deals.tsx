@@ -4,7 +4,7 @@
  */
 import { Badge } from "@/components/ui/badge";
 import Autoplay from "embla-carousel-autoplay";
-import ProductCart from "./ProductCard";
+import ProductCard, { ProductSkeleton } from "./ProductCard";
 import {
   Carousel,
   CarouselContent,
@@ -12,8 +12,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "./ui/carousel";
+import { ProductDoc } from "@/types/types";
 
-export default function Deals() {
+export default function Deals({ products }: { products?: ProductDoc[] }) {
   return (
     <div className="w-full h-fit">
       <Badge variant={"destructive"}>Top deals</Badge>
@@ -25,15 +26,35 @@ export default function Deals() {
         ]}
       >
         <CarouselContent className="w-full">
-          <CarouselItem className="basis-full md:basis-1/2 lg:basis-1/3">
-            <ProductCart />
-          </CarouselItem>
-          <CarouselItem className="basis-full md:basis-1/2 lg:basis-1/3">
-            <ProductCart />
-          </CarouselItem>
-          <CarouselItem className="basis-full md:basis-1/2 lg:basis-1/3">
-            <ProductCart />
-          </CarouselItem>
+          {!products ? (
+            <>
+              <CarouselItem className="basis-full md:basis-1/2 lg:basis-1/3">
+                <ProductSkeleton />
+              </CarouselItem>
+              <CarouselItem className="basis-full md:basis-1/2 lg:basis-1/3">
+                <ProductSkeleton />
+              </CarouselItem>
+              <CarouselItem className="basis-full md:basis-1/2 lg:basis-1/3">
+                <ProductSkeleton />
+              </CarouselItem>
+            </>
+          ) : (
+            products.map((v) => {
+              return (
+                <CarouselItem className="basis-full md:basis-1/2 lg:basis-1/3">
+                  <ProductCard
+                    id={v._id}
+                    name={v.name}
+                    price={v.price}
+                    discount={v.discount}
+                    rating={v.rating}
+                    desc={v.desc}
+                    img={v.thumbnail}
+                  />
+                </CarouselItem>
+              );
+            })
+          )}
         </CarouselContent>
         <CarouselPrevious className="" />
         <CarouselNext className="-right-5" />
