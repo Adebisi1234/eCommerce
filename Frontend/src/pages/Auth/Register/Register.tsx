@@ -29,11 +29,13 @@ export default function Register() {
   const navigate = useNavigate();
   const [details, setDetails] = useState<userInput | undefined>(undefined);
   const [passwordErr, setPasswordErr] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef<Map<keyof userInput, HTMLInputElement>>();
   const { loading, data, error } = useRegister(details);
 
   useEffect(() => {
     if (data) {
+      setIsLoading(false);
       navigate("/auth/verify", { state: details?.email, replace: true });
     }
   }, [data]);
@@ -57,8 +59,9 @@ export default function Register() {
           <form
             onSubmit={(ev) => {
               ev.preventDefault();
+              setIsLoading(true);
               setPasswordErr("");
-              console.log("hi");
+
               if (
                 !(
                   inputRef.current?.get("password")?.value ===
@@ -66,7 +69,7 @@ export default function Register() {
                 )
               ) {
                 setPasswordErr("password didn't match");
-                console.log("wtf");
+
                 return;
               }
               setDetails({
@@ -177,8 +180,11 @@ export default function Register() {
               </div>
             </CardContent>
             <CardFooter className="flex justify-center pb-0">
-              <Button className="w-full sm:w-auto">
-                {!loading ? (
+              <Button
+                className="w-full sm:w-auto"
+                onClick={() => setIsLoading((prev) => !prev)}
+              >
+                {!isLoading ? (
                   "Register"
                 ) : (
                   <Loader2 className="animate-spin fill-none stroke-white" />

@@ -27,8 +27,10 @@ export default function Login() {
   const [details, setDetails] = useState<userInput | undefined>(undefined);
   const inputRef = useRef<Map<string, HTMLInputElement>>();
   const { loading, data, error } = useLogin(details);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     if (data) {
+      setIsLoading(false);
       navigate("/auth/verify", { state: details?.email, replace: true });
     }
   }, [data]);
@@ -49,6 +51,7 @@ export default function Login() {
         <form
           onSubmit={(ev) => {
             ev.preventDefault();
+            setIsLoading(true);
             setDetails({
               email: inputRef.current?.get("email")?.value || "",
               password: inputRef.current?.get("password")?.value || "",
@@ -94,8 +97,11 @@ export default function Login() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button className="flex items-center justify-center w-full">
-              {!loading ? (
+            <Button
+              className="flex items-center justify-center w-full"
+              onClick={() => setIsLoading((prev) => !prev)}
+            >
+              {!isLoading ? (
                 "Sign in"
               ) : (
                 <Loader2 className="animate-spin fill-none stroke-white" />
