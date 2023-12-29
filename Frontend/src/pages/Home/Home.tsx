@@ -80,7 +80,7 @@ export default function Home() {
                       alt="Featured Product"
                       className="object-cover mx-auto overflow-hidden bg-gradient-to-r from-gray-700 via-gray-900 to-black aspect-video animate-pulse rounded-xl sm:w-full lg:order-last lg:aspect-square"
                       height="550"
-                      src={products[0]?.images[0]}
+                      src={products.length > 0 ? products[0]?.images[0] : ""}
                       width="550"
                       onLoad={(ev) => {
                         ev.currentTarget.complete &&
@@ -90,10 +90,10 @@ export default function Home() {
 
                     <div className="flex flex-col justify-center space-y-4">
                       <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                        {products[0]?.name}
+                        {products.length > 0 ? products[0]?.name : ""}
                       </h2>
                       <p className="max-w-[600px] text-gray-500 md:text-xl dark:text-gray-400">
-                        {products[0]?.desc}
+                        {products.length > 0 ? products[0]?.desc : ""}
                       </p>
                       <Button
                         className="self-start"
