@@ -8,7 +8,7 @@ const oAuth2Client = new google.auth.OAuth2(
   process.env.REDIRECT_URI
 );
 oAuth2Client.setCredentials({
-  refresh_token: process.env.REFRESH_TOKEN,
+  refresh_token: process.env.MAIL_REFRESH_TOKEN,
 });
 
 export function generateOTP() {
@@ -39,10 +39,10 @@ async function sM(otp: number, email: string) {
       service: "gmail",
       auth: {
         type: "OAuth2",
-        user: "ti.adebisi@gmail.com",
+        user: process.env.MAIL_USER,
         clientId: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET,
-        refreshToken: process.env.REFRESH_TOKEN,
+        refreshToken: process.env.MAIL_REFRESH_TOKEN,
         accessToken: accessToken,
       },
     });
