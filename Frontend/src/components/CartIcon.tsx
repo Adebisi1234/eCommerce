@@ -1,10 +1,15 @@
+import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 
 export const CartIcon = () => {
+  const navigate = useNavigate();
   return (
     <Button
       aria-label="Add to Cart"
       className="p-3 rounded-full bg-blue-600 z-20 text-white fixed right-0 bottom-3 mx-5 h-fit w-fit aspect-square hover:bg-blue-500 focus:outline-none focus:bg-blue-500"
+      onClick={() => {
+        navigate("/cart");
+      }}
     >
       <ShoppingCartIcon className="w-10 h-10" />
     </Button>

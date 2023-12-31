@@ -28,7 +28,7 @@ export const Shop = () => {
             <h1 className="mb-2 text-2xl font-bold tracking-tight">
               {category || "All Products"}
             </h1>
-            <div className="grid grid-cols-2 gap-4 product-container sm:border-l-2 lg:grid-cols-4">
+            <div className="grid sm:grid-cols-2 gap-4 product-container sm:border-l-2 lg:grid-cols-4">
               {!data || loading ? (
                 <>
                   <ProductSkeleton />

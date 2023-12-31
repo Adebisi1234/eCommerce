@@ -69,7 +69,6 @@ export default function ProductCard({
       <Card
         className="max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg"
         onClick={(ev) => {
-          console.log((ev.target as HTMLElement).tagName.toLowerCase());
           if (
             (ev.target as HTMLElement).tagName.toLowerCase() === "button" ||
             (ev.target as HTMLElement).tagName.toLowerCase() === "svg" ||

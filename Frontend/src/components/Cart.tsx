@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 export default function Cart() {
   return (
     <Card className="w-full max-w-3xl p-4 mx-auto">
-      <CardHeader className="flex items-center justify-between">
+      <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Shopping Cart</CardTitle>
         <Badge>4 items</Badge>
       </CardHeader>

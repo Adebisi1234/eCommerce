@@ -1,7 +1,3 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/syt27khDuwo
- */
 import { Button } from "@/components/ui/button";
 import ProductCard, { ProductSkeleton } from "../../components/ProductCard";
 
@@ -121,8 +117,8 @@ export default function Home() {
                   View All
                 </Button>
               </div>
-              <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-                {products[0] ? (
+              <div className="grid sm:grid-cols-2 gap-4 lg:grid-cols-4">
+                {products.length > 0 ? (
                   highlight
                 ) : (
                   <>
