@@ -48,7 +48,7 @@ export default function Verify() {
         <CardHeader>
           <CardTitle className="text-2xl">Verify OTP</CardTitle>
           <CardDescription>
-            Enter the OTP sent to your registered phone number below to verify
+            Enter the OTP sent to your registered email address below to verify
             your account.
           </CardDescription>
         </CardHeader>
@@ -58,7 +58,7 @@ export default function Verify() {
             setIsLoading(true);
             setDetails({
               email: state,
-              code: otpRef.current?.value || "123456",
+              code: otpRef.current?.value || "000000",
             });
           }}
         >
@@ -77,9 +77,6 @@ export default function Verify() {
               />
             </div>
           </CardContent>
-          <p className="mx-auto my-1 text-blue-600 w-fit">
-            Enter any 6-digit number for now
-          </p>
           <CardFooter>
             <Button className="w-full" onClick={() => setIsLoading(!isLoading)}>
               {!isLoading ? (

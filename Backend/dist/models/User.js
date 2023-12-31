@@ -52,6 +52,7 @@ const UserSchema = new Schema({
         type: String,
         select: false,
     },
+    otp: Number,
 }, {
     timestamps: true,
 });

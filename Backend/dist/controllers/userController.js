@@ -9,6 +9,7 @@ import { Address } from "../models/Address.js";
 import { Order } from "../models/Order.js";
 import { Payment } from "../models/Payment.js";
 import { signToken } from "../utils/jwt.js";
+import { sendMail } from "../temporal/nodemailer.js";
 export const signup = async (req, res) => {
     try {
         const body = validateAuth(req.body);
@@ -22,6 +23,8 @@ export const signup = async (req, res) => {
             password: hashedPassword,
             profilePic: `https://robohash.org/${body.email}`,
         });
+        const otp = await sendMail(body.email);
+        newUser.otp = otp;
         await newUser.save();
         return res.json("OTP created");
     }
@@ -41,6 +44,9 @@ export const login = async (req, res) => {
         const compare = await comparePassword(password, user.password);
         if (!compare)
             return res.status(400).json("Incorrect input");
+        const otp = await sendMail(email);
+        user.otp = otp;
+        await user.save();
         return res.json("Otp created");
     }
     catch (err) {
@@ -91,7 +97,9 @@ export const verify = async (req, res) => {
         const user = await User.findOne({ email });
         if (!user)
             return res.status(400).json("user not found");
-        // Saving the trial, will roll my own auth soon
+        if (user.otp !== code) {
+            return res.status(400).json("Wrong credentials");
+        }
         user.verified = true;
         const { accessToken, refreshToken } = signToken(user._id);
         user.refreshToken = refreshToken;
