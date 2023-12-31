@@ -38,6 +38,9 @@ export default function Verify() {
     if (data) {
       setIsLoading(false);
       localStorage.setItem("token", `Bearer ${data.token}`);
+      localStorage.setItem("id", `${data._id}`);
+      localStorage.setItem("cartId", `${data.cart}`);
+
       navigate(-1);
     }
   }, [data]);

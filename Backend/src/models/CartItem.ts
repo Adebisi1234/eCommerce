@@ -5,6 +5,7 @@ import { ProductDoc } from "./Product.js";
 export type CartItemDoc = {
   cartId: Schema.Types.ObjectId | CartDoc;
   itemId: Schema.Types.ObjectId | ProductDoc;
+  itemQty: number;
 };
 const CartItemSchema = new Schema(
   {

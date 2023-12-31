@@ -10,96 +10,60 @@ import {
   Card,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Avatar } from "@/components/ui/avatar";
+
 import { Button } from "@/components/ui/button";
+import { useGetCart } from "@/hooks/useUser";
+import { useParams } from "react-router-dom";
+import CartItem from "./CartItem";
+import { ProductDoc } from "@/types/types";
+import { Skeleton } from "./ui/skeleton";
 
 export default function Cart() {
+  const { id } = useParams();
+  const { loading, data, error } = useGetCart(id!);
   return (
-    <Card className="w-full max-w-3xl p-4 mx-auto">
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>Shopping Cart</CardTitle>
-        <Badge>4 items</Badge>
-      </CardHeader>
-      <CardContent className="divide-y">
-        <div className="flex items-center justify-between py-4">
-          <div className="flex items-center gap-2">
-            <Avatar />
-            <div>
-              <h3 className="text-lg font-semibold">Product 1</h3>
-              <p className="text-gray-500">Description of the product</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button size="icon" variant="ghost">
-              <MinusIcon className="w-4 h-4" />
+    <>
+      {!error || error === "Token expired" ? (
+        <Card className="w-full max-w-3xl p-4 mx-auto">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle>Shopping Cart</CardTitle>
+            {data && !loading && <Badge>{data.itemIds.length} items</Badge>}
+          </CardHeader>
+          <CardContent className="divide-y">
+            {data && !loading ? (
+              data.itemIds.map(({ itemId, _id, itemQty }, i) => {
+                console.log(itemId, _id, itemQty);
+                return (
+                  <CartItem
+                    name={(itemId as ProductDoc)?.name}
+                    desc={(itemId as ProductDoc)?.desc}
+                    thumbnail={(itemId as ProductDoc)?.thumbnail}
+                    key={i}
+                    cartId={data?._id!}
+                    itemQty={itemQty}
+                    id={_id!}
+                  />
+                );
+              })
+            ) : (
+              <Skeleton className="w-full h-5 bg-black" />
+            )}
+          </CardContent>
+          <CardFooter className="flex items-center justify-end">
+            <Button>
+              {data && !loading ? (
+                "Proceed to Payment"
+              ) : (
+                <Skeleton className="w-full h-5 bg-black" />
+              )}
             </Button>
-            <span>1</span>
-            <Button size="icon" variant="ghost">
-              <PlusIcon className="w-4 h-4" />
-            </Button>
-          </div>
+          </CardFooter>
+        </Card>
+      ) : (
+        <div className="w-full h-full text-white bg-black">
+          Error Occurred: {error}
         </div>
-        <div className="flex items-center justify-between py-4">
-          <div className="flex items-center gap-2">
-            <Avatar />
-            <div>
-              <h3 className="text-lg font-semibold">Product 2</h3>
-              <p className="text-gray-500">Description of the product</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button size="icon" variant="ghost">
-              <MinusIcon className="w-4 h-4" />
-            </Button>
-            <span>2</span>
-            <Button size="icon" variant="ghost">
-              <PlusIcon className="w-4 h-4" />
-            </Button>
-          </div>
-        </div>
-      </CardContent>
-      <CardFooter className="flex items-center justify-end">
-        <Button>Proceed to Payment</Button>
-      </CardFooter>
-    </Card>
-  );
-}
-
-function MinusIcon(props: { className: string }) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M5 12h14" />
-    </svg>
-  );
-}
-
-function PlusIcon(props: { className: string }) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M5 12h14" />
-      <path d="M12 5v14" />
-    </svg>
+      )}
+    </>
   );
 }

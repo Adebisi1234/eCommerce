@@ -61,7 +61,7 @@ function App() {
           element: <Product />,
         },
         {
-          path: "cart",
+          path: "cart/:id",
           element: <Cart />,
         },
         {
@@ -88,6 +88,7 @@ function App() {
         },
       ],
     },
+    { path: "*", element: <h1>Page doesn't exist please go back to home</h1> },
   ]);
   return <RouterProvider router={router} />;
 }

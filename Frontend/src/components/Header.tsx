@@ -72,7 +72,8 @@ export const Header = () => {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel
                 onClick={() => {
-                  navigate("/user/asdfhksd");
+                  const userId = localStorage.getItem("id");
+                  navigate(`/user/${userId}`);
                 }}
               >
                 My Account
@@ -84,6 +85,7 @@ export const Header = () => {
               <DropdownMenuItem
                 onClick={() => {
                   localStorage.removeItem("token");
+                  localStorage.removeItem("id");
                   navigate("/auth/login");
                 }}
               >

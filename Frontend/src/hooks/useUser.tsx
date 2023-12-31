@@ -11,7 +11,7 @@ export const useLogin = (input?: auth) => {
 };
 export const useRegister = (input?: auth) => {
   if (!input || input.email === "" || input.password === "") {
-    const response: Res<string> = useAxios("IGNORE", "/user/register", input);
+    const response: Res<string> = useAxios("IGNORE", "/", input);
     return response;
   }
   const response: Res<string> = useAxios("POST", "/user/register", input);
@@ -19,7 +19,7 @@ export const useRegister = (input?: auth) => {
 };
 export const useVerify = (input?: auth) => {
   if (!input || input.email === "" || input.code === "") {
-    const response: Res<UserDoc> = useAxios("IGNORE", "/user/register", input);
+    const response: Res<UserDoc> = useAxios("IGNORE", "/", input);
     return response;
   }
   const response: Res<UserDoc> = useAxios("POST", "/user/verify", input);
@@ -41,11 +41,20 @@ export const useGetCart = (id: string) => {
   const response: Res<CartDoc> = useAxios("GET", `/user/cart/${id}`);
   return response;
 };
-export const useAddToCart = (input: CartItemDoc) => {
+export const useAddToCart = (input?: CartItemDoc) => {
+  if (!input) {
+    const response: Res<string> = useAxios("IGNORE", "/", input);
+    return response;
+  }
+
   const response: Res<CartDoc> = useAxios("POST", `/user/cart`, input);
   return response;
 };
-export const useUpdateCartItem = (id: string, input: CartItemDoc) => {
+export const useUpdateCartItem = (id: string, input?: CartItemDoc) => {
+  if (!input) {
+    const response: Res<string> = useAxios("IGNORE", "/", input);
+    return response;
+  }
   const response: Res<CartDoc> = useAxios(
     "PUT",
     `/user/cart/item/${id}`,
@@ -53,7 +62,11 @@ export const useUpdateCartItem = (id: string, input: CartItemDoc) => {
   );
   return response;
 };
-export const useDeleteCartItem = (id: string) => {
+export const useDeleteCartItem = (id?: string) => {
+  if (!id) {
+    const response: Res<string> = useAxios("IGNORE", "/");
+    return response;
+  }
   const response: Res<string> = useAxios("DELETE", `/user/cart/item/${id}`);
   return response;
 };

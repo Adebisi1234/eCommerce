@@ -1,4 +1,5 @@
 export type auth = {
+  _id?: string;
   phone?: string;
   email?: string;
   password?: string;
@@ -7,7 +8,8 @@ export type auth = {
 };
 
 export type ProductDoc = {
-  _id: string;
+  _id?: string;
+
   name: string;
   desc: string;
   category: string;
@@ -17,47 +19,53 @@ export type ProductDoc = {
   price: number;
   discount: number;
   availability: boolean;
-  sellerId: string | UserDoc;
+  sellerId: UserDoc;
   dealId: string;
   stockUnit: number;
 };
 
 export type PaymentDoc = {
-  userId: string | UserDoc;
+  _id?: string;
+  userId: UserDoc;
   bankAccount: number;
   payment: string;
 };
 
 export type OrderDoc = {
-  userId: string | UserDoc;
-  carId: string | CartDoc;
-  productId: string | ProductDoc;
+  _id?: string;
+  userId: UserDoc;
+  carId: CartDoc;
+  productId: ProductDoc;
   status: string;
   amount: number;
 };
 
 export type UserDoc = {
+  _id?: string;
   phone: number;
   email: string;
   password: string;
   userType: "Buyer" | "Seller";
   verified: boolean;
-  address: string | AddressDoc;
-  cart: string | CartDoc;
-  order: string | OrderDoc;
-  payment: string | PaymentDoc;
+  address: AddressDoc;
+  cart: CartDoc;
+  order: OrderDoc;
+  payment: PaymentDoc;
   name: string;
   profilePic?: string;
   token: string;
 };
 
 export type CartItemDoc = {
+  _id?: string;
   cartId: string | CartDoc;
   itemId: string | ProductDoc;
+  itemQty: number;
 };
 
 export type AddressDoc = {
-  userId: string | UserDoc;
+  _id?: string;
+  userId: UserDoc;
   addressLine1: string;
   addressLine2?: string;
   city: string;
@@ -66,19 +74,22 @@ export type AddressDoc = {
 };
 
 export type CartDoc = {
-  userId: string | UserDoc;
-  itemIds: (string | CartItemDoc)[];
+  _id?: string;
+  userId: UserDoc;
+  itemIds: CartItemDoc[];
 };
 
 export type CategoryDoc = {
+  _id?: string;
   name: string;
   desc: string;
 };
 
 export type ShippingDoc = {
-  orderId: string | OrderDoc;
-  customerId: string | UserDoc;
-  sellerId: string | UserDoc;
+  _id?: string;
+  orderId: OrderDoc;
+  customerId: UserDoc;
+  sellerId: UserDoc;
   status: string;
-  address: string | AddressDoc;
+  address: AddressDoc;
 };

@@ -197,6 +197,12 @@ export const getCart = async (req: Request, res: Response) => {
         userId,
       }).save());
     await User.findOneAndUpdate({ _id: userId }, { cart: cart._id });
+    await cart.populate({
+      path: "itemIds",
+      model: "CartItem",
+      populate: { path: "itemId", model: "Product" },
+    });
+
     return res.json(cart);
   } catch (err) {
     if (err instanceof Error) {

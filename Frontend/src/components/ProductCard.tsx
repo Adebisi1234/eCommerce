@@ -7,6 +7,9 @@ import { CardContent, Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "./ui/skeleton";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { CartItemDoc } from "@/types/types";
+import { useAddToCart } from "@/hooks/useUser";
 
 type ProdType = {
   id: string;
@@ -57,6 +60,9 @@ export default function ProductCard({
   discount,
 }: ProdType) {
   const navigate = useNavigate();
+  const [cartItem, setCartItem] = useState<CartItemDoc | undefined>(undefined);
+  useAddToCart(cartItem);
+  const cartId = localStorage.getItem("cartId");
   const stars = new Array(5);
   const starsComponent = stars.map((_v, i) => {
     if (i < rating) {
@@ -92,6 +98,13 @@ export default function ProductCard({
           <Button
             aria-label="Add to Cart"
             className="z-20 p-2 mx-5 -mb-4 text-white bg-blue-600 rounded-full hover:bg-blue-500 focus:outline-none focus:bg-blue-500"
+            onClick={() => {
+              setCartItem({
+                cartId: cartId!,
+                itemId: id,
+                itemQty: 1,
+              });
+            }}
           >
             <ShoppingCartIcon className="w-5 h-5" />
           </Button>

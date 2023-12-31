@@ -16,7 +16,7 @@ export const Shop = () => {
   console.log(data, error);
   return (
     <>
-      {!error || error !== "Token expired" ? (
+      {!error || error === "Token expired" ? (
         <div className="md:grid md:grid-cols-[240px_1fr] h-[calc(100vh_-_80px)]">
           <Sidebar />
           <main>
@@ -28,7 +28,7 @@ export const Shop = () => {
             <h1 className="mb-2 text-2xl font-bold tracking-tight">
               {category || "All Products"}
             </h1>
-            <div className="grid sm:grid-cols-2 gap-4 product-container sm:border-l-2 lg:grid-cols-4">
+            <div className="grid gap-4 sm:grid-cols-2 product-container sm:border-l-2 lg:grid-cols-4">
               {!data || loading ? (
                 <>
                   <ProductSkeleton />
@@ -49,7 +49,7 @@ export const Shop = () => {
                   return (
                     <ProductCard
                       key={i}
-                      id={v._id}
+                      id={v._id!}
                       img={v.thumbnail}
                       name={v.name}
                       desc={v.desc}
@@ -62,7 +62,7 @@ export const Shop = () => {
               ) : (
                 typeof data === "object" && (
                   <ProductCard
-                    id={data._id}
+                    id={data._id!}
                     img={data.thumbnail}
                     name={data.name}
                     desc={data.desc}
