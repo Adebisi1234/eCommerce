@@ -1,1 +1,1 @@
-export default CartItem = () => {};
+export default function CartItem() {}
