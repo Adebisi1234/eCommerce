@@ -106,7 +106,8 @@ export const verify = async (req: Request, res: Response) => {
     const { email, code } = validateVerify(req.body);
     const user = await User.findOne({ email });
     if (!user) return res.status(400).json("user not found");
-    if (user.otp !== code) {
+    if (user.otp != code) {
+      console.log(user.otp, code);
       return res.status(400).json("Wrong credentials");
     }
 
