@@ -25,6 +25,14 @@ export const useVerify = (input?: auth) => {
   const response: Res<UserDoc> = useAxios("POST", "/user/verify", input);
   return response;
 };
+export const useRefreshOTP = (input?: auth) => {
+  if (!input || !input.email) {
+    const response: Res<UserDoc> = useAxios("IGNORE", "/", input);
+    return response;
+  }
+  const response: Res<string> = useAxios("POST", "/user/verify/refresh", input);
+  return response;
+};
 export const useGetProfile = (id: string) => {
   const response: Res<string> = useAxios("GET", `/user/profile/${id}`);
   return response;

@@ -5,6 +5,7 @@ import {
   validateAddress,
   validateAuth,
   validateCartItem,
+  validateOTP,
   validatePayment,
   validateUser,
   validateVerify,
@@ -17,7 +18,7 @@ import { Address, AddressDoc } from "../models/Address.js";
 import { Order } from "../models/Order.js";
 import { Payment, PaymentDoc } from "../models/Payment.js";
 import { signToken } from "../utils/jwt.js";
-import { sendMail } from "../temporal/nodemailer.js";
+import { sendOTP } from "../temporal/nodemailer.js";
 
 export const signup = async (req: Request, res: Response) => {
   try {
@@ -33,7 +34,7 @@ export const signup = async (req: Request, res: Response) => {
       profilePic: `https://robohash.org/${body.email}`,
     });
 
-    const otp = await sendMail(body.email);
+    const otp = await sendOTP(body.email);
     newUser.otp = otp;
     await newUser.save();
     return res.json("OTP created");
@@ -52,7 +53,7 @@ export const login = async (req: Request, res: Response) => {
     if (!user) return res.status(400).json("user not found");
     const compare = await comparePassword(password, user.password);
     if (!compare) return res.status(400).json("Incorrect input");
-    const otp = await sendMail(email);
+    const otp = await sendOTP(email);
     user.otp = otp;
     await user.save();
     return res.json("Otp created");
@@ -110,8 +111,8 @@ export const verify = async (req: Request, res: Response) => {
       console.log(user.otp, code);
       return res.status(400).json("Wrong credentials");
     }
-
     user.verified = true;
+    user.otp = 0;
     const { accessToken, refreshToken } = signToken(user._id);
     user.refreshToken = refreshToken;
     user.save();
@@ -127,6 +128,26 @@ export const verify = async (req: Request, res: Response) => {
       token: accessToken,
       refreshToken: null,
     });
+  } catch (err) {
+    if (err instanceof Error) {
+      return res.status(400).json(err.message);
+    }
+    return res.status(400).json(err);
+  }
+};
+
+export const refreshOTP = async (req: Request, res: Response) => {
+  try {
+    const body = validateOTP(req.body);
+    const user = await User.findOne({ email: body.email });
+    if (!user) {
+      return res.status(403).json("Wrong credentials");
+    }
+
+    user.otp = await sendOTP(body.email);
+
+    await user.save();
+    return res.json("Otp refreshed");
   } catch (err) {
     if (err instanceof Error) {
       return res.status(400).json(err.message);

@@ -9,6 +9,7 @@ import {
   getPaymentDetails,
   getProfile,
   login,
+  refreshOTP,
   refreshTokens,
   signup,
   updateCartItem,
@@ -22,6 +23,7 @@ const userRouter = Router();
 userRouter.post("/register", signup);
 userRouter.post("/login", login);
 userRouter.post("/verify", verify);
+userRouter.post("/verify/refresh", refreshOTP);
 userRouter.get("/refresh", refreshTokens);
 userRouter.use(verifyToken);
 userRouter.post("/profile", createProfile);

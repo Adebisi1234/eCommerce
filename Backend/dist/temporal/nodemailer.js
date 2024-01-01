@@ -10,7 +10,7 @@ export function generateOTP() {
     let max = 999999;
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-export async function sendMail(email) {
+export async function sendOTP(email) {
     try {
         const otp = generateOTP();
         await sM(otp, email);

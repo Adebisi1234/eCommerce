@@ -17,6 +17,7 @@ export type UserDoc = {
   name: string;
   profilePic?: string;
   refreshToken?: string;
+  otp?: number;
 };
 
 const UserSchema = new Schema(

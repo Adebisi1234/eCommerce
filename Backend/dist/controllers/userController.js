@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { User } from "../models/User.js";
-import { validateAddress, validateAuth, validateCartItem, validatePayment, validateUser, validateVerify, } from "../utils/validation.js";
+import { validateAddress, validateAuth, validateCartItem, validateOTP, validatePayment, validateUser, validateVerify, } from "../utils/validation.js";
 import { comparePassword, hashPassword } from "../utils/password.js";
 import { Cart } from "../models/Cart.js";
 import { Product } from "../models/Product.js";
@@ -9,7 +9,7 @@ import { Address } from "../models/Address.js";
 import { Order } from "../models/Order.js";
 import { Payment } from "../models/Payment.js";
 import { signToken } from "../utils/jwt.js";
-import { sendMail } from "../temporal/nodemailer.js";
+import { sendOTP } from "../temporal/nodemailer.js";
 export const signup = async (req, res) => {
     try {
         const body = validateAuth(req.body);
@@ -23,7 +23,7 @@ export const signup = async (req, res) => {
             password: hashedPassword,
             profilePic: `https://robohash.org/${body.email}`,
         });
-        const otp = await sendMail(body.email);
+        const otp = await sendOTP(body.email);
         newUser.otp = otp;
         await newUser.save();
         return res.json("OTP created");
@@ -44,7 +44,7 @@ export const login = async (req, res) => {
         const compare = await comparePassword(password, user.password);
         if (!compare)
             return res.status(400).json("Incorrect input");
-        const otp = await sendMail(email);
+        const otp = await sendOTP(email);
         user.otp = otp;
         await user.save();
         return res.json("Otp created");
@@ -102,6 +102,7 @@ export const verify = async (req, res) => {
             return res.status(400).json("Wrong credentials");
         }
         user.verified = true;
+        user.otp = 0;
         const { accessToken, refreshToken } = signToken(user._id);
         user.refreshToken = refreshToken;
         user.save();
@@ -117,6 +118,25 @@ export const verify = async (req, res) => {
             token: accessToken,
             refreshToken: null,
         });
+    }
+    catch (err) {
+        if (err instanceof Error) {
+            return res.status(400).json(err.message);
+        }
+        return res.status(400).json(err);
+    }
+};
+export const refreshOTP = async (req, res) => {
+    try {
+        const body = validateOTP(req.body);
+        const user = await User.findOne({ email: body.email });
+        if (!user) {
+            return res.status(403).json("Wrong credentials");
+        }
+        user.otp = await sendOTP(body.email);
+        console.log(user.otp);
+        await user.save();
+        return res.json("Otp refreshed");
     }
     catch (err) {
         if (err instanceof Error) {

@@ -1,10 +1,11 @@
 import { Router } from "express";
-import { addPaymentDetails, addToCart, clearCart, createProfile, deleteCartItem, getCart, getPaymentDetails, getProfile, login, refreshTokens, signup, updateCartItem, updatePaymentDetails, updateProfile, verify, } from "../controllers/userController.js";
+import { addPaymentDetails, addToCart, clearCart, createProfile, deleteCartItem, getCart, getPaymentDetails, getProfile, login, refreshOTP, refreshTokens, signup, updateCartItem, updatePaymentDetails, updateProfile, verify, } from "../controllers/userController.js";
 import { verifyToken } from "../utils/jwt.js";
 const userRouter = Router();
 userRouter.post("/register", signup);
 userRouter.post("/login", login);
 userRouter.post("/verify", verify);
+userRouter.post("/verify/refresh", refreshOTP);
 userRouter.get("/refresh", refreshTokens);
 userRouter.use(verifyToken);
 userRouter.post("/profile", createProfile);

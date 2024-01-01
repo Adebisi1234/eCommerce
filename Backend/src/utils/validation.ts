@@ -29,6 +29,18 @@ export const validateVerify = (input: object) => {
     throw Error(schema.validate(input).error?.message);
   } else return schema.validate(input).value;
 };
+export const validateOTP = (input: object) => {
+  const schema = Joi.object({
+    email: Joi.string()
+      .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
+      .required(),
+  });
+  const result = schema.validate(input);
+  if (result.error) {
+    console.log(result.error);
+    throw Error(schema.validate(input).error?.message);
+  } else return schema.validate(input).value;
+};
 
 export const validateUser = (input: object) => {
   const schema = Joi.object({

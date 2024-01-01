@@ -12,6 +12,7 @@ type Prop = {
   thumbnail: string;
   itemQty: number;
   cartId: string;
+  setCartId: React.Dispatch<React.SetStateAction<string>>;
 };
 type Update =
   | {
@@ -27,6 +28,7 @@ export default function CartItem({
   itemQty,
   id,
   cartId,
+  setCartId,
 }: Prop) {
   const [quantity, setQuantity] = useState(itemQty);
   const [update, setUpdate] = useState<Update>(undefined);
@@ -37,6 +39,7 @@ export default function CartItem({
       itemId: id,
       itemQty: quantity,
     });
+    setCartId(cartId);
   }, [quantity]);
   useUpdateCartItem(id, update);
   useDeleteCartItem(deleteItem ? id : undefined);

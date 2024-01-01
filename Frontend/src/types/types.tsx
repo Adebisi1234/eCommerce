@@ -8,8 +8,7 @@ export type auth = {
 };
 
 export type ProductDoc = {
-  _id?: string;
-
+  _id: string;
   name: string;
   desc: string;
   category: string;

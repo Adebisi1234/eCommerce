@@ -17,10 +17,12 @@ import { useParams } from "react-router-dom";
 import CartItem from "./CartItem";
 import { ProductDoc } from "@/types/types";
 import { Skeleton } from "./ui/skeleton";
+import { useState } from "react";
 
 export default function Cart() {
   const { id } = useParams();
-  const { loading, data, error } = useGetCart(id!);
+  const [CartId, setCartId] = useState(id!);
+  const { loading, data, error } = useGetCart(CartId);
   return (
     <>
       {!error || error === "Token expired" ? (
@@ -32,7 +34,7 @@ export default function Cart() {
           <CardContent className="divide-y">
             {data && !loading ? (
               data.itemIds.map(({ itemId, _id, itemQty }, i) => {
-                console.log(itemId, _id, itemQty);
+                if (!itemId) return;
                 return (
                   <CartItem
                     name={(itemId as ProductDoc)?.name}
@@ -42,6 +44,7 @@ export default function Cart() {
                     cartId={data?._id!}
                     itemQty={itemQty}
                     id={_id!}
+                    setCartId={setCartId}
                   />
                 );
               })

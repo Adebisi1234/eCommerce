@@ -25,9 +25,10 @@ axios.interceptors.response.use(
   },
   async (error: AxiosError) => {
     try {
+      console.log(error.config?.url);
       if (
         error.response?.status === 401 &&
-        !error.config?.url?.includes("refresh")
+        !error.config?.url?.includes("/user/refresh")
       ) {
         const { data } = await axios.get("/user/refresh");
         localStorage.setItem("token", `Bearer ${data.token}`);

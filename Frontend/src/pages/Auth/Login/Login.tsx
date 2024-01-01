@@ -115,7 +115,7 @@ export default function Login() {
             Don't have an account?
             <a
               onClick={() => {
-                navigate("/auth/register");
+                navigate("/auth/register", { replace: true });
               }}
             >
               {" "}
