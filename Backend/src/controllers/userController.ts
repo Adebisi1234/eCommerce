@@ -19,6 +19,9 @@ import { Order } from "../models/Order.js";
 import { Payment, PaymentDoc } from "../models/Payment.js";
 import { signToken } from "../utils/jwt.js";
 import { sendOTP } from "../temporal/nodemailer.js";
+import { Client, Connection } from "@temporalio/client";
+import { taskQueueName } from "../temporal/shared.js";
+import { sendOTPEmail } from "../temporal/workflows.js";
 
 export const signup = async (req: Request, res: Response) => {
   try {
@@ -34,7 +37,18 @@ export const signup = async (req: Request, res: Response) => {
       profilePic: `https://robohash.org/${body.email}`,
     });
 
-    const otp = await sendOTP(body.email);
+    if (process.env.NODE_ENV != "development") {
+      newUser.otp = await sendOTP(body.email);
+      await newUser.save();
+      return res.json("OTP created");
+    }
+    const connection = await Connection.connect();
+    const client = new Client({ connection });
+    const otp = await client.workflow.execute(sendOTPEmail, {
+      taskQueue: taskQueueName,
+      workflowId: `${newUser._id}`,
+      args: [body.email],
+    });
     newUser.otp = otp;
     await newUser.save();
     return res.json("OTP created");
@@ -53,7 +67,18 @@ export const login = async (req: Request, res: Response) => {
     if (!user) return res.status(400).json("user not found");
     const compare = await comparePassword(password, user.password);
     if (!compare) return res.status(400).json("Incorrect input");
-    const otp = await sendOTP(email);
+    if (process.env.NODE_ENV != "development") {
+      user.otp = await sendOTP(email);
+      await user.save();
+      return res.json("Otp created");
+    }
+    const connection = await Connection.connect();
+    const client = new Client({ connection });
+    const otp = await client.workflow.execute(sendOTPEmail, {
+      taskQueue: taskQueueName,
+      workflowId: `${user._id}`,
+      args: [email],
+    });
     user.otp = otp;
     await user.save();
     return res.json("Otp created");
@@ -144,8 +169,21 @@ export const refreshOTP = async (req: Request, res: Response) => {
       return res.status(403).json("Wrong credentials");
     }
 
-    user.otp = await sendOTP(body.email);
+    if (process.env.NODE_ENV != "development") {
+      user.otp = await sendOTP(body.email);
 
+      await user.save();
+      return res.json("Otp refreshed");
+    }
+
+    const connection = await Connection.connect();
+    const client = new Client({ connection });
+    const otp = await client.workflow.execute(sendOTPEmail, {
+      taskQueue: taskQueueName,
+      workflowId: `${user._id}`,
+      args: [body.email],
+    });
+    user.otp = otp;
     await user.save();
     return res.json("Otp refreshed");
   } catch (err) {
@@ -260,6 +298,7 @@ export const addToCart = async (req: Request, res: Response) => {
       return res.status(200).json(cart);
     }
     cart.itemIds.push(cartItem._id);
+    cart.total += product.price ?? 0;
     await cart.save();
     return res.json(cart.toObject());
   } catch (err) {

@@ -6,7 +6,6 @@ import { CartDoc } from "./Cart.js";
 export type OrderDoc = {
   userId: Schema.Types.ObjectId | UserDoc;
   carId: Schema.Types.ObjectId | CartDoc;
-  productId: Schema.Types.ObjectId | ProductDoc;
   status: string;
   amount: number;
 };
@@ -22,12 +21,12 @@ const OrderSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Cart",
     },
-    productId: {
-      type: Schema.Types.ObjectId,
-      ref: "Product",
-    },
+
     status: String,
-    amount: Number,
+    amount: {
+      type: Number,
+      required: true,
+    },
   },
   { timestamps: true }
 );

@@ -6,7 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./dist/server.js",
-    "dev": "nodemon ./dist/server.js"
+    "dev": "nodemon ./dist/server.js",
+    "dev:temporal": "npx npm-run-all -l build  --parallel dev start:worker",
+    "build": "tsc --build",
+    "start:worker": "node ./dist/temporal/worker",
+    "start:temporal": "node ./dist/temporal/worker"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +31,7 @@
     "mongoose": "^8.0.3",
     "morgan": "^1.10.0",
     "nodemailer": "^6.9.7",
+    "npm-run-all": "^4.1.5",
     "typescript": "^5.3.3"
   },
   "devDependencies": {

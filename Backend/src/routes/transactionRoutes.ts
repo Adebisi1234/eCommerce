@@ -6,6 +6,7 @@ import {
   orderProduct,
   purchaseProduct,
   shipProduct,
+  unSubscribe,
 } from "../controllers/transactionController.js";
 const transactionRouter = Router();
 transactionRouter.post("/order", orderProduct);
@@ -14,4 +15,6 @@ transactionRouter.get("/order/:id/:page", getOrders);
 transactionRouter.post("/payment", purchaseProduct);
 transactionRouter.get("/shipping", getShippings);
 transactionRouter.post("/shipping", shipProduct);
+transactionRouter.post("/unsubscribe/:workflowId", unSubscribe);
+
 export default transactionRouter;

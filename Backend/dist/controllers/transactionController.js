@@ -3,6 +3,9 @@ import { validateOrder, validateShipping, validateTransaction, } from "../utils/
 import { User } from "../models/User.js";
 import { Product } from "../models/Product.js";
 import { Shipping } from "../models/Shipping.js";
+import { Connection, Client } from "@temporalio/client";
+import { cancelPurchase, installmentQ, payInInstallments, } from "../temporal/workflows.js";
+import { taskQueueName } from "../temporal/shared.js";
 export const getOrders = async (req, res) => {
     const { id, page } = req.params;
     try {
@@ -23,19 +26,73 @@ export const getOrders = async (req, res) => {
         return res.status(400).json(err);
     }
 };
+export const getCurrentPaymentInstallment = async (req, res) => {
+    try {
+        const { workflowId } = req.query;
+        if (!workflowId) {
+            return res.status(400).json("workflowId required");
+        }
+        const client = new Client();
+        const workflow = client.workflow.getHandle(workflowId);
+        const installment = await workflow.query(installmentQ);
+        if (!installment) {
+            return res.status(400).json("installment not found");
+        }
+        return res.json(installment);
+    }
+    catch (err) {
+        if (err instanceof Error) {
+            return res.status(400).json(err.message);
+        }
+        return res.status(400).json(err);
+    }
+};
+export const unSubscribe = async (req, res) => {
+    try {
+        const { workflowId } = req.query;
+        if (!workflowId) {
+            return res.status(400).json("workflowId required");
+        }
+        const client = new Client();
+        const workflow = client.workflow.getHandle(workflowId);
+        workflow.signal(cancelPurchase);
+    }
+    catch (err) {
+        if (err instanceof Error) {
+            return res.status(400).json(err.message);
+        }
+        return res.status(400).json(err);
+    }
+};
 export const orderProduct = async (req, res) => {
     try {
         const details = validateOrder(req.body);
         const newOrder = await new Order({
             ...details,
         }).save();
-        await User.findByIdAndUpdate(details.userId, {
+        const user = await User.findByIdAndUpdate(details.userId, {
             $push: { order: newOrder._id },
         });
-        if (!newOrder) {
-            res.status(400).json("order not created");
+        if (!user) {
+            return res.status(400).json("user not found");
         }
-        return res.status(200).json("order created");
+        if (!newOrder) {
+            return res.status(400).json("order not created");
+        }
+        const connection = await Connection.connect();
+        const client = new Client({ connection });
+        const productDetails = {
+            id: `${newOrder._id}`,
+            name: `${newOrder.cartId}`,
+            price: `${newOrder.amount}`,
+            userId: `${newOrder.userId}`,
+        };
+        const { workflowId } = await client.workflow.start(payInInstallments, {
+            taskQueue: taskQueueName,
+            workflowId: `${newOrder._id}`,
+            args: [user.email, productDetails, 5, "10s"],
+        });
+        return res.status(200).json({ workflowId, orderId: newOrder._id });
     }
     catch (err) {
         if (err instanceof Error) {
@@ -48,6 +105,13 @@ export const cancelOrder = async (req, res) => {
     // validate if the order is already shipped or not
     try {
         await Order.findByIdAndDelete(req.params.id);
+        const { workflowId } = req.query;
+        if (!workflowId) {
+            return res.status(400).json("workflowId required");
+        }
+        const client = new Client();
+        const workflow = client.workflow.getHandle(workflowId);
+        workflow.cancel();
         return res.status(200).json("deleted");
     }
     catch (err) {

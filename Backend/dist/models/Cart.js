@@ -10,5 +10,6 @@ const CartSchema = new Schema({
             ref: "CartItem",
         },
     ],
+    total: { type: Number, default: 0 },
 }, { timestamps: true });
 export const Cart = model("Cart", CartSchema);

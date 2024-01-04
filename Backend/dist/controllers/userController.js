@@ -10,6 +10,9 @@ import { Order } from "../models/Order.js";
 import { Payment } from "../models/Payment.js";
 import { signToken } from "../utils/jwt.js";
 import { sendOTP } from "../temporal/nodemailer.js";
+import { Client, Connection } from "@temporalio/client";
+import { taskQueueName } from "../temporal/shared.js";
+import { sendOTPEmail } from "../temporal/workflows.js";
 export const signup = async (req, res) => {
     try {
         const body = validateAuth(req.body);
@@ -23,7 +26,13 @@ export const signup = async (req, res) => {
             password: hashedPassword,
             profilePic: `https://robohash.org/${body.email}`,
         });
-        const otp = await sendOTP(body.email);
+        const connection = await Connection.connect();
+        const client = new Client({ connection });
+        const otp = await client.workflow.execute(sendOTPEmail, {
+            taskQueue: taskQueueName,
+            workflowId: `${newUser._id}`,
+            args: [body.email],
+        });
         newUser.otp = otp;
         await newUser.save();
         return res.json("OTP created");
@@ -44,7 +53,13 @@ export const login = async (req, res) => {
         const compare = await comparePassword(password, user.password);
         if (!compare)
             return res.status(400).json("Incorrect input");
-        const otp = await sendOTP(email);
+        const connection = await Connection.connect();
+        const client = new Client({ connection });
+        const otp = await client.workflow.execute(sendOTPEmail, {
+            taskQueue: taskQueueName,
+            workflowId: `${user._id}`,
+            args: [email],
+        });
         user.otp = otp;
         await user.save();
         return res.json("Otp created");
@@ -134,7 +149,6 @@ export const refreshOTP = async (req, res) => {
             return res.status(403).json("Wrong credentials");
         }
         user.otp = await sendOTP(body.email);
-        console.log(user.otp);
         await user.save();
         return res.json("Otp refreshed");
     }
@@ -238,6 +252,7 @@ export const addToCart = async (req, res) => {
             return res.status(200).json(cart);
         }
         cart.itemIds.push(cartItem._id);
+        cart.total += product.price ?? 0;
         await cart.save();
         return res.json(cart.toObject());
     }
