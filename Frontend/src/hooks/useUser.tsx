@@ -11,7 +11,7 @@ export const useLogin = (input?: auth) => {
 };
 export const useRegister = (input?: auth) => {
   if (!input || input.email === "" || input.password === "") {
-    const response: Res<string> = useAxios("IGNORE", "/", input);
+    const response: Res<string> = useAxios("IGNORE", "/");
     return response;
   }
   const response: Res<string> = useAxios("POST", "/user/register", input);
@@ -19,7 +19,7 @@ export const useRegister = (input?: auth) => {
 };
 export const useVerify = (input?: auth) => {
   if (!input || input.email === "" || input.code === "") {
-    const response: Res<UserDoc> = useAxios("IGNORE", "/", input);
+    const response: Res<UserDoc> = useAxios("IGNORE", "/");
     return response;
   }
   const response: Res<UserDoc> = useAxios("POST", "/user/verify", input);
@@ -27,7 +27,7 @@ export const useVerify = (input?: auth) => {
 };
 export const useRefreshOTP = (input?: auth) => {
   if (!input || !input.email) {
-    const response: Res<UserDoc> = useAxios("IGNORE", "/", input);
+    const response: Res<UserDoc> = useAxios("IGNORE", "/");
     return response;
   }
   const response: Res<string> = useAxios("POST", "/user/verify/refresh", input);
@@ -41,7 +41,11 @@ export const useCreateProfile = (input: UserDoc) => {
   const response: Res<string> = useAxios("POST", `/user/profile`, input);
   return response;
 };
-export const useUpdateProfile = (input: UserDoc) => {
+export const useUpdateProfile = (input?: UserDoc) => {
+  if (!input) {
+    const response: Res<string> = useAxios("IGNORE", "/");
+    return response;
+  }
   const response: Res<UserDoc> = useAxios("PUT", `/user/profile`, input);
   return response;
 };
@@ -51,7 +55,7 @@ export const useGetCart = (id: string) => {
 };
 export const useAddToCart = (input?: CartItemDoc) => {
   if (!input) {
-    const response: Res<string> = useAxios("IGNORE", "/", input);
+    const response: Res<string> = useAxios("IGNORE", "/");
     return response;
   }
 
@@ -60,7 +64,7 @@ export const useAddToCart = (input?: CartItemDoc) => {
 };
 export const useUpdateCartItem = (id: string, input?: CartItemDoc) => {
   if (!input) {
-    const response: Res<string> = useAxios("IGNORE", "/", input);
+    const response: Res<string> = useAxios("IGNORE", "/");
     return response;
   }
   const response: Res<CartDoc> = useAxios(

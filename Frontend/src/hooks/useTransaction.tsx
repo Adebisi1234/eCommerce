@@ -8,7 +8,11 @@ export const useGetOrder = (id: string, page: number) => {
   );
   return response;
 };
-export const useOrder = (input: OrderDoc) => {
+export const useOrder = (input?: OrderDoc) => {
+  if (!input) {
+    const response: Res<OrderDoc> = useAxios("IGNORE", `/`);
+    return response;
+  }
   const response: Res<OrderDoc> = useAxios(
     "POST",
     `/transaction/order/`,

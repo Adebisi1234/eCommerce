@@ -1,3 +1,4 @@
+// import { useUpdateProfile } from "@/hooks/useUser";
 import { Button } from "./ui/button";
 import {
   Card,
@@ -25,6 +26,7 @@ import {
 } from "./ui/select";
 
 export default function Payment({ name }: { name: string }) {
+  // const {loading, data, error } = useUpdateProfile()
   return (
     <>
       <Dialog>
@@ -48,7 +50,7 @@ export default function Payment({ name }: { name: string }) {
                   <RadioGroupItem
                     value="card"
                     id="card"
-                    className="peer sr-only"
+                    className="sr-only peer"
                   />
                   <Label
                     htmlFor="card"
@@ -62,7 +64,7 @@ export default function Payment({ name }: { name: string }) {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth="2"
-                      className="mb-3 h-6 w-6"
+                      className="w-6 h-6 mb-3"
                     >
                       <rect width="20" height="14" x="2" y="5" rx="2" />
                       <path d="M2 10h20" />
@@ -75,7 +77,7 @@ export default function Payment({ name }: { name: string }) {
                   <RadioGroupItem
                     value="bank-transfer"
                     id="bank-transfer"
-                    className="peer sr-only"
+                    className="sr-only peer"
                   />
                   <Label
                     htmlFor="bank-transfer"
@@ -89,7 +91,7 @@ export default function Payment({ name }: { name: string }) {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth="2"
-                      className="mb-3 h-6 w-6"
+                      className="w-6 h-6 mb-3"
                     >
                       <rect width="20" height="14" x="2" y="5" rx="2" />
                       <path d="M2 10h20" />
