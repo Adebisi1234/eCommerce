@@ -26,6 +26,11 @@ export const signup = async (req, res) => {
             password: hashedPassword,
             profilePic: `https://robohash.org/${body.email}`,
         });
+        if (process.env.NODE_ENV != "development") {
+            newUser.otp = await sendOTP(body.email);
+            await newUser.save();
+            return res.json("OTP created");
+        }
         const connection = await Connection.connect();
         const client = new Client({ connection });
         const otp = await client.workflow.execute(sendOTPEmail, {
@@ -53,6 +58,11 @@ export const login = async (req, res) => {
         const compare = await comparePassword(password, user.password);
         if (!compare)
             return res.status(400).json("Incorrect input");
+        if (process.env.NODE_ENV != "development") {
+            user.otp = await sendOTP(email);
+            await user.save();
+            return res.json("Otp created");
+        }
         const connection = await Connection.connect();
         const client = new Client({ connection });
         const otp = await client.workflow.execute(sendOTPEmail, {
@@ -148,7 +158,19 @@ export const refreshOTP = async (req, res) => {
         if (!user) {
             return res.status(403).json("Wrong credentials");
         }
-        user.otp = await sendOTP(body.email);
+        if (process.env.NODE_ENV != "development") {
+            user.otp = await sendOTP(body.email);
+            await user.save();
+            return res.json("Otp refreshed");
+        }
+        const connection = await Connection.connect();
+        const client = new Client({ connection });
+        const otp = await client.workflow.execute(sendOTPEmail, {
+            taskQueue: taskQueueName,
+            workflowId: `${user._id}`,
+            args: [body.email],
+        });
+        user.otp = otp;
         await user.save();
         return res.json("Otp refreshed");
     }

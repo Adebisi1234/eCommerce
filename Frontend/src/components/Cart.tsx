@@ -13,27 +13,44 @@ import { Badge } from "@/components/ui/badge";
 
 import { Button } from "@/components/ui/button";
 import { useGetCart } from "@/hooks/useUser";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CartItem from "./CartItem";
-import { ProductDoc } from "@/types/types";
+import { CartDoc, ProductDoc } from "@/types/types";
 import { Skeleton } from "./ui/skeleton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Cart() {
   const { id } = useParams();
-  const [CartId, setCartId] = useState(id!);
-  const { loading, data, error } = useGetCart(CartId);
+  const navigate = useNavigate();
+  const [cart, setCart] = useState<CartDoc | undefined>(undefined);
+  const { loading, data, error } = useGetCart(cart?._id ?? id!);
+  const total = cart ? (
+    cart?.itemIds
+      ?.map(({ itemId, itemQty }) => {
+        return +(itemId as ProductDoc)?.price ?? 0 * +itemQty;
+      })
+      .reduce((a, b) => a + b, 0)
+  ) : (
+    <Skeleton className="w-3 h-2 bg-black" />
+  );
+
+  useEffect(() => {
+    if (data) {
+      setCart(data);
+    }
+  }, [data]);
+
   return (
     <>
       {!error || error === "Token expired" ? (
         <Card className="w-full max-w-3xl p-4 mx-auto">
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>Shopping Cart</CardTitle>
-            {data && !loading && <Badge>{data.itemIds.length} items</Badge>}
+            {cart && !loading && <Badge>{cart?.itemIds.length} items</Badge>}
           </CardHeader>
           <CardContent className="divide-y">
-            {data && !loading ? (
-              data.itemIds.map(({ itemId, _id, itemQty }, i) => {
+            {cart && !loading ? (
+              cart?.itemIds.map(({ itemId, _id, itemQty }, i) => {
                 if (!itemId) return;
                 return (
                   <CartItem
@@ -41,21 +58,34 @@ export default function Cart() {
                     desc={(itemId as ProductDoc)?.desc}
                     thumbnail={(itemId as ProductDoc)?.thumbnail}
                     key={i}
-                    cartId={data?._id!}
+                    cartId={cart._id!}
                     itemQty={itemQty}
                     id={_id!}
-                    setCartId={setCartId}
+                    setCart={setCart}
+                    index={i}
                   />
                 );
               })
             ) : (
               <Skeleton className="w-full h-5 bg-black" />
             )}
+            <p className="flex space-y-1 justify-between items-center">
+              <span>Total:</span> <span>{total}</span>
+            </p>
           </CardContent>
           <CardFooter className="flex items-center justify-end">
             <Button>
-              {data && !loading ? (
-                "Proceed to Payment"
+              {cart && !loading ? (
+                <p
+                  className={`${
+                    cart?.itemIds.length === 0 && "cursor-not-allowed"
+                  }`}
+                  onClick={() => {
+                    navigate("/order", { state: cart });
+                  }}
+                >
+                  Proceed to Payment
+                </p>
               ) : (
                 <Skeleton className="w-full h-5 bg-black" />
               )}

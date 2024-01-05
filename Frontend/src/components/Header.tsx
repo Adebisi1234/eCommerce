@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   DropdownMenuTrigger,
   DropdownMenuLabel,
@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 export const Header = () => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   return (
     <header className="flex items-center w-full h-20 px-4 shrink-0 md:px-6">
       <a
@@ -22,7 +23,7 @@ export const Header = () => {
         <MountainIcon className="w-6 h-6" />
         <span className="sr-only">Inc</span>
       </a>
-      {localStorage.getItem("token") ? (
+      {localStorage.getItem("token") && !pathname.includes("auth") ? (
         <nav className="flex items-center gap-4 ml-auto sm:gap-6">
           <a
             className="text-sm font-medium cursor-pointer hover:underline underline-offset-4"
@@ -71,6 +72,7 @@ export const Header = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel
+                className="cursor-pointer"
                 onClick={() => {
                   const userId = localStorage.getItem("id");
                   navigate(`/user/${userId}`);
@@ -79,6 +81,20 @@ export const Header = () => {
                 My Account
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => {
+                  navigate(`cart/${localStorage.getItem("cartId")}`);
+                }}
+              >
+                Cart
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  navigate(`orders/${localStorage.getItem("id")}`);
+                }}
+              >
+                Orders
+              </DropdownMenuItem>
               <DropdownMenuItem>Settings</DropdownMenuItem>
               <DropdownMenuItem>Theme</DropdownMenuItem>
               <DropdownMenuSeparator />

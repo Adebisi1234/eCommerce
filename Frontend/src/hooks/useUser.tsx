@@ -34,7 +34,7 @@ export const useRefreshOTP = (input?: auth) => {
   return response;
 };
 export const useGetProfile = (id: string) => {
-  const response: Res<string> = useAxios("GET", `/user/profile/${id}`);
+  const response: Res<UserDoc> = useAxios("GET", `/user/profile/${id}`);
   return response;
 };
 export const useCreateProfile = (input: UserDoc) => {

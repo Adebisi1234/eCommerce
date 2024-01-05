@@ -6,9 +6,9 @@ import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
 
 export default function Sidebar() {
   return (
-    <aside className="h-full w-60 absolute -translate-x-full md:translate-x-0 md:static px-4 py-6">
+    <aside className="absolute h-full px-4 py-6 -translate-x-full w-60 md:translate-x-0 md:static">
       <div className="flex items-center mb-6">
-        <Avatar className="h-9 w-9 mr-2">
+        <Avatar className="mr-2 h-9 w-9">
           <AvatarImage alt="User Avatar" src="/placeholder-avatar.jpg" />
           <AvatarFallback>U</AvatarFallback>
         </Avatar>
@@ -16,36 +16,28 @@ export default function Sidebar() {
       </div>
       <nav className="flex flex-col flex-wrap">
         <a className="flex py-1.5 px-2 rounded hover:bg-gray-200" href="#">
-          <ComputerIcon className="w-4 h-4 mr-2" />
-          Computers
+          Cart
         </a>
         <a className="flex py-1.5 px-2 rounded hover:bg-gray-200" href="#">
-          <ShirtIcon className="w-4 h-4 mr-2" />
-          Fashion
+          Orders
         </a>
         <a className="flex py-1.5 px-2 rounded hover:bg-gray-200" href="#">
-          <BookIcon className="w-4 h-4 mr-2" />
-          Books
+          Categories
         </a>
         <a className="flex py-1.5 px-2 rounded hover:bg-gray-200" href="#">
-          <GamepadIcon className="w-4 h-4 mr-2" />
-          Gaming
+          Categories
         </a>
         <a className="flex py-1.5 px-2 rounded hover:bg-gray-200" href="#">
-          <CameraIcon className="w-4 h-4 mr-2" />
-          Cameras
+          Categories
         </a>
         <a className="flex py-1.5 px-2 rounded hover:bg-gray-200" href="#">
-          <HeadphonesIcon className="w-4 h-4 mr-2" />
-          Audio & Music
+          Categories
         </a>
         <a className="flex py-1.5 px-2 rounded hover:bg-gray-200" href="#">
-          <DumbbellIcon className="w-4 h-4 mr-2" />
-          Fitness & Sports
+          Categories
         </a>
         <a className="flex py-1.5 px-2 rounded hover:bg-gray-200" href="#">
-          <BabyIcon className="w-4 h-4 mr-2" />
-          Baby & Kids
+          Categories
         </a>
       </nav>
     </aside>

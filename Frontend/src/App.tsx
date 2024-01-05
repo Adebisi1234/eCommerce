@@ -7,12 +7,12 @@ import Categories from "./pages/Shop/Categories/Categories";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import { Shop } from "./pages/Shop/Shop";
-import { Profile } from "./pages/Home/Profile/Profile";
-import { CartIcon } from "./components/CartIcon";
 import Product from "./components/Product";
 import Cart from "./components/Cart";
 import UserProfile from "./components/Profile";
 import { Header } from "./components/Header";
+import Orders from "./components/Orders";
+import OrderProducts from "./components/OrderProducts";
 function App() {
   const router = createBrowserRouter([
     {
@@ -25,10 +25,7 @@ function App() {
               index: true,
               element: <Home />,
             },
-            {
-              path: "profile",
-              element: <Profile />,
-            },
+
             {
               path: "dashboard",
               element: <Dashboard />,
@@ -64,6 +61,15 @@ function App() {
           path: "cart/:id",
           element: <Cart />,
         },
+
+        {
+          path: "order",
+          element: <OrderProducts />,
+        },
+        {
+          path: "orders/:id",
+          element: <Orders />,
+        },
         {
           path: "/shop",
           children: [
@@ -98,7 +104,6 @@ const Layout = () => {
     <div className="mx-auto max-w-7xl">
       <Header />
       <Outlet />
-      <CartIcon />
     </div>
   );
 };

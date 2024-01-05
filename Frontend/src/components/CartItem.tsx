@@ -4,6 +4,7 @@ import { MinusIcon, PlusIcon, Trash2Icon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useDeleteCartItem, useUpdateCartItem } from "@/hooks/useUser";
+import { CartDoc } from "@/types/types";
 
 type Prop = {
   id: string;
@@ -12,7 +13,8 @@ type Prop = {
   thumbnail: string;
   itemQty: number;
   cartId: string;
-  setCartId: React.Dispatch<React.SetStateAction<string>>;
+  setCart: React.Dispatch<React.SetStateAction<CartDoc | undefined>>;
+  index: number;
 };
 type Update =
   | {
@@ -28,19 +30,33 @@ export default function CartItem({
   itemQty,
   id,
   cartId,
-  setCartId,
+  setCart,
+  index,
 }: Prop) {
   const [quantity, setQuantity] = useState(itemQty);
   const [update, setUpdate] = useState<Update>(undefined);
   const [deleteItem, setDeleteItem] = useState(false);
   useEffect(() => {
+    if (quantity === itemQty) return;
     setUpdate({
       cartId,
       itemId: id,
       itemQty: quantity,
     });
-    setCartId(cartId);
+    setCart((prev) => {
+      const temp = prev;
+      temp!.itemIds[index].itemQty = quantity;
+      return temp;
+    });
   }, [quantity]);
+  useEffect(() => {
+    if (!deleteItem) return;
+    setCart((prev) => {
+      const temp = prev;
+      temp!.itemIds.splice(index, 1);
+      return temp;
+    });
+  }, [deleteItem]);
   useUpdateCartItem(id, update);
   useDeleteCartItem(deleteItem ? id : undefined);
 
@@ -63,7 +79,7 @@ export default function CartItem({
           size="icon"
           variant="ghost"
           onClick={(ev) => {
-            setQuantity((prev) => (prev! <= 1 ? --prev : prev));
+            setQuantity((prev) => (prev >= 1 ? --prev : prev));
             if (quantity === 1) {
               ev.currentTarget.classList.add("opacity-50");
             } else {
@@ -73,7 +89,7 @@ export default function CartItem({
         >
           <MinusIcon className="w-4 h-4" />
         </Button>
-        <span>{itemQty}</span>
+        <span>{quantity}</span>
         <Button
           size="icon"
           variant="ghost"
@@ -84,12 +100,13 @@ export default function CartItem({
           <PlusIcon className="w-4 h-4" />
         </Button>
       </div>
-      <div className="flex items-center gap-2">
-        <Trash2Icon
-          onClick={() => {
-            setDeleteItem(true);
-          }}
-        />
+      <div
+        className="flex items-center gap-2 cursor-pointer"
+        onClick={() => {
+          setDeleteItem(true);
+        }}
+      >
+        <Trash2Icon />
       </div>
     </div>
   );

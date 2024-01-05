@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
-
+// Toast component
 export const CartIcon = () => {
   const navigate = useNavigate();
   return (

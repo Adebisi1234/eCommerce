@@ -32,17 +32,17 @@ export default function Categories() {
   };
   return (
     <>
-      {!error && error === "Token expired" ? (
+      {!error || error === "Token expired" ? (
         <>
           <h1 className="mb-2 text-2xl font-bold tracking-tight">
             Product Categories
           </h1>
 
           <div className="grid grid-cols-1 gap-6 p-6 md:grid-cols-2 lg:grid-cols-3">
-            {loading && !data ? (
+            {loading || !data ? (
               <CategorySkeleton />
             ) : (
-              data.map((v) => {
+              data?.map((v) => {
                 return (
                   <Card
                     className="transition-transform hover:scale-105"

@@ -1,9 +1,9 @@
 import Deals from "@/components/Deals";
 
 import ProductCard, { ProductSkeleton } from "../../components/ProductCard";
-import Sidebar from "../../components/Sidebar";
 import { useParams } from "react-router-dom";
 import { useFetchProduct } from "@/hooks/useProduct";
+import { CartIcon } from "@/components/CartIcon";
 
 export const Shop = () => {
   const { category } = useParams();
@@ -17,8 +17,7 @@ export const Shop = () => {
   return (
     <>
       {!error || error === "Token expired" ? (
-        <div className="md:grid md:grid-cols-[240px_1fr] h-[calc(100vh_-_80px)]">
-          <Sidebar />
+        <div className="h-[calc(100vh_-_80px)]">
           <main>
             {data instanceof Array ? (
               <Deals products={[...data].splice(0, 5)} />
@@ -45,7 +44,7 @@ export const Shop = () => {
                   <ProductSkeleton />
                 </>
               ) : data instanceof Array ? (
-                data.map((v, i) => {
+                data?.map((v, i) => {
                   return (
                     <ProductCard
                       key={i}
@@ -62,13 +61,13 @@ export const Shop = () => {
               ) : (
                 typeof data === "object" && (
                   <ProductCard
-                    id={data._id!}
-                    img={data.thumbnail}
-                    name={data.name}
-                    desc={data.desc}
-                    rating={Math.floor(data.rating)}
-                    price={data.price}
-                    discount={data.discount}
+                    id={data?._id!}
+                    img={data?.thumbnail}
+                    name={data?.name}
+                    desc={data?.desc}
+                    rating={Math.floor(data?.rating)}
+                    price={data?.price}
+                    discount={data?.discount}
                   />
                 )
               )}
@@ -80,6 +79,7 @@ export const Shop = () => {
           Error ocurred {error}
         </div>
       )}
+      <CartIcon />
     </>
   );
 };
