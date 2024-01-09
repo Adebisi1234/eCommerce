@@ -8,7 +8,14 @@ FROM node:lts-bookworm
 
 COPY --from=builder /home/curl_user/.temporalio/bin/temporal /bin/temporal
 
+WORKDIR /backend
+
+COPY . .
+RUN npm i
+
+
 EXPOSE 7233
 EXPOSE 8233
+EXPOSE 6001
 
-ENTRYPOINT ["temporal", "server", "start-dev", "--ip" , "0.0.0.0"]
+CMD [ "npm", "run", "dev:temporal" ]
