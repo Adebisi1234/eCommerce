@@ -3,9 +3,11 @@ FROM curlimages/curl as builder
 WORKDIR /
 RUN curl -sSf https://temporal.download/cli.sh | sh
 
-FROM gcr.io/distroless/base-debian11
+
+FROM node:lts-bookworm
 
 COPY --from=builder /home/curl_user/.temporalio/bin/temporal /bin/temporal
+
 EXPOSE 7233
 EXPOSE 8233
 
