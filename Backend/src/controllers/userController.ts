@@ -49,6 +49,7 @@ export const signup = async (req: Request, res: Response) => {
       workflowId: `${newUser._id}`,
       args: [body.email],
     });
+    console.log(otp);
     newUser.otp = otp;
     await newUser.save();
     return res.json("OTP created");
