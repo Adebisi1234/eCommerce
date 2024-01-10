@@ -1,7 +1,3 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/bJCxuajwEa7
- */
 import { Button } from "@/components/ui/button";
 import { CardContent, Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -87,6 +83,7 @@ export default function ProductCard({
       >
         <div className="relative flex items-end justify-end w-full h-56 bg-cover">
           <img
+            loading="lazy"
             src={img}
             alt="product image"
             className="absolute inset-0 object-cover w-full h-full animate-pulse bg-slate-200"

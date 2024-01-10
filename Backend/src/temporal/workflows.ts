@@ -8,8 +8,11 @@ import {
 } from "@temporalio/workflow";
 import * as activities from "./activities.js";
 import { ProductDetails } from "./shared.js";
+import { Document } from "mongoose";
+import { UserDoc } from "../models/User.js";
 export const cancelPurchase = defineSignal("cancelPurchase");
 export const installmentQ = defineQuery("installment");
+export const resetOTP = defineSignal("resetOTP");
 
 export async function payInInstallments(
   email: string,
@@ -49,7 +52,8 @@ export async function payInInstallments(
   }
 }
 
-export async function sendOTPEmail(email: string) {
+export async function sendOTPEmail(user: Document & UserDoc & any) {
+  let reset = false;
   const { sendOTP } = proxyActivities<typeof activities>({
     retry: {
       maximumAttempts: 10,
@@ -57,8 +61,8 @@ export async function sendOTPEmail(email: string) {
     startToCloseTimeout: "10s",
   });
   try {
-    console.log("Sending otp to", email);
-    return await sendOTP(email);
+    console.log("Sending otp to", user.email);
+    return await sendOTP(user.email);
   } catch (err) {
     throw new ApplicationFailure(`Failed to send otp. Error: ${err}`);
   }

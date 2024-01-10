@@ -10,8 +10,11 @@ COPY --from=builder /home/curl_user/.temporalio/bin/temporal /bin/temporal
 
 WORKDIR /backend
 
-COPY . .
+COPY package.json .
+
 RUN npm i
+
+COPY . .
 
 
 EXPOSE 7233

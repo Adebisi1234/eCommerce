@@ -32,9 +32,9 @@ export type PaymentDoc = {
 
 export type OrderDoc = {
   _id?: string;
-  userId: UserDoc;
-  carId: CartDoc;
-  productId: ProductDoc;
+  userId: string;
+  cartId: string;
+  productId: string;
   status: string;
   amount: number;
 };

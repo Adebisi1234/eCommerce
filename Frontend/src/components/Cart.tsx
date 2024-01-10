@@ -1,7 +1,3 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/jF8CDA3PINW
- */
 import {
   CardTitle,
   CardHeader,
@@ -22,23 +18,35 @@ import { useEffect, useState } from "react";
 export default function Cart() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { loading, data, error } = useGetCart(id!);
   const [cart, setCart] = useState<CartDoc | undefined>(undefined);
-  const { loading, data, error } = useGetCart(cart?._id ?? id!);
-  const total = cart ? (
-    cart?.itemIds
-      ?.map(({ itemId, itemQty }) => {
-        return +(itemId as ProductDoc)?.price ?? 0 * +itemQty;
-      })
-      .reduce((a, b) => a + b, 0)
-  ) : (
-    <Skeleton className="w-3 h-2 bg-black" />
-  );
+
+  const total =
+    cart && cart?.itemIds.length > 0
+      ? cart?.itemIds
+          ?.map(({ itemId, itemQty }) => {
+            return +(itemId as ProductDoc)?.price ?? 0 * +itemQty ?? 0;
+          })
+          .reduce((a, b) => {
+            if (isNaN(a)) {
+              a = 0;
+            }
+            if (isNaN(b)) {
+              b = 0;
+            }
+            return a + b;
+          }, 0)
+      : 0;
 
   useEffect(() => {
     if (data) {
       setCart(data);
     }
   }, [data]);
+
+  useEffect(() => {
+    console.log(cart);
+  }, [cart]);
 
   return (
     <>
@@ -60,6 +68,7 @@ export default function Cart() {
                     key={i}
                     cartId={cart._id!}
                     itemQty={itemQty}
+                    itemId={(itemId as ProductDoc)?._id!}
                     id={_id!}
                     setCart={setCart}
                     index={i}
@@ -69,7 +78,7 @@ export default function Cart() {
             ) : (
               <Skeleton className="w-full h-5 bg-black" />
             )}
-            <p className="flex space-y-1 justify-between items-center">
+            <p className="flex items-center justify-between space-y-1">
               <span>Total:</span> <span>{total}</span>
             </p>
           </CardContent>

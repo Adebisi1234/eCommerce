@@ -47,7 +47,7 @@ export const signup = async (req: Request, res: Response) => {
     const otp = await client.workflow.execute(sendOTPEmail, {
       taskQueue: taskQueueName,
       workflowId: `${newUser._id}`,
-      args: [body.email],
+      args: [newUser],
     });
     console.log(otp);
     newUser.otp = otp;
@@ -64,7 +64,7 @@ export const signup = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = validateAuth(req.body);
-    const user = await User.findOne({ email }).select("password");
+    const user = await User.findOne({ email }).select(["password", "email"]);
     if (!user) return res.status(400).json("user not found");
     const compare = await comparePassword(password, user.password);
     if (!compare) return res.status(400).json("Incorrect input");
@@ -78,7 +78,7 @@ export const login = async (req: Request, res: Response) => {
     const otp = await client.workflow.execute(sendOTPEmail, {
       taskQueue: taskQueueName,
       workflowId: `${user._id}`,
-      args: [email],
+      args: [user],
     });
     user.otp = otp;
     await user.save();
@@ -182,7 +182,7 @@ export const refreshOTP = async (req: Request, res: Response) => {
     const otp = await client.workflow.execute(sendOTPEmail, {
       taskQueue: taskQueueName,
       workflowId: `${user._id}`,
-      args: [body.email],
+      args: [user],
     });
     user.otp = otp;
     await user.save();

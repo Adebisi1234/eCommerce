@@ -1,7 +1,3 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/kjr2hwbL6CZ
- */
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -30,48 +26,48 @@ export default function Dashboard() {
           <div className="flex flex-col gap-2">
             <div className="flex h-[60px] items-center px-6">
               <a className="flex items-center gap-2 font-semibold" href="#">
-                <Package2Icon className="h-6 w-6" />
+                <Package2Icon className="w-6 h-6" />
                 <span>Inc</span>
               </a>
             </div>
             <div className="flex-1">
               <nav className="grid items-start px-4 text-sm font-medium">
                 <a
-                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
+                  className="flex items-center gap-3 px-3 py-2 text-gray-500 transition-all rounded-lg hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
                   href="#"
                 >
-                  <HomeIcon className="h-4 w-4" />
+                  <HomeIcon className="w-4 h-4" />
                   Home
                 </a>
                 <a
-                  className="flex items-center gap-3 rounded-lg bg-gray-100 px-3 py-2 text-gray-900  transition-all hover:text-gray-900 dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50"
+                  className="flex items-center gap-3 px-3 py-2 text-gray-900 transition-all bg-gray-100 rounded-lg hover:text-gray-900 dark:bg-gray-800 dark:text-gray-50 dark:hover:text-gray-50"
                   href="#"
                 >
-                  <ShoppingCartIcon className="h-4 w-4" />
+                  <ShoppingCartIcon className="w-4 h-4" />
                   Orders
-                  <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
+                  <Badge className="flex items-center justify-center w-6 h-6 ml-auto rounded-full shrink-0">
                     12
                   </Badge>
                 </a>
                 <a
-                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
+                  className="flex items-center gap-3 px-3 py-2 text-gray-500 transition-all rounded-lg hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
                   href="#"
                 >
-                  <PackageIcon className="h-4 w-4" />
+                  <PackageIcon className="w-4 h-4" />
                   Products
                 </a>
                 <a
-                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
+                  className="flex items-center gap-3 px-3 py-2 text-gray-500 transition-all rounded-lg hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
                   href="#"
                 >
-                  <UsersIcon className="h-4 w-4" />
+                  <UsersIcon className="w-4 h-4" />
                   Customers
                 </a>
                 <a
-                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
+                  className="flex items-center gap-3 px-3 py-2 text-gray-500 transition-all rounded-lg hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
                   href="#"
                 >
-                  <LineChartIcon className="h-4 w-4" />
+                  <LineChartIcon className="w-4 h-4" />
                   Analytics
                 </a>
               </nav>
@@ -81,14 +77,14 @@ export default function Dashboard() {
         <div className="flex flex-col">
           <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6 dark:bg-gray-800/40">
             <a className="lg:hidden" href="#">
-              <Package2Icon className="h-6 w-6" />
+              <Package2Icon className="w-6 h-6" />
               <span className="sr-only">Home</span>
             </a>
             <div className="flex-1">
-              <h1 className="font-semibold text-lg">Recent Orders</h1>
+              <h1 className="text-lg font-semibold">Recent Orders</h1>
             </div>
-            <div className="flex flex-1 items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-              <form className="ml-auto flex-1 sm:flex-initial">
+            <div className="flex items-center flex-1 gap-4 md:ml-auto md:gap-2 lg:gap-4">
+              <form className="flex-1 ml-auto sm:flex-initial">
                 <div className="relative">
                   <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500 dark:text-gray-400" />
                   <Input
@@ -102,8 +98,9 @@ export default function Dashboard() {
                 <DropdownMenuTrigger asChild>
                   <Button className="rounded-full" size="icon" variant="ghost">
                     <img
+                      loading="lazy"
                       alt="Avatar"
-                      className="rounded-full bg-gradient-to-r from-gray-700 via-gray-900 to-black animate-pulse aspect-square object-cover"
+                      className="object-cover rounded-full bg-gradient-to-r from-gray-700 via-gray-900 to-black animate-pulse aspect-square"
                       height="32"
                       src="/placeholder.svg"
                       onLoad={(ev) => {
@@ -125,8 +122,8 @@ export default function Dashboard() {
               </DropdownMenu>
             </div>
           </header>
-          <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
-            <div className="border shadow-sm rounded-lg p-2">
+          <main className="flex flex-col flex-1 gap-4 p-4 md:gap-8 md:p-6">
+            <div className="p-2 border rounded-lg shadow-sm">
               <Table>
                 <TableHeader>
                   <TableRow>

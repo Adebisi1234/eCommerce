@@ -73,6 +73,7 @@ export default function Home() {
                 ) : (
                   <>
                     <img
+                      loading="lazy"
                       alt="Featured Product"
                       className="object-cover mx-auto overflow-hidden bg-gradient-to-r from-gray-700 via-gray-900 to-black aspect-video animate-pulse rounded-xl sm:w-full lg:order-last lg:aspect-square"
                       height="550"

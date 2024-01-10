@@ -1,4 +1,5 @@
 // import { useUpdateProfile } from "@/hooks/useUser";
+import { useState } from "react";
 import { Button } from "./ui/button";
 import {
   Card,
@@ -27,6 +28,7 @@ import {
 
 export default function Payment({ name }: { name: string }) {
   // const {loading, data, error } = useUpdateProfile()
+  const [value, setValue] = useState("card");
   return (
     <>
       <Dialog>
@@ -51,6 +53,9 @@ export default function Payment({ name }: { name: string }) {
                     value="card"
                     id="card"
                     className="sr-only peer"
+                    onInput={() => {
+                      setValue("card");
+                    }}
                   />
                   <Label
                     htmlFor="card"
@@ -75,12 +80,15 @@ export default function Payment({ name }: { name: string }) {
                 </div>
                 <div>
                   <RadioGroupItem
-                    value="bank-transfer"
-                    id="bank-transfer"
+                    value="transfer"
+                    id="transfer"
                     className="sr-only peer"
+                    onInput={() => {
+                      setValue("transfer");
+                    }}
                   />
                   <Label
-                    htmlFor="bank-transfer"
+                    htmlFor="transfer"
                     className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
                   >
                     <svg
@@ -101,64 +109,85 @@ export default function Payment({ name }: { name: string }) {
                   </Label>
                 </div>
               </RadioGroup>
-              <div className="grid gap-2">
-                <Label htmlFor="name">Name</Label>
-                <Input id="name" placeholder="First Last" />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="number">Card number</Label>
-                <Input id="number" placeholder="" />
-              </div>
-              <div className="grid grid-cols-3 gap-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="month">Expires</Label>
-                  <Select>
-                    <SelectTrigger id="month">
-                      <SelectValue placeholder="Month" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="1">January</SelectItem>
-                      <SelectItem value="2">February</SelectItem>
-                      <SelectItem value="3">March</SelectItem>
-                      <SelectItem value="4">April</SelectItem>
-                      <SelectItem value="5">May</SelectItem>
-                      <SelectItem value="6">June</SelectItem>
-                      <SelectItem value="7">July</SelectItem>
-                      <SelectItem value="8">August</SelectItem>
-                      <SelectItem value="9">September</SelectItem>
-                      <SelectItem value="10">October</SelectItem>
-                      <SelectItem value="11">November</SelectItem>
-                      <SelectItem value="12">December</SelectItem>
-                    </SelectContent>
-                  </Select>
+              {value === "card" ? (
+                <>
+                  <div className="grid gap-2">
+                    <Label htmlFor="name">Name</Label>
+                    <Input id="name" placeholder="First Last" />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="number">Card number</Label>
+                    <Input id="number" placeholder="" />
+                  </div>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="grid gap-2">
+                      <Label htmlFor="month">Expires</Label>
+                      <Select>
+                        <SelectTrigger id="month">
+                          <SelectValue placeholder="Month" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="1">January</SelectItem>
+                          <SelectItem value="2">February</SelectItem>
+                          <SelectItem value="3">March</SelectItem>
+                          <SelectItem value="4">April</SelectItem>
+                          <SelectItem value="5">May</SelectItem>
+                          <SelectItem value="6">June</SelectItem>
+                          <SelectItem value="7">July</SelectItem>
+                          <SelectItem value="8">August</SelectItem>
+                          <SelectItem value="9">September</SelectItem>
+                          <SelectItem value="10">October</SelectItem>
+                          <SelectItem value="11">November</SelectItem>
+                          <SelectItem value="12">December</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="year">Year</Label>
+                      <Select>
+                        <SelectTrigger id="year">
+                          <SelectValue placeholder="Year" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {Array.from({ length: 10 }, (_, i) => (
+                            <SelectItem
+                              key={i}
+                              value={`${new Date().getFullYear() + i}`}
+                            >
+                              {new Date().getFullYear() + i}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="cvc">CVC</Label>
+                      <Input id="cvc" placeholder="CVC" maxLength={3} />
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <div>
+                  <p>
+                    Transfer any amount you wish into the account below then
+                    click continue
+                  </p>
+                  <p>08114779597</p>
+                  <p>Tobiloba Isaiah Adebisi</p>
+                  <p>Opay</p>
                 </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="year">Year</Label>
-                  <Select>
-                    <SelectTrigger id="year">
-                      <SelectValue placeholder="Year" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Array.from({ length: 10 }, (_, i) => (
-                        <SelectItem
-                          key={i}
-                          value={`${new Date().getFullYear() + i}`}
-                        >
-                          {new Date().getFullYear() + i}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="cvc">CVC</Label>
-                  <Input id="cvc" placeholder="CVC" maxLength={3} />
-                </div>
-              </div>
+              )}
             </CardContent>
             <DialogFooter>
               <DialogClose>
-                <Button className="w-full">Continue</Button>
+                <Button
+                  className="w-full"
+                  onClick={() => {
+                    localStorage.setItem("paymentDetails", "set up");
+                  }}
+                >
+                  Continue
+                </Button>
               </DialogClose>
             </DialogFooter>
           </Card>

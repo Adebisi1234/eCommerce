@@ -1,7 +1,3 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/DBRDuLZPoHn
- */
 import {
   CardTitle,
   CardDescription,

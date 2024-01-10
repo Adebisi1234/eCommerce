@@ -13,6 +13,7 @@ type Prop = {
   thumbnail: string;
   itemQty: number;
   cartId: string;
+  itemId: string;
   setCart: React.Dispatch<React.SetStateAction<CartDoc | undefined>>;
   index: number;
 };
@@ -29,6 +30,7 @@ export default function CartItem({
   thumbnail,
   itemQty,
   id,
+  itemId,
   cartId,
   setCart,
   index,
@@ -40,21 +42,29 @@ export default function CartItem({
     if (quantity === itemQty) return;
     setUpdate({
       cartId,
-      itemId: id,
+      itemId,
       itemQty: quantity,
     });
     setCart((prev) => {
-      const temp = prev;
-      temp!.itemIds[index].itemQty = quantity;
-      return temp;
+      const temp = { ...prev };
+      if (typeof temp === "undefined") {
+        return prev;
+      }
+      if (temp?.itemIds![index]) {
+        temp.itemIds[index].itemQty = quantity;
+      }
+      return temp as CartDoc;
     });
   }, [quantity]);
   useEffect(() => {
     if (!deleteItem) return;
     setCart((prev) => {
-      const temp = prev;
-      temp!.itemIds.splice(index, 1);
-      return temp;
+      const temp = { ...prev };
+      if (typeof temp === "undefined") {
+        return prev;
+      }
+      temp.itemIds!.splice(index, 1);
+      return temp as CartDoc;
     });
   }, [deleteItem]);
   useUpdateCartItem(id, update);

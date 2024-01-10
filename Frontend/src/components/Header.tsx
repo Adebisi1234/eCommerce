@@ -56,6 +56,7 @@ export const Header = () => {
                 <Avatar>
                   <AvatarImage>
                     <img
+                      loading="lazy"
                       alt="Avatar"
                       className="object-cover rounded-full bg-gradient-to-r from-gray-700 via-gray-900 to-black dark:from-black dark:via-gray-600 dark:to-gray-300 animate-pulse aspect-square"
                       height="32"

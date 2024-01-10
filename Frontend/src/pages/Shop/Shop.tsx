@@ -3,7 +3,6 @@ import Deals from "@/components/Deals";
 import ProductCard, { ProductSkeleton } from "../../components/ProductCard";
 import { useParams } from "react-router-dom";
 import { useFetchProduct } from "@/hooks/useProduct";
-import { CartIcon } from "@/components/CartIcon";
 
 export const Shop = () => {
   const { category } = useParams();
@@ -79,7 +78,6 @@ export const Shop = () => {
           Error ocurred {error}
         </div>
       )}
-      <CartIcon />
     </>
   );
 };

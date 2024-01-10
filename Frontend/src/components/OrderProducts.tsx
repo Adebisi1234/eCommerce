@@ -1,4 +1,3 @@
-import { useOrder } from "@/hooks/useTransaction";
 import Payment from "./Payment";
 import { Button } from "./ui/button";
 import {
@@ -8,14 +7,22 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
-import { Skeleton } from "./ui/skeleton";
+
+import { useLocation } from "react-router-dom";
+import { CartDoc, OrderDoc, ProductDoc } from "@/types/types";
+import { useState } from "react";
+import { useOrder } from "@/hooks/useTransaction";
 
 // Toast component
 export default function OrderProducts() {
-  const { loading, data, error } = useOrder();
+  const { state }: { state: CartDoc } = useLocation();
+  const [order, setOrder] = useState<OrderDoc | undefined>(undefined);
+  const res = useOrder(order);
+  console.log(res);
+  // Get cart incase there's no states
   return (
     <>
-      {!error || error === "Token expired" ? (
+      {state ? (
         <Card className="max-w-md mx-auto">
           <CardHeader>
             <CardTitle>Orders</CardTitle>
@@ -24,52 +31,60 @@ export default function OrderProducts() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {!loading || data ? (
-              <>
-                <div className="flex items-center justify-between space-y-1">
-                  <div className="flex items-center gap-2">
-                    <img src="" alt="" className="w-10 h-10 aspect-square" />
-                    <p>name</p>
+            <>
+              {state?.itemIds?.map(({ itemId }) => {
+                return (
+                  <div className="flex items-center justify-between space-y-1">
+                    <div className="flex items-center gap-2">
+                      <img
+                        loading="lazy"
+                        src={(itemId as ProductDoc).thumbnail}
+                        alt="product image"
+                        className="w-10 h-10 aspect-square"
+                      />
+                      <p>{(itemId as ProductDoc).name}</p>
+                    </div>
+                    <p>{(itemId as ProductDoc).price}</p>
                   </div>
-                  <p>Price</p>
-                </div>
-                <div className="flex items-center justify-between space-y-1">
-                  <div className="flex items-center gap-2">
-                    <img src="" alt="" className="w-10 h-10 aspect-square" />
-                    <p>name</p>
-                  </div>
-                  <p>Price</p>
-                </div>
-                <div className="flex items-center justify-between space-y-1">
-                  <div className="flex items-center gap-2">
-                    <img src="" alt="" className="w-10 h-10 aspect-square" />
-                    <p>name</p>
-                  </div>
-                  <p>Price</p>
-                </div>
-                <div className="flex items-center justify-between space-y-1">
-                  <div className="flex items-center gap-2">
-                    <img src="" alt="" className="w-10 h-10 aspect-square" />
-                    <p>name</p>
-                  </div>
-                  <p>Price</p>
-                </div>
-              </>
-            ) : (
-              OrderSkeleton
-            )}
+                );
+              })}
+            </>
           </CardContent>
           <CardContent>
-            <p className="flex items-center justify-between">
+            {/* <p className="flex items-center justify-between">
               Total:
               <p>total</p>
-            </p>
+            </p> */}
             {localStorage.getItem("paymentDetails") ? (
               <>
-                <Button className="block w-full my-2">
+                <Button
+                  className="block w-full my-2"
+                  onClick={() => {
+                    setOrder({
+                      amount: 1000,
+                      cartId: state._id!,
+                      userId: localStorage.getItem("id")!,
+                      status: "pending",
+                      productId: state.itemIds[0]._id!,
+                    });
+                  }}
+                >
                   Pay in Installments
                 </Button>
-                <Button className="block w-full my-2">Pay for all once</Button>
+                <Button
+                  className="block w-full my-2"
+                  onClick={() => {
+                    setOrder({
+                      amount: 1000,
+                      cartId: state._id!,
+                      productId: state.itemIds[0]._id!,
+                      userId: localStorage.getItem("id")!,
+                      status: "pending",
+                    });
+                  }}
+                >
+                  Pay once
+                </Button>
               </>
             ) : (
               <Payment name="Setup payment details" />
@@ -77,24 +92,22 @@ export default function OrderProducts() {
           </CardContent>
         </Card>
       ) : (
-        <div className="w-full h-full text-white bg-black">
-          Error Occurred: {error}
-        </div>
+        "Page not accessible directly please ensure you were redirected here"
       )}
     </>
   );
 }
 
-const OrderSkeleton = (
-  <div className="flex items-center justify-between space-y-1">
-    <div className="flex items-center gap-2">
-      <Skeleton className="w-10 h-10 aspect-square" />
-      <p>
-        <Skeleton className="w-16 h-6" />
-      </p>
-    </div>
-    <p>
-      <Skeleton className="w-16 h-6" />
-    </p>
-  </div>
-);
+// const OrderSkeleton = (
+//   <div className="flex items-center justify-between space-y-1">
+//     <div className="flex items-center gap-2">
+//       <Skeleton className="w-10 h-10 aspect-square" />
+//       <p>
+//         <Skeleton className="w-16 h-6" />
+//       </p>
+//     </div>
+//     <p>
+//       <Skeleton className="w-16 h-6" />
+//     </p>
+//   </div>
+// );

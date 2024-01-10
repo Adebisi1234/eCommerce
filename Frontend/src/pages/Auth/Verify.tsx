@@ -1,7 +1,3 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/dHbtbqexTot
- */
 import {
   CardTitle,
   CardDescription,
@@ -76,7 +72,7 @@ export default function Verify() {
           <CardTitle className="text-2xl">Verify OTP</CardTitle>
           <CardDescription>
             Enter the OTP sent to your registered email address below to verify
-            your account.
+            your account. Expires in 3mins
           </CardDescription>
         </CardHeader>
         <form

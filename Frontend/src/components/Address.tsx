@@ -1,7 +1,3 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/fLYhxJd1QXQ
- */
 import { Button } from "@/components/ui/button";
 import {
   DialogTrigger,
@@ -30,7 +26,7 @@ export default function Address() {
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
+          <div className="grid items-center grid-cols-4 gap-4">
             <Label className="text-right" htmlFor="address-line-1">
               Address Line 1
             </Label>
@@ -40,7 +36,7 @@ export default function Address() {
               placeholder="1234 Main St"
             />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
+          <div className="grid items-center grid-cols-4 gap-4">
             <Label className="text-right" htmlFor="address-line-2">
               Address Line 2
             </Label>
@@ -50,7 +46,7 @@ export default function Address() {
               placeholder="Apartment, suite, unit, etc. (optional)"
             />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
+          <div className="grid items-center grid-cols-4 gap-4">
             <Label className="text-right" htmlFor="city">
               City
             </Label>
@@ -60,7 +56,7 @@ export default function Address() {
               placeholder="Enter your city"
             />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
+          <div className="grid items-center grid-cols-4 gap-4">
             <Label className="text-right" htmlFor="post-code">
               Post Code
             </Label>
@@ -70,7 +66,7 @@ export default function Address() {
               placeholder="Enter your post code"
             />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
+          <div className="grid items-center grid-cols-4 gap-4">
             <Label className="text-right" htmlFor="country">
               Country
             </Label>

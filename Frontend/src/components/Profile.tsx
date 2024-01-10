@@ -1,7 +1,3 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/ySSKMasiqlp
- */
 import { CardTitle, CardHeader, CardContent, Card } from "@/components/ui/card";
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
 
@@ -14,7 +10,7 @@ import { Button } from "./ui/button";
 export default function UserProfile() {
   const userId = localStorage.getItem("id");
   const { loading, data, error } = useGetProfile(userId!);
-  const Fallback = <Skeleton className="bg-black w-12 h-5" />;
+  const Fallback = <Skeleton className="w-12 h-5 bg-black" />;
   return (
     <>
       {!error || error === "Token expired" ? (
@@ -25,7 +21,7 @@ export default function UserProfile() {
                 <div className="flex items-center justify-between">
                   <CardTitle>User Details</CardTitle>
                   <Button variant="outline" className="px-0">
-                    <Skeleton className="w-14 h-10 bg-black" />
+                    <Skeleton className="h-10 bg-black w-14" />
                   </Button>
                 </div>
               </CardHeader>
@@ -37,10 +33,10 @@ export default function UserProfile() {
                   </Avatar>
                   <div className="grid gap-0.5">
                     <div className="text-lg font-medium">
-                      <Skeleton className="w-20 h-7 bg-black" />
+                      <Skeleton className="w-20 bg-black h-7" />
                     </div>
                     <div className="text-gray-500 dark:text-gray-400">
-                      <Skeleton className="w-40 h-7 bg-black" />
+                      <Skeleton className="w-40 bg-black h-7" />
                     </div>
                   </div>
                 </div>

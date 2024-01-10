@@ -1,7 +1,3 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/L8XuemfibzA
- */
 import { Button } from "@/components/ui/button";
 import { Res } from "@/hooks/useAxios";
 import { useFetchProduct } from "@/hooks/useProduct";
@@ -27,6 +23,7 @@ export default function Product() {
             <div className="flex flex-col p-6 mx-auto bg-gray-100 rounded-lg shadow-lg md:flex-row dark:bg-gray-900 md:p-12 max-w-7xl">
               <div className="md:w-1/2">
                 <img
+                  loading="lazy"
                   alt="Product Image"
                   className="aspect-[1/1] object-cover border border-gray-200 w-full rounded-lg overflow-hidden dark:border-gray-800 mb-6 md:mb-0"
                   height="500"
@@ -97,7 +94,7 @@ const ProductSkeleton = () => {
         </div>
         <div className="md:w-1/2 md:pl-10">
           <h1 className="mb-4 text-3xl font-bold lg:text-4xl">
-            <Skeleton className="bg-black w-10 h-4" />
+            <Skeleton className="w-10 h-4 bg-black" />
           </h1>
           <div className="flex items-center gap-2 mb-4">
             <StarIcon className="w-5 h-5 fill-primary" />
@@ -107,14 +104,14 @@ const ProductSkeleton = () => {
             <StarIcon className="w-5 h-5 fill-muted stroke-muted-foreground" />
           </div>
           <p className="mb-6">
-            <Skeleton className="bg-black w-20 h-4" />
+            <Skeleton className="w-20 h-4 bg-black" />
           </p>
           <div className="flex items-center justify-between">
             <div className="text-4xl font-bold">
-              <Skeleton className="bg-black w-5 h-4" />
+              <Skeleton className="w-5 h-4 bg-black" />
             </div>
             <div className="text-sm font-bold text-red-500">
-              <Skeleton className="bg-black w-5 h-4" />
+              <Skeleton className="w-5 h-4 bg-black" />
             </div>
           </div>
           <Button size="lg" className="my-2 cursor-not-allowed">

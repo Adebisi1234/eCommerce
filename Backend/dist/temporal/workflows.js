@@ -1,6 +1,7 @@
 import { ApplicationFailure, proxyActivities, sleep, defineSignal, defineQuery, setHandler, } from "@temporalio/workflow";
 export const cancelPurchase = defineSignal("cancelPurchase");
 export const installmentQ = defineQuery("installment");
+export const resetOTP = defineSignal("resetOTP");
 export async function payInInstallments(email, productDetails, installment, sleepTime) {
     const { sendReceipt } = proxyActivities({
         retry: {
@@ -37,7 +38,8 @@ export async function payInInstallments(email, productDetails, installment, slee
         throw new ApplicationFailure(`Failed to send receipt. Error: ${err}`);
     }
 }
-export async function sendOTPEmail(email) {
+export async function sendOTPEmail(user) {
+    let reset = false;
     const { sendOTP } = proxyActivities({
         retry: {
             maximumAttempts: 10,
@@ -45,8 +47,8 @@ export async function sendOTPEmail(email) {
         startToCloseTimeout: "10s",
     });
     try {
-        console.log("Sending otp to", email);
-        return await sendOTP(email);
+        console.log("Sending otp to", user.email);
+        return await sendOTP(user.email);
     }
     catch (err) {
         throw new ApplicationFailure(`Failed to send otp. Error: ${err}`);
