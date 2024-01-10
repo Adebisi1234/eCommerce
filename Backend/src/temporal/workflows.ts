@@ -32,7 +32,7 @@ export async function payInInstallments(
     if (state === "canceled") {
       await sendReceipt(email, productDetails, undefined, true);
     } else if (installment) {
-      while (i < installment) {
+      while (i <= installment) {
         await sendReceipt(email, productDetails, i);
         i++;
         setHandler(installmentQ, () => i);

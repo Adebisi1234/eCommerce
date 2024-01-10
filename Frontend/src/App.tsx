@@ -19,6 +19,7 @@ import { Header } from "./components/Header";
 import Orders from "./components/Orders";
 import OrderProducts from "./components/OrderProducts";
 import { CartIcon } from "./components/CartIcon";
+import { Toaster } from "./components/ui/toaster";
 function App() {
   const router = createBrowserRouter([
     {
@@ -112,6 +113,7 @@ const Layout = () => {
       <Header />
       <Outlet />
       {!pathname.includes("auth") && <CartIcon />}
+      <Toaster />
     </div>
   );
 };

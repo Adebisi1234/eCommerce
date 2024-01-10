@@ -103,7 +103,7 @@ export const orderProduct = async (req: Request, res: Response) => {
     const { workflowId } = await client.workflow.start(payInInstallments, {
       taskQueue: taskQueueName,
       workflowId: `${newOrder._id}`,
-      args: [user.email!, productDetails, 5, "10s"],
+      args: [user.email!, productDetails, details.installments, details.sleep],
     });
     return res.status(200).json({ workflowId, orderId: newOrder._id! });
   } catch (err) {

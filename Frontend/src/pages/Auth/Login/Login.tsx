@@ -26,10 +26,10 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     if (data) {
-      setIsLoading(false);
       navigate("/auth/verify", { state: details?.email, replace: true });
     }
-  }, [data]);
+    setIsLoading(false);
+  }, [data, error]);
   const getMap = () => {
     if (inputRef.current) return inputRef.current;
     inputRef.current = new Map<string, HTMLInputElement>();
@@ -97,7 +97,7 @@ export default function Login() {
               className="flex items-center justify-center w-full"
               onClick={() => setIsLoading((prev) => !prev)}
             >
-              {!isLoading ? (
+              {error || !isLoading ? (
                 "Sign in"
               ) : (
                 <Loader2 className="animate-spin fill-none stroke-white" />

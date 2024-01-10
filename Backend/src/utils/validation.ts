@@ -112,6 +112,8 @@ export const validateOrder = (input: object) => {
     cartId: Joi.string().alphanum().required(),
     status: Joi.string().required(),
     amount: Joi.number().required(),
+    installments: Joi.number(),
+    sleep: Joi.string()
   });
   const result = schema.validate(input);
   if (result.error) {

@@ -12,13 +12,16 @@ import { useLocation } from "react-router-dom";
 import { CartDoc, OrderDoc, ProductDoc } from "@/types/types";
 import { useState } from "react";
 import { useOrder } from "@/hooks/useTransaction";
+import { useToast } from "./ui/use-toast";
 
 // Toast component
 export default function OrderProducts() {
   const { state }: { state: CartDoc } = useLocation();
   const [order, setOrder] = useState<OrderDoc | undefined>(undefined);
+  const [paymentDetails, setPaymentDetails] = useState(false);
   const res = useOrder(order);
   console.log(res);
+  const { toast } = useToast();
   // Get cart incase there's no states
   return (
     <>
@@ -33,6 +36,7 @@ export default function OrderProducts() {
           <CardContent>
             <>
               {state?.itemIds?.map(({ itemId }) => {
+                if (!itemId) return;
                 return (
                   <div className="flex items-center justify-between space-y-1">
                     <div className="flex items-center gap-2">
@@ -55,7 +59,7 @@ export default function OrderProducts() {
               Total:
               <p>total</p>
             </p> */}
-            {localStorage.getItem("paymentDetails") ? (
+            {localStorage.getItem("paymentDetails") || paymentDetails ? (
               <>
                 <Button
                   className="block w-full my-2"
@@ -65,7 +69,13 @@ export default function OrderProducts() {
                       cartId: state._id!,
                       userId: localStorage.getItem("id")!,
                       status: "pending",
-                      productId: state.itemIds[0]._id!,
+                      installments: 5,
+                      sleep: "10m",
+                    });
+                    toast({
+                      title: "Order created",
+                      description:
+                        "You'll receive an email detailing what's next",
                     });
                   }}
                 >
@@ -77,9 +87,13 @@ export default function OrderProducts() {
                     setOrder({
                       amount: 1000,
                       cartId: state._id!,
-                      productId: state.itemIds[0]._id!,
                       userId: localStorage.getItem("id")!,
                       status: "pending",
+                    });
+                    toast({
+                      title: "Order created",
+                      description:
+                        "You'll receive an email detailing what's next",
                     });
                   }}
                 >
@@ -87,7 +101,10 @@ export default function OrderProducts() {
                 </Button>
               </>
             ) : (
-              <Payment name="Setup payment details" />
+              <Payment
+                name="Setup payment details"
+                setPaymentDetails={setPaymentDetails}
+              />
             )}
           </CardContent>
         </Card>

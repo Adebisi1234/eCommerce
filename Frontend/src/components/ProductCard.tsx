@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { CartItemDoc } from "@/types/types";
 import { useAddToCart } from "@/hooks/useUser";
+import { useToast } from "./ui/use-toast";
 
 type ProdType = {
   id: string;
@@ -56,6 +57,7 @@ export default function ProductCard({
   discount,
 }: ProdType) {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [cartItem, setCartItem] = useState<CartItemDoc | undefined>(undefined);
   useAddToCart(cartItem);
   const cartId = localStorage.getItem("cartId");
@@ -100,6 +102,9 @@ export default function ProductCard({
                 cartId: cartId!,
                 itemId: id,
                 itemQty: 1,
+              });
+              toast({
+                title: "Added to cart",
               });
             }}
           >

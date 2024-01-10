@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useDeleteCartItem, useUpdateCartItem } from "@/hooks/useUser";
 import { CartDoc } from "@/types/types";
+import { useToast } from "./ui/use-toast";
 
 type Prop = {
   id: string;
@@ -38,6 +39,7 @@ export default function CartItem({
   const [quantity, setQuantity] = useState(itemQty);
   const [update, setUpdate] = useState<Update>(undefined);
   const [deleteItem, setDeleteItem] = useState(false);
+  const { toast } = useToast();
   useEffect(() => {
     if (quantity === itemQty) return;
     setUpdate({
@@ -113,6 +115,9 @@ export default function CartItem({
       <div
         className="flex items-center gap-2 cursor-pointer"
         onClick={() => {
+          toast({
+            title: "Removed from cart",
+          });
           setDeleteItem(true);
         }}
       >

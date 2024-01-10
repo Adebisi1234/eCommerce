@@ -26,9 +26,16 @@ import {
   SelectValue,
 } from "./ui/select";
 
-export default function Payment({ name }: { name: string }) {
+export default function Payment({
+  name,
+  setPaymentDetails,
+}: {
+  name: string;
+  setPaymentDetails: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   // const {loading, data, error } = useUpdateProfile()
   const [value, setValue] = useState("card");
+  console.log(value);
   return (
     <>
       <Dialog>
@@ -53,11 +60,11 @@ export default function Payment({ name }: { name: string }) {
                     value="card"
                     id="card"
                     className="sr-only peer"
-                    onInput={() => {
-                      setValue("card");
-                    }}
                   />
                   <Label
+                    onClick={() => {
+                      setValue("card");
+                    }}
                     htmlFor="card"
                     className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
                   >
@@ -83,11 +90,11 @@ export default function Payment({ name }: { name: string }) {
                     value="transfer"
                     id="transfer"
                     className="sr-only peer"
-                    onInput={() => {
-                      setValue("transfer");
-                    }}
                   />
                   <Label
+                    onClick={() => {
+                      setValue("transfer");
+                    }}
                     htmlFor="transfer"
                     className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
                   >
@@ -167,12 +174,12 @@ export default function Payment({ name }: { name: string }) {
                   </div>
                 </>
               ) : (
-                <div>
+                <div className="flex justify-center items-center flex-col">
                   <p>
                     Transfer any amount you wish into the account below then
                     click continue
                   </p>
-                  <p>08114779597</p>
+                  <p className="mt-2">8114779597</p>
                   <p>Tobiloba Isaiah Adebisi</p>
                   <p>Opay</p>
                 </div>
@@ -184,6 +191,7 @@ export default function Payment({ name }: { name: string }) {
                   className="w-full"
                   onClick={() => {
                     localStorage.setItem("paymentDetails", "set up");
+                    setPaymentDetails(true);
                   }}
                 >
                   Continue

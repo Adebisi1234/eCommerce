@@ -34,7 +34,8 @@ export type OrderDoc = {
   _id?: string;
   userId: string;
   cartId: string;
-  productId: string;
+  sleep?: string;
+  installments?: number;
   status: string;
   amount: number;
 };
