@@ -58,23 +58,34 @@ export default function Cart() {
           </CardHeader>
           <CardContent className="divide-y">
             {cart && !loading ? (
-              cart?.itemIds.map(({ itemId, _id, itemQty }, i) => {
-                if (!itemId) return;
-                return (
-                  <CartItem
-                    name={(itemId as ProductDoc)?.name}
-                    desc={(itemId as ProductDoc)?.desc}
-                    thumbnail={(itemId as ProductDoc)?.thumbnail}
-                    key={i}
-                    cartId={cart._id!}
-                    itemQty={itemQty}
-                    itemId={(itemId as ProductDoc)?._id!}
-                    id={_id!}
-                    setCart={setCart}
-                    index={i}
+              cart?.itemIds.length === 0 ? (
+                <div className="flex flex-col w-60 justify-center items-center h-60 gap-3">
+                  <img
+                    src="../src/assets/noCart.svg"
+                    alt="Cart not found"
+                    loading="lazy"
                   />
-                );
-              })
+                  <p>No Cart found</p>
+                </div>
+              ) : (
+                cart?.itemIds.map(({ itemId, _id, itemQty }, i) => {
+                  if (!itemId) return;
+                  return (
+                    <CartItem
+                      name={(itemId as ProductDoc)?.name}
+                      desc={(itemId as ProductDoc)?.desc}
+                      thumbnail={(itemId as ProductDoc)?.thumbnail}
+                      key={i}
+                      cartId={cart._id!}
+                      itemQty={itemQty}
+                      itemId={(itemId as ProductDoc)?._id!}
+                      id={_id!}
+                      setCart={setCart}
+                      index={i}
+                    />
+                  );
+                })
+              )
             ) : (
               <Skeleton className="w-full h-5 bg-black" />
             )}

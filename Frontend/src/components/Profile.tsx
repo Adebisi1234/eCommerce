@@ -120,43 +120,43 @@ export default function UserProfile() {
                       {data?.phone ?? Fallback}
                     </div>
                   </div>
-                  {data?.address.addressLine1 && (
+                  {data?.address?.addressLine1 && (
                     <div className="flex justify-between">
                       <div>Address 1:</div>
                       <div className="text-gray-500 dark:text-gray-400">
-                        {data?.address.addressLine1}
+                        {data?.address?.addressLine1}
                       </div>
                     </div>
                   )}
-                  {data?.address.addressLine2 && (
+                  {data?.address?.addressLine2 && (
                     <div className="flex justify-between">
                       <div>Address 2:</div>
                       <div className="text-gray-500 dark:text-gray-400">
-                        {data?.address.addressLine2}
+                        {data?.address?.addressLine2}
                       </div>
                     </div>
                   )}
-                  {data?.address.city && (
+                  {data?.address?.city && (
                     <div className="flex justify-between">
                       <div>City:</div>
                       <div className="text-gray-500 dark:text-gray-400">
-                        {data?.address.city}
+                        {data?.address?.city}
                       </div>
                     </div>
                   )}
-                  {data?.address.postCode && (
+                  {data?.address?.postCode && (
                     <div className="flex justify-between">
                       <div>Post Code:</div>
                       <div className="text-gray-500 dark:text-gray-400">
-                        {data?.address.postCode}
+                        {data?.address?.postCode}
                       </div>
                     </div>
                   )}
-                  {data?.address.country && (
+                  {data?.address?.country && (
                     <div className="flex justify-between">
                       <div>Country:</div>
                       <div className="text-gray-500 dark:text-gray-400">
-                        {data?.address.country}
+                        {data?.address?.country}
                       </div>
                     </div>
                   )}

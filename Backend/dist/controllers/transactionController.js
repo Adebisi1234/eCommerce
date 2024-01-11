@@ -10,7 +10,7 @@ export const getOrders = async (req, res) => {
     const { id, page } = req.params;
     try {
         const orders = await Order.find({ userId: id })
-            .populate("productId")
+            .populate("cartId")
             .skip(page && !isNaN(+page) ? +page : 0)
             .limit(20)
             .sort("asc");
@@ -90,7 +90,7 @@ export const orderProduct = async (req, res) => {
         const { workflowId } = await client.workflow.start(payInInstallments, {
             taskQueue: taskQueueName,
             workflowId: `${newOrder._id}`,
-            args: [user.email, productDetails, 5, "10s"],
+            args: [user.email, productDetails, details.installments, details.sleep],
         });
         return res.status(200).json({ workflowId, orderId: newOrder._id });
     }

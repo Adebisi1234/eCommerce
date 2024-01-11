@@ -1,8 +1,8 @@
 import { OrderDoc, ShippingDoc } from "@/types/types";
 import { type Res, useAxios } from "./useAxios";
 
-export const useGetOrder = (id: string, page: number) => {
-  const response: Res<OrderDoc> = useAxios(
+export const useGetOrder = (id: string, page?: number) => {
+  const response: Res<OrderDoc[]> = useAxios(
     "GET",
     `/transaction/order/${id}/${page}`
   );

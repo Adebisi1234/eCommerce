@@ -13,14 +13,16 @@ import { CartDoc, OrderDoc, ProductDoc } from "@/types/types";
 import { useState } from "react";
 import { useOrder } from "@/hooks/useTransaction";
 import { useToast } from "./ui/use-toast";
+import { useClearCart } from "@/hooks/useUser";
 
 // Toast component
 export default function OrderProducts() {
   const { state }: { state: CartDoc } = useLocation();
   const [order, setOrder] = useState<OrderDoc | undefined>(undefined);
+  const [cartId, setCartId] = useState<string | undefined>(undefined);
   const [paymentDetails, setPaymentDetails] = useState(false);
-  const res = useOrder(order);
-  console.log(res);
+  useOrder(order);
+  useClearCart(cartId);
   const { toast } = useToast();
   // Get cart incase there's no states
   return (
@@ -64,6 +66,7 @@ export default function OrderProducts() {
                 <Button
                   className="block w-full my-2"
                   onClick={() => {
+                    setCartId(state._id!);
                     setOrder({
                       amount: 1000,
                       cartId: state._id!,
@@ -84,6 +87,7 @@ export default function OrderProducts() {
                 <Button
                   className="block w-full my-2"
                   onClick={() => {
+                    setCartId(state._id!);
                     setOrder({
                       amount: 1000,
                       cartId: state._id!,

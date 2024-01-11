@@ -82,7 +82,11 @@ export const useDeleteCartItem = (id?: string) => {
   const response: Res<string> = useAxios("DELETE", `/user/cart/item/${id}`);
   return response;
 };
-export const useClearCart = (id: string) => {
+export const useClearCart = (id?: string) => {
+  if (!id) {
+    const response: Res<string> = useAxios("IGNORE", "/");
+    return response;
+  }
   const response: Res<string> = useAxios("DELETE", `/user/cart/${id}`);
   return response;
 };

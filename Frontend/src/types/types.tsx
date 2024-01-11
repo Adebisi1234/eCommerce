@@ -33,11 +33,12 @@ export type PaymentDoc = {
 export type OrderDoc = {
   _id?: string;
   userId: string;
-  cartId: string;
+  cartId: CartDoc | string;
   sleep?: string;
   installments?: number;
   status: string;
   amount: number;
+  createdAt?: string;
 };
 
 export type UserDoc = {

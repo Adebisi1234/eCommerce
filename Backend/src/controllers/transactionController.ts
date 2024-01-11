@@ -20,7 +20,7 @@ export const getOrders = async (req: Request, res: Response) => {
   const { id, page } = req.params;
   try {
     const orders = await Order.find({ userId: id })
-      .populate("productId")
+      .populate("cartId")
       .skip(page && !isNaN(+page) ? +page : 0)
       .limit(20)
       .sort("asc");

@@ -16,7 +16,7 @@ export async function payInInstallments(email, productDetails, installment, slee
             await sendReceipt(email, productDetails, undefined, true);
         }
         else if (installment) {
-            while (i < installment) {
+            while (i <= installment) {
                 await sendReceipt(email, productDetails, i);
                 i++;
                 setHandler(installmentQ, () => i);
