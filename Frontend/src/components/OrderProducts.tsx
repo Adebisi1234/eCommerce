@@ -89,7 +89,7 @@ export default function OrderProducts() {
                   onClick={() => {
                     setCartId(state._id!);
                     setOrder({
-                      amount: 1000,
+                      amount: state.total!,
                       cartId: state._id!,
                       userId: localStorage.getItem("id")!,
                       status: "pending",

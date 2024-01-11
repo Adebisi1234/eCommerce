@@ -101,7 +101,7 @@ export default function Cart() {
                     cart?.itemIds.length === 0 && "cursor-not-allowed"
                   }`}
                   onClick={() => {
-                    navigate("/order", { state: cart });
+                    navigate("/order", { state: { ...cart, total } });
                   }}
                 >
                   Proceed to Payment

@@ -75,6 +75,7 @@ export type AddressDoc = {
 };
 
 export type CartDoc = {
+  total: number;
   _id?: string;
   userId: UserDoc;
   itemIds: CartItemDoc[];
