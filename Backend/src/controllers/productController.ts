@@ -7,15 +7,21 @@ import {
 } from "../utils/validation.js";
 import { Product } from "../models/Product.js";
 import { Category } from "../models/Category.js";
+import { getOrSetCache } from "../cache/redis.js";
 
 export const getAllProducts = async (req: Request, res: Response) => {
   try {
     const { limit, skip } = req.query;
 
-    const products = await Product.find()
-      .skip(skip && !isNaN(+skip) ? +skip : 0)
-      .limit(limit && !isNaN(+limit) ? +limit : 0);
+    const cb = async () => {
+      return await Product.find()
+        .skip(skip && !isNaN(+skip) ? +skip : 0)
+        .limit(limit && !isNaN(+limit) ? +limit : 0);
+    };
 
+    const products = await (getOrSetCache("allProducts", cb) as ReturnType<
+      typeof cb
+    >);
     if (!products) {
       return res.status(500).json("No product found");
     }
@@ -31,7 +37,8 @@ export const getProduct = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const product = await Product.findById(id);
+    const cb = async () => await Product.findById(id);
+    const product = await (getOrSetCache(id, cb) as ReturnType<typeof cb>);
     if (!product) {
       return res.status(400).json("product not found");
     }
@@ -96,10 +103,13 @@ export const getCategoryProducts = async (req: Request, res: Response) => {
   try {
     const { limit, skip } = req.query;
     const { name } = req.params;
-    console.log(name);
-    const products = await Product.find({ category: name })
-      .skip(skip && !isNaN(+skip) ? +skip : 0)
-      .limit(limit && !isNaN(+limit) ? +limit : 0);
+
+    const cb = async () => {
+      return await Product.find({ category: name })
+        .skip(skip && !isNaN(+skip) ? +skip : 0)
+        .limit(limit && !isNaN(+limit) ? +limit : 0);
+    };
+    const products = await (getOrSetCache(name, cb) as ReturnType<typeof cb>);
     if (!products) {
       return res.status(400).json("products not found");
     }
@@ -114,7 +124,10 @@ export const getCategoryProducts = async (req: Request, res: Response) => {
 };
 export const getAllCategories = async (req: Request, res: Response) => {
   try {
-    const categories = await Category.find();
+    const cb = async () => await Category.find();
+    const categories = await (getOrSetCache("categories", cb) as ReturnType<
+      typeof cb
+    >);
     if (!categories) {
       return res.status(500).json("No Category found");
     }

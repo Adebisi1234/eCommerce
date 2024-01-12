@@ -9,7 +9,8 @@ export const CartIcon = () => {
       className="fixed right-0 z-20 p-3 mx-5 text-white bg-blue-600 rounded-full bottom-3 h-fit w-fit aspect-square hover:bg-blue-500 focus:outline-none focus:bg-blue-500"
       onClick={() => {
         const userId = localStorage.getItem("id");
-        navigate(`/cart/${userId}`);
+        const cartId = localStorage.getItem("cartId");
+        navigate(`/cart/${userId}/${cartId}`);
       }}
     >
       <ShoppingCartIcon className="w-10 h-10" />

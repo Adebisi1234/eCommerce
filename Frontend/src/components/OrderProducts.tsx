@@ -8,9 +8,9 @@ import {
   CardTitle,
 } from "./ui/card";
 
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { CartDoc, OrderDoc, ProductDoc } from "@/types/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useOrder } from "@/hooks/useTransaction";
 import { useToast } from "./ui/use-toast";
 import { useClearCart } from "@/hooks/useUser";
@@ -22,9 +22,17 @@ export default function OrderProducts() {
   const [cartId, setCartId] = useState<string | undefined>(undefined);
   const [paymentDetails, setPaymentDetails] = useState(false);
   useOrder(order);
-  useClearCart(cartId);
+  const { data } = useClearCart(cartId);
   const { toast } = useToast();
-  // Get cart incase there's no states
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (data) {
+      console.log(data);
+      navigate("/shop");
+    }
+  }, [data]);
+
   return (
     <>
       {state ? (
@@ -65,7 +73,8 @@ export default function OrderProducts() {
               <>
                 <Button
                   className="block w-full my-2"
-                  onClick={() => {
+                  onClick={(ev) => {
+                    ev.currentTarget.classList.add("cursor-not-allowed");
                     setCartId(state._id!);
                     setOrder({
                       amount: 1000,
@@ -86,7 +95,8 @@ export default function OrderProducts() {
                 </Button>
                 <Button
                   className="block w-full my-2"
-                  onClick={() => {
+                  onClick={(ev) => {
+                    ev.currentTarget.classList.add("cursor-not-allowed");
                     setCartId(state._id!);
                     setOrder({
                       amount: state.total!,

@@ -16,9 +16,9 @@ import { Skeleton } from "./ui/skeleton";
 import { useEffect, useState } from "react";
 
 export default function Cart() {
-  const { id } = useParams();
+  const { id, cartId } = useParams();
   const navigate = useNavigate();
-  const { loading, data, error } = useGetCart(id!);
+  const { loading, data, error } = useGetCart(`${id}/${cartId}`);
   const [cart, setCart] = useState<CartDoc | undefined>(undefined);
 
   const total =
@@ -41,6 +41,7 @@ export default function Cart() {
   useEffect(() => {
     if (data) {
       setCart(data);
+      localStorage.setItem("cartId", data._id!);
     }
   }, [data]);
 
@@ -59,17 +60,17 @@ export default function Cart() {
           <CardContent className="divide-y">
             {cart && !loading ? (
               cart?.itemIds.length === 0 ? (
-                <div className="flex flex-col w-60 justify-center items-center h-60 gap-3">
+                <div className="flex flex-col items-center justify-center gap-3 mx-auto w-60 h-60">
                   <img
-                    src="../src/assets/noCart.svg"
+                    src="../../src/assets/noCart.svg"
                     alt="Cart not found"
                     loading="lazy"
                   />
                   <p>No Cart found</p>
                 </div>
               ) : (
-                cart?.itemIds.map(({ itemId, _id, itemQty }, i) => {
-                  if (!itemId) return;
+                cart?.itemIds?.map(({ itemId, _id, itemQty }, i) => {
+                  if (!itemId || typeof itemId !== "object") return;
                   return (
                     <CartItem
                       name={(itemId as ProductDoc)?.name}

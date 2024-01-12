@@ -6,14 +6,18 @@ import { Shipping } from "../models/Shipping.js";
 import { Connection, Client } from "@temporalio/client";
 import { cancelPurchase, installmentQ, payInInstallments, } from "../temporal/workflows.js";
 import { taskQueueName } from "../temporal/shared.js";
+import { getOrSetCache } from "../cache/redis.js";
 export const getOrders = async (req, res) => {
     const { id, page } = req.params;
     try {
-        const orders = await Order.find({ userId: id })
-            .populate("cartId")
-            .skip(page && !isNaN(+page) ? +page : 0)
-            .limit(20)
-            .sort("asc");
+        const cb = async () => {
+            return await Order.find({ userId: id })
+                .populate("cartId")
+                .skip(page && !isNaN(+page) ? +page : 0)
+                .limit(20)
+                .sort("asc");
+        };
+        const orders = await getOrSetCache(id, cb);
         if (!orders) {
             res.json([]);
         }
@@ -124,10 +128,13 @@ export const cancelOrder = async (req, res) => {
 export const getShippings = async (req, res) => {
     try {
         const { page } = req.params;
-        const shippings = await Shipping.find()
-            .skip(page && !isNaN(+page) ? +page : 0)
-            .limit(20)
-            .sort("asc");
+        const cb = async () => {
+            return await Shipping.find()
+                .skip(page && !isNaN(+page) ? +page : 0)
+                .limit(20)
+                .sort("asc");
+        };
+        const shippings = await getOrSetCache("shippings", cb);
         if (!shippings) {
             return res.json([]);
         }

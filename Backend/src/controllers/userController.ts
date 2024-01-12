@@ -22,6 +22,7 @@ import { sendOTP } from "../temporal/nodemailer.js";
 import { Client, Connection } from "@temporalio/client";
 import { taskQueueName } from "../temporal/shared.js";
 import { sendOTPEmail } from "../temporal/workflows.js";
+import { getOrSetCache, invalidateCache } from "../cache/redis.js";
 
 export const signup = async (req: Request, res: Response) => {
   try {
@@ -199,7 +200,9 @@ export const getProfile = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const user = await User.findById(id).populate(["cart", "order", "address"]);
+    const cb = async () =>
+      await User.findById(id).populate(["cart", "order", "address"]);
+    const user = await (getOrSetCache(id, cb) as ReturnType<typeof cb>);
 
     if (!user) {
       return res.status(400).json("User not found");
@@ -247,22 +250,26 @@ export const updateProfile = async (req: Request, res: Response) => {
 
 export const getCart = async (req: Request, res: Response) => {
   try {
-    const { userId } = req.params;
-    if (!userId) {
+    const { userId, cartId } = req.params;
+    if (!userId && !cartId) {
       return res.sendStatus(400);
     }
-    const cart =
-      (await Cart.findOne({ userId })) ??
-      (await new Cart({
-        userId,
-      }).save());
-    await User.findOneAndUpdate({ _id: userId }, { cart: cart._id });
-    await cart.populate({
-      path: "itemIds",
-      model: "CartItem",
-      populate: { path: "itemId", model: "Product" },
-    });
+    const cb = async () => {
+      return (
+        (await Cart.findById(cartId)?.populate({
+          path: "itemIds",
+          model: "CartItem",
+          populate: { path: "itemId", model: "Product" },
+        })) ??
+        (await new Cart({
+          userId,
+        }).save())
+      );
+    };
 
+    const cart = await (getOrSetCache(cartId, cb) as ReturnType<typeof cb>);
+
+    await User.findOneAndUpdate({ _id: userId }, { cart: cart._id });
     return res.json(cart);
   } catch (err) {
     if (err instanceof Error) {
@@ -286,8 +293,13 @@ export const addToCart = async (req: Request, res: Response) => {
     if (!cartItem) {
       return res.sendStatus(400);
     }
-
-    const cart = await Cart.findById(cartItem.cartId).populate("itemIds");
+    await invalidateCache(cartItem.cartId!.toString());
+    const cb = async () =>
+      await Cart.findById(cartItem.cartId).populate("itemIds");
+    const cart = await (getOrSetCache(
+      body.cartId!.toString(),
+      cb
+    ) as ReturnType<typeof cb>);
 
     if (!cart) {
       return res.status(400).json("Cart not found");
@@ -411,6 +423,8 @@ export const clearCart = async (req: Request, res: Response) => {
     });
     cart.itemIds = [];
     await cart.save();
+    await invalidateCache(cart._id!.toString());
+    await getOrSetCache(id, () => cart);
     return res.json("Cart cleared");
   } catch (err) {
     if (err instanceof Error) {
