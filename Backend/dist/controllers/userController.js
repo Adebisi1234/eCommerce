@@ -13,7 +13,6 @@ import { sendOTP } from "../temporal/nodemailer.js";
 import { Client, Connection } from "@temporalio/client";
 import { taskQueueName } from "../temporal/shared.js";
 import { sendOTPEmail } from "../temporal/workflows.js";
-import { getOrSetCache, invalidateCache } from "../cache/redis.js";
 export const signup = async (req, res) => {
     try {
         const body = validateAuth(req.body);
@@ -186,8 +185,7 @@ export const refreshOTP = async (req, res) => {
 export const getProfile = async (req, res) => {
     try {
         const { id } = req.params;
-        const cb = async () => await User.findById(id).populate(["cart", "order", "address"]);
-        const user = await getOrSetCache(id, cb);
+        const user = await User.findById(id).populate(["cart", "order", "address"]);
         if (!user) {
             return res.status(400).json("User not found");
         }
@@ -235,17 +233,14 @@ export const getCart = async (req, res) => {
         if (!userId && !cartId) {
             return res.sendStatus(400);
         }
-        const cb = async () => {
-            return ((await Cart.findById(cartId)?.populate({
-                path: "itemIds",
-                model: "CartItem",
-                populate: { path: "itemId", model: "Product" },
-            })) ??
-                (await new Cart({
-                    userId,
-                }).save()));
-        };
-        const cart = await getOrSetCache(cartId, cb);
+        const cart = (await Cart.findById(cartId)?.populate({
+            path: "itemIds",
+            model: "CartItem",
+            populate: { path: "itemId", model: "Product" },
+        })) ??
+            (await new Cart({
+                userId,
+            }).save());
         await User.findOneAndUpdate({ _id: userId }, { cart: cart._id });
         return res.json(cart);
     }
@@ -268,9 +263,7 @@ export const addToCart = async (req, res) => {
         if (!cartItem) {
             return res.sendStatus(400);
         }
-        await invalidateCache(cartItem.cartId.toString());
-        const cb = async () => await Cart.findById(cartItem.cartId).populate("itemIds");
-        const cart = await getOrSetCache(body.cartId.toString(), cb);
+        const cart = await Cart.findById(cartItem.cartId).populate("itemIds");
         if (!cart) {
             return res.status(400).json("Cart not found");
         }
@@ -392,7 +385,6 @@ export const clearCart = async (req, res) => {
         });
         cart.itemIds = [];
         await cart.save();
-        await getOrSetCache(id, () => cart);
         return res.json("Cart cleared");
     }
     catch (err) {
