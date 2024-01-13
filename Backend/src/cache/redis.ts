@@ -1,5 +1,11 @@
 import { createClient } from "redis";
-const client = await createClient()
+const client = await createClient(
+  process.env.NODE_ENV !== "development"
+    ? {
+        url: "redis://red-cmh3o6un7f5s739ojal0:6379",
+      }
+    : undefined
+)
   .on("error", (err) => console.log("Redis Client Error", err))
   .connect();
 

@@ -13,7 +13,7 @@ WORKDIR /backend
 
 COPY package.json .
 
-RUN apt-get redis
+RUN apt-get install redis
 RUN redis-server
 
 
