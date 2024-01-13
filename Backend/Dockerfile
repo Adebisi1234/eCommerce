@@ -12,7 +12,6 @@ WORKDIR /backend
 
 
 COPY package.json .
-RUN add-apt-repository universe
 RUN apt-get update
 RUN apt-get install redis
 RUN redis-server
