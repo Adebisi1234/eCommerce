@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./dist/server.js",
     "dev": "nodemon ./dist/server.js",
-    "dev:temporal": "npx npm-run-all -l build  --parallel start:temporal dev start:worker",
+    "dev:temporal": "npx npm-run-all -l build  --parallel redis start:temporal dev start:worker",
+    "redis": "redis-server"
     "build": "tsc --build",
     "start:worker": "node ./dist/temporal/worker",
     "start:temporal": "temporal server start-dev "
