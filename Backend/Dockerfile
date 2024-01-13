@@ -13,7 +13,7 @@ WORKDIR /backend
 
 COPY package.json .
 
-RUN sudo apt-get redis
+RUN apt-get redis
 RUN redis-server
 
 
@@ -25,5 +25,6 @@ COPY . .
 EXPOSE 7233
 EXPOSE 8233
 EXPOSE 6001
+EXPOSE 6379
 
 CMD [ "npm", "run", "dev:temporal" ]
