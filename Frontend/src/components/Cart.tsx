@@ -14,7 +14,7 @@ import CartItem from "./CartItem";
 import { CartDoc, ProductDoc } from "@/types/types";
 import { Skeleton } from "./ui/skeleton";
 import { useEffect, useState } from "react";
-
+import noCart from "../assets/noCart.svg";
 export default function Cart() {
   const { id, cartId } = useParams();
   const navigate = useNavigate();
@@ -61,11 +61,7 @@ export default function Cart() {
             {cart && !loading ? (
               cart?.itemIds.length === 0 ? (
                 <div className="flex flex-col items-center justify-center gap-3 mx-auto w-60 h-60">
-                  <img
-                    src="../../src/assets/noCart.svg"
-                    alt="Cart not found"
-                    loading="lazy"
-                  />
+                  <img src={noCart} alt="Cart not found" loading="lazy" />
                   <p>No Cart found</p>
                 </div>
               ) : (

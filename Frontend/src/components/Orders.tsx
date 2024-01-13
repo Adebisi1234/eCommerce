@@ -10,6 +10,7 @@ import {
 import { Badge } from "./ui/badge";
 import { useGetOrder } from "@/hooks/useTransaction";
 import { Skeleton } from "./ui/skeleton";
+import noOrder from "../assets/noOrder.svg";
 export default function Orders() {
   const id = localStorage.getItem("id");
   const { loading, data, error } = useGetOrder(id!);
@@ -23,11 +24,7 @@ export default function Orders() {
           <CardContent>
             {!data || data.length === 0 ? (
               <div className="flex flex-col justify-center items-center w-60 h-60 gap-3">
-                <img
-                  src="./assets/noOrder.svg"
-                  alt="Order not found"
-                  loading="lazy"
-                />
+                <img src={noOrder} alt="Order not found" loading="lazy" />
                 <p>No Order found</p>
               </div>
             ) : (
