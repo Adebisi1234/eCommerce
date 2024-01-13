@@ -19,10 +19,12 @@ export const getAllProducts = async (req: Request, res: Response) => {
         .limit(limit && !isNaN(+limit) ? +limit : 0);
     };
 
-    const products = await (getOrSetCache(
-      `allProducts/limit=${limit}`,
-      cb
-    ) as ReturnType<typeof cb>);
+    const products =
+      limit && !isNaN(+limit)
+        ? await (getOrSetCache(`home/limit=${limit}`, cb) as ReturnType<
+            typeof cb
+          >)
+        : await (getOrSetCache(`getAllProducts`, cb) as ReturnType<typeof cb>);
     if (!products) {
       return res.status(500).json("No product found");
     }
