@@ -7,7 +7,6 @@ import {
 } from "../utils/validation.js";
 import { Product } from "../models/Product.js";
 import { Category } from "../models/Category.js";
-import { getOrSetCache } from "../cache/redis.js";
 
 export const getAllProducts = async (req: Request, res: Response) => {
   try {
@@ -32,8 +31,8 @@ export const getProduct = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const cb = async () => await Product.findById(id);
-    const product = await (getOrSetCache(id, cb) as ReturnType<typeof cb>);
+    const product = await Product.findById(id);
+
     if (!product) {
       return res.status(400).json("product not found");
     }
@@ -99,12 +98,9 @@ export const getCategoryProducts = async (req: Request, res: Response) => {
     const { limit, skip } = req.query;
     const { name } = req.params;
 
-    const cb = async () => {
-      return await Product.find({ category: name })
-        .skip(skip && !isNaN(+skip) ? +skip : 0)
-        .limit(limit && !isNaN(+limit) ? +limit : 0);
-    };
-    const products = await (getOrSetCache(name, cb) as ReturnType<typeof cb>);
+    const products = await Product.find({ category: name })
+      .skip(skip && !isNaN(+skip) ? +skip : 0)
+      .limit(limit && !isNaN(+limit) ? +limit : 0);
     if (!products) {
       return res.status(400).json("products not found");
     }
@@ -119,10 +115,8 @@ export const getCategoryProducts = async (req: Request, res: Response) => {
 };
 export const getAllCategories = async (req: Request, res: Response) => {
   try {
-    const cb = async () => await Category.find();
-    const categories = await (getOrSetCache("categories", cb) as ReturnType<
-      typeof cb
-    >);
+    const categories = await Category.find();
+
     if (!categories) {
       return res.status(500).json("No Category found");
     }

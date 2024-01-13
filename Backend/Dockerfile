@@ -12,9 +12,6 @@ WORKDIR /backend
 
 
 COPY package.json .
-RUN apt-get update
-RUN apt-get -y install redis
-
 
 RUN npm i
 
@@ -24,6 +21,5 @@ COPY . .
 EXPOSE 7233
 EXPOSE 8233
 EXPOSE 6001
-EXPOSE 6379
 
 CMD [ "npm", "run", "dev:temporal" ]

@@ -22,7 +22,6 @@ import { sendOTP } from "../temporal/nodemailer.js";
 import { Client, Connection } from "@temporalio/client";
 import { taskQueueName } from "../temporal/shared.js";
 import { sendOTPEmail } from "../temporal/workflows.js";
-import { getOrSetCache, invalidateCache } from "../cache/redis.js";
 
 export const signup = async (req: Request, res: Response) => {
   try {
@@ -200,9 +199,7 @@ export const getProfile = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const cb = async () =>
-      await User.findById(id).populate(["cart", "order", "address"]);
-    const user = await (getOrSetCache(id, cb) as ReturnType<typeof cb>);
+    const user = await User.findById(id).populate(["cart", "order", "address"]);
 
     if (!user) {
       return res.status(400).json("User not found");
