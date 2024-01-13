@@ -13,18 +13,10 @@ export const getAllProducts = async (req: Request, res: Response) => {
   try {
     const { limit, skip } = req.query;
 
-    const cb = async () => {
-      return await Product.find()
-        .skip(skip && !isNaN(+skip) ? +skip : 0)
-        .limit(limit && !isNaN(+limit) ? +limit : 0);
-    };
+    const products = await Product.find()
+      .skip(skip && !isNaN(+skip) ? +skip : 0)
+      .limit(limit && !isNaN(+limit) ? +limit : 0);
 
-    const products =
-      limit && !isNaN(+limit)
-        ? await (getOrSetCache(`home/limit=${limit}`, cb) as ReturnType<
-            typeof cb
-          >)
-        : await (getOrSetCache(`getAllProducts`, cb) as ReturnType<typeof cb>);
     if (!products) {
       return res.status(500).json("No product found");
     }

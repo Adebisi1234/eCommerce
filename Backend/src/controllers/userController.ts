@@ -254,21 +254,15 @@ export const getCart = async (req: Request, res: Response) => {
     if (!userId && !cartId) {
       return res.sendStatus(400);
     }
-    const cb = async () => {
-      return (
-        (await Cart.findById(cartId)?.populate({
-          path: "itemIds",
-          model: "CartItem",
-          populate: { path: "itemId", model: "Product" },
-        })) ??
-        (await new Cart({
-          userId,
-        }).save())
-      );
-    };
-
-    const cart = await (getOrSetCache(cartId, cb) as ReturnType<typeof cb>);
-
+    const cart =
+      (await Cart.findById(cartId)?.populate({
+        path: "itemIds",
+        model: "CartItem",
+        populate: { path: "itemId", model: "Product" },
+      })) ??
+      (await new Cart({
+        userId,
+      }).save());
     await User.findOneAndUpdate({ _id: userId }, { cart: cart._id });
     return res.json(cart);
   } catch (err) {
@@ -293,13 +287,7 @@ export const addToCart = async (req: Request, res: Response) => {
     if (!cartItem) {
       return res.sendStatus(400);
     }
-    await invalidateCache(`${cartItem.cartId}`);
-    const cb = async () =>
-      await Cart.findById(cartItem.cartId).populate("itemIds");
-    const cart = await (getOrSetCache(
-      body.cartId!.toString(),
-      cb
-    ) as ReturnType<typeof cb>);
+    const cart = await Cart.findById(cartItem.cartId).populate("itemIds");
 
     if (!cart) {
       return res.status(400).json("Cart not found");
@@ -423,8 +411,6 @@ export const clearCart = async (req: Request, res: Response) => {
     });
     cart.itemIds = [];
     await cart.save();
-    await invalidateCache(cart._id!.toString());
-    await getOrSetCache(id, () => cart);
     return res.json("Cart cleared");
   } catch (err) {
     if (err instanceof Error) {
