@@ -20,7 +20,7 @@ export const getAllProducts = async (req: Request, res: Response) => {
     };
 
     const products = await (getOrSetCache(
-      `allProducts${limit}`,
+      `allProducts/limit=${limit}`,
       cb
     ) as ReturnType<typeof cb>);
     if (!products) {

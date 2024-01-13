@@ -293,7 +293,7 @@ export const addToCart = async (req: Request, res: Response) => {
     if (!cartItem) {
       return res.sendStatus(400);
     }
-    await invalidateCache(cartItem.cartId!.toString());
+    await invalidateCache(`${cartItem.cartId}`);
     const cb = async () =>
       await Cart.findById(cartItem.cartId).populate("itemIds");
     const cart = await (getOrSetCache(
