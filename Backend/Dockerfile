@@ -10,7 +10,12 @@ COPY --from=builder /home/curl_user/.temporalio/bin/temporal /bin/temporal
 
 WORKDIR /backend
 
+
 COPY package.json .
+
+RUN sudo apt-get redis
+RUN redis-server
+
 
 RUN npm i
 
