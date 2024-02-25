@@ -1,33 +1,31 @@
 from application.models.db import *
-from application.models.User import User
-class Product(Document):
+from application.models.Users import Users
+class Products(DynamicDocument):
+    _id= ObjectIdField(primary_key=True)
     name = StringField()
     desc = StringField()
     category= StringField()
-    rating = FloatField()
     thumbnail = StringField()
     images= ListField(StringField())
     price = IntField()
     discount = FloatField()
     brand = StringField()
     availability = BooleanField(default=True)
-    sellerId = ReferenceField(User, reverse_delete_rule=CASCADE)
     stockUnit= IntField()
+    
 
     
     def to_json(self):
         return {
+            "_id": str(self._id),
             "name": self.name,
             "desc": self.desc,
             "category": self.category,
-            "rating": self.rating,
             "thumbnail": self.thumbnail,
             "images": self.images,
             "price": self.price,
             "discount": self.discount,
             "brand": self.brand,
             "availability": self.availability,
-            "sellerId": self.sellerId,
-            "dealId": self.dealId,
             "stockUnit": self.stockUnit,
         }

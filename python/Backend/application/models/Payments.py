@@ -2,17 +2,15 @@ from datetime import datetime
 from application.models.db import *
 
 
-class Order(EmbeddedDocument):
+class Payments(DynamicDocument):
     userId= ObjectIdField()
-    cartId=ObjectIdField()
-    status=StringField()
-    amount=IntField(required=True)
+    bankAccount= IntField(required=True)
+    payment=StringField(required=True)
     timestamps = DateTimeField(default=datetime.utcnow())
     def to_json(self):
         return {
             "userId": self.userId,
-            "cartId": self.cartId,
-            "status": self.status,
-            "amount": self.amount,
+            "bankAccount": self.bankAccount,
+            "payment": self.payment,
             "timestamps": self.timestamps,
         }

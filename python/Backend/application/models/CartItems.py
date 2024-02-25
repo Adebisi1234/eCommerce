@@ -3,7 +3,7 @@ from application.models.db import *
 
 
 
-class CartItem(Document):
+class CartItems(DynamicDocument):
     timestamps = DateTimeField(default=datetime.utcnow())
     cartId=ObjectIdField()
     itemId= ListField(ObjectIdField())

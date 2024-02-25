@@ -1,9 +1,9 @@
 from application.models.db import * 
-from application.models.Order import Order
-from application.models.User import User
-class Transaction(Document):
-    orderId= ReferenceField(Order)
-    userId= ReferenceField(User, reverse_delete_rule=CASCADE)
+from application.models.Orders import Orders
+from application.models.Users import Users
+class Transactions(DynamicDocument):
+    orderId= ReferenceField(Orders)
+    userId= ReferenceField(Users, reverse_delete_rule=CASCADE)
     paymentMethod=StringField()
     status=StringField()
     paymentLog=StringField()

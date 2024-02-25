@@ -1,20 +1,23 @@
-from flask import Flask, request, jsonify
+from flask import Flask
 
-import os
-from application.controllers.user_bp import user_bp
-from application.controllers.product_bp import product_bp
-from application.controllers.transaction_bp import transaction_bp
-from dotenv import load_dotenv
-load_dotenv()
+from application.models.db import init_db
 
-DATABASE_URI = os.getenv('DATABASE_URI')
-# from flask_mail import Mail
-app = Flask(__name__) 
-# register the database commands
+def create_app():
+    app = Flask(__name__)
 
-app.register_blueprint(user_bp)
-app.register_blueprint(transaction_bp)
-app.register_blueprint(product_bp)
+    with app.app_context():
+        init_db()
+        from application.controllers.user_bp import user_bp
+        from application.controllers.product_bp import product_bp
+        from application.controllers.transaction_bp import transaction_bp
+
+        app.register_blueprint(user_bp)
+        app.register_blueprint(transaction_bp)
+        app.register_blueprint(product_bp)
+        
+
+    return app
+
 
 # mailer = Mail(app)
 
@@ -22,7 +25,7 @@ app.register_blueprint(product_bp)
 # def query_records():
 #     request.get_json()
 #     name = request.args.get('name')
-#     user = User.objects(name=name).first()
+#     user = Users.objects(name=name).first()
 #     if not user:
 #         return jsonify({'error': 'data not found'})
 #     else:
@@ -31,7 +34,7 @@ app.register_blueprint(product_bp)
 # @app.route('/', methods=['PUT'])
 # def create_record():
 #     record = json.loads(request.data)
-#     user = User(name=record['name'],
+#     user = Users(name=record['name'],
 #                 email=record['email'])
 #     user.save()
 #     return jsonify(user.to_json())
@@ -39,7 +42,7 @@ app.register_blueprint(product_bp)
 # @app.route('/', methods=['POST'])
 # def update_record():
 #     record = json.loads(request.data)
-#     user = User.objects(name=record['name']).first()
+#     user = Users.objects(name=record['name']).first()
 #     if not user:
 #         return jsonify({'error': 'data not found'})
 #     else:
@@ -49,7 +52,7 @@ app.register_blueprint(product_bp)
 # @app.route('/', methods=['DELETE'])
 # def delete_record():
 #     record = json.loads(request.data)
-#     user = User.objects(name=record['name']).first()
+#     user = Users.objects(name=record['name']).first()
 #     if not user:
 #         return jsonify({'error': 'data not found'})
 #     else:

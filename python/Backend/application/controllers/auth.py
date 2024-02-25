@@ -57,7 +57,7 @@
 #         error = None
 
 #         if not username:
-#             error = "Username is required."
+#             error = "Usersname is required."
 #         elif not password:
 #             error = "Password is required."
 
@@ -71,7 +71,7 @@
 #             except db.IntegrityError:
 #                 # The username was already taken, which caused the
 #                 # commit to fail. Show a validation error.
-#                 error = f"User {username} is already registered."
+#                 error = f"Users {username} is already registered."
 #             else:
 #                 # Success, go to the login page.
 #                 return redirect(url_for("auth.login"))

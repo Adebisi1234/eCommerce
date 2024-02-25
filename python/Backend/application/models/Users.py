@@ -1,12 +1,12 @@
 from application.models.db import *
 
-from application.models.Address import Address
-from application.models.Cart import Cart
-from application.models.Payment import Payment
-from application.models.Order import Order
+from application.models.Addresses import Addresses
+from application.models.Carts import Carts
+from application.models.Payments import Payments
+from application.models.Orders import Orders
 
-class UserOrder(EmbeddedDocument):
-    products= EmbeddedDocumentListField(Order)
+class UsersOrder(EmbeddedDocument):
+    products= ListField(ReferenceField(Orders))
     def to_json(self):
         return {
             "products": self.products
@@ -14,20 +14,21 @@ class UserOrder(EmbeddedDocument):
     
 
 
-class User(Document):
+class Users(DynamicDocument):
+    _id= ObjectIdField(primary_key=True)
     phone = IntField(required=True, unique=True)
     email= EmailField()
     profilePic=StringField()
     password=StringField(required=True)
     userType=StringField(default="Buyer", required=True)
     name= StringField()
-    address=ReferenceField(Address, reverse_delete_rule=CASCADE)
-    cart=ReferenceField(Cart, reverse_delete_rule=CASCADE)
-    payment= ReferenceField(Payment, reverse_delete_rule=CASCADE)
+    address=ReferenceField(Addresses, reverse_delete_rule=CASCADE)
+    cart=ReferenceField(Carts, reverse_delete_rule=CASCADE)
+    payment= ReferenceField(Payments, reverse_delete_rule=CASCADE)
     verified=BooleanField(default=False)
     refreshToken=StringField(select=False)
     otp=IntField()
-    order=EmbeddedDocumentField(UserOrder)
+    order=ListField(ObjectIdField())
 
 
     def to_json(self):
@@ -35,15 +36,15 @@ class User(Document):
             "name": self.name,
             "email": self.email,
             "profilePic": self.profilePic,
-            "password": self.password,
             "userType": self.userType,
             "name": self.name,
             "address": self.address,
-            "cart": self.cart,
+            "cart": self.cart.to_json(),
             "payment": self.payment,
             "verified": self.verified,
             "otp": self.otp,
             "phone": self.phone,
-            "order": self.order
+            "order": [str(x) for x in self.order],
+            "_id": str(self._id)
             }
 

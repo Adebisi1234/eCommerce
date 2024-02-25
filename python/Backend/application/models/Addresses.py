@@ -1,7 +1,7 @@
 from datetime import datetime
 from application.models.db import *
 
-class Address(Document):
+class Addresses(DynamicDocument):
     userId= ObjectIdField()
     addressLine1= StringField(required=True)
     addressLine1= StringField()

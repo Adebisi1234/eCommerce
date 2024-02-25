@@ -1,21 +1,21 @@
-from flask import Blueprint, abort, request, jsonify, make_response
+from flask import Blueprint, abort, request, jsonify, current_app as app
 import json
-from application.models.Cart import Cart
-from application.models.User import User
-from werkzeug.security import check_password_hash
-from werkzeug.security import generate_password_hash
-from application.models.Address import Address
+from application.models.Carts import Carts
+from application.models.Users import Users
+from application.models.Addresses import Addresses
+from flask_bcrypt import Bcrypt
+bcrypt = Bcrypt(app)
 
-user_bp = Blueprint("/user", __name__)
+user_bp = Blueprint("/user", __name__, url_prefix="/user")
 @user_bp.post("/register")
 def signup():
     record = json.loads(request.data)
-    user_exist = User.objects(email=record["email"]).first()
+    user_exist = Users.objects(email=record["email"]).first()
     if user_exist:
-        return jsonify({"error": "User exist"})
-    hashedPassword = generate_password_hash(record["password"])
-    newUser = User(phone=record["phone"], name=record["name"], email=record["email"], address=record["address"], password=hashedPassword)
-    newUser.save()
+        return jsonify({"error": "Users exist"})
+    hashedPassword = bcrypt.generate_password_hash(record["password"])
+    newUsers = Users(phone=record["phone"], name=record["name"], email=record["email"], password=hashedPassword)
+    newUsers.save()
     return jsonify({"success": "Working on OTP"})
 
 
@@ -24,13 +24,39 @@ def login():
     record = json.loads(request.data)
     if not record["email"] and not record["password"]:
         return jsonify({"error": "Email and password required"})
-    user = User.objects(email=record["email"]).first()
+    user = Users.objects(email=record["email"]).first()
     if not user:
         return jsonify({"error": "user not found"})
-    comparePassword = check_password_hash(user.password, record["password"])
+    comparePassword = bcrypt.check_password_hash(user.password, record["password"])
     if not comparePassword:
-        return json({"error": "Wrong credentials"})
+        return jsonify({"error": "Wrong credentials"})
+    # Implement jwt
     
+    # import jwt
+    # from datetime import datetime, timedelta
+
+    # # Generate JWT token
+    # def generate_token(user_id):
+    #     payload = {
+    #         'user_id': user_id,
+    #         'exp': datetime.utcnow() + timedelta(days=1)
+    #     }
+    #     token = jwt.encode(payload, app.config['SECRET_KEY'], algorithm='HS256')
+    #     return token
+
+    # # Verify JWT token
+    # def verify_token(token):
+    #     try:
+    #         payload = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
+    #         return payload['user_id']
+    #     except jwt.ExpiredSignatureError:
+    #         return None
+    #     except jwt.InvalidTokenError:
+    #         return None
+
+    # # Use JWT in login route
+    # token = generate_token(str(user.id))
+    # return jsonify({"success": user.to_json(), "token": token})
     return jsonify({"success": user.to_json()})
     
 
@@ -38,10 +64,10 @@ def login():
 @user_bp.post("/verify")
 def verify():
     record = json.loads(request.data)
-    user = User.objects(email=record["email"]).first()
-    User.obj
+    user = Users.objects(email=record["email"]).first()
+    Users.obj
     if not user:
-        return jsonify({"error": "User not found"})
+        return jsonify({"error": "Users not found"})
     # Implement otp
     resp =  jsonify({"user": user.to_json()})
     resp.set_cookie("accessToken","asldfalkfdjlasdfka",httponly=True)
@@ -72,8 +98,8 @@ def createProfile():
     postCode = record["postCode"]
     country = record["country"]
     userId = record["userId"]
-    newAddress = Address(addressLine1=addressLine1, addressLine2=addressLine2, city=city, postCode=postCode, country=country, userId=userId)
-    user = User.objects(pk=userId).update(address=newAddress)
+    newAddress = Addresses(addressLine1=addressLine1, addressLine2=addressLine2, city=city, postCode=postCode, country=country, userId=userId)
+    user = Users.objects(pk=userId).update(address=newAddress)
     newAddress.cascade_save()
     user.cascade_save()
     pass
@@ -85,23 +111,22 @@ def updateProfile():
 
 
 @user_bp.get("/profile/<id>")
-def getProfile(): 
-    id = request.args.get("id")
-    user = User.objects(pk=id).first()
+def getProfile(id):    
+    user = Users.objects(pk=id).first()
     if not user:
-        return jsonify("User not found")
+        return jsonify("Users not found")
     return jsonify(user.to_json())
 
 
 @user_bp.get("/cart/<userId>/<cartId>")
-def getCart():
+def getCarts():
     userId = request.args.get("userId")
     cartId = request.args.get("cartId")
-    cart = Cart.objects(pk=cartId).first()
+    cart = Carts.objects(pk=cartId).first()
     if not cart:
-        cart = Cart(userId=userId).save()
+        cart = Carts(userId=userId).save()
 
-    user = User.objects(pk=userId).update(cart=cart)
+    user = Users.objects(pk=userId).update(cart=cart)
     user.save()
     return jsonify(cart)
 
@@ -112,12 +137,12 @@ def getPaymentDetails():
 
 
 @user_bp.post("/cart")
-def addToCart():
+def addToCarts():
     pass
 
 
 @user_bp.delete("/cart/<id>")
-def clearCart():
+def clearCarts():
     pass
 
 
@@ -127,12 +152,12 @@ def addPaymentDetails():
 
 
 @user_bp.put("/cart/item/<id>")
-def updateCartItem():
+def updateCartsItem():
     pass
 
 
 @user_bp.delete("/cart/item/<id>")
-def deleteCartItem():
+def deleteCartsItem():
     pass
 
 

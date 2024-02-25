@@ -1,7 +1,7 @@
 from datetime import datetime
 from application.models.db import *
 
-class Category(Document):
+class Categories(DynamicDocument):
     timestamps = DateTimeField(default=datetime.utcnow())
     name= StringField(required=True)
     desc=StringField(required=True)
