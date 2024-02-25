@@ -1,7 +1,6 @@
 from application.models.db import *
 from application.models.Users import Users
 class Products(DynamicDocument):
-    _id= ObjectIdField(primary_key=True)
     name = StringField()
     desc = StringField()
     category= StringField()
@@ -17,7 +16,7 @@ class Products(DynamicDocument):
     
     def to_json(self):
         return {
-            "_id": str(self._id),
+            "_id": str(self.id),
             "name": self.name,
             "desc": self.desc,
             "category": self.category,

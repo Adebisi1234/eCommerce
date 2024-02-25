@@ -15,7 +15,6 @@ class UsersOrder(EmbeddedDocument):
 
 
 class Users(DynamicDocument):
-    _id= ObjectIdField(primary_key=True)
     phone = IntField(required=True, unique=True)
     email= EmailField()
     profilePic=StringField()
@@ -45,6 +44,6 @@ class Users(DynamicDocument):
             "otp": self.otp,
             "phone": self.phone,
             "order": [str(x) for x in self.order],
-            "_id": str(self._id)
+            "_id": str(self.id)
             }
 
