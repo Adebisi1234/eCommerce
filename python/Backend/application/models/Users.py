@@ -1,9 +1,9 @@
-from application.models.db import *
+from..models.db import *
 
-from application.models.Addresses import Addresses
-from application.models.Carts import Carts
-from application.models.Payments import Payments
-from application.models.Orders import Orders
+from ..models.Addresses import Addresses
+from ..models.Carts import Carts
+from ..models.Payments import Payments
+from ..models.Orders import Orders
 
 class UsersOrder(EmbeddedDocument):
     products= ListField(ReferenceField(Orders))

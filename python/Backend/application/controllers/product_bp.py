@@ -1,7 +1,7 @@
 from flask import Blueprint, abort, request, jsonify
 import json
-from application.models.Products import Products
-from application.models.Categories import Categories
+from ..models.Products import Products
+from ..models.Categories import Categories
 
 product_bp = Blueprint("/", __name__)
 

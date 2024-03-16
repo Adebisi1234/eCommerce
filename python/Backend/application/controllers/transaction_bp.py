@@ -1,5 +1,5 @@
 from flask import Blueprint, abort, request, jsonify
-from application.models.Orders import Orders
+from ..models.Orders import Orders
 import json
 
 transaction_bp = Blueprint("/transactions", __name__, url_prefix="/transaction")

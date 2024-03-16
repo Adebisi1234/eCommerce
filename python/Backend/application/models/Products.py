@@ -1,5 +1,5 @@
-from application.models.db import *
-from application.models.Users import Users
+from..models.db import *
+from ..models.Users import Users
 class Products(DynamicDocument):
     name = StringField()
     desc = StringField()

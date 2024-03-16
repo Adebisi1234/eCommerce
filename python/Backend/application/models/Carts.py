@@ -1,7 +1,7 @@
 from datetime import datetime
-from application.models.db import *
+from ..models.db import *
 
-from application.models.CartItems import CartItems
+from ..models.CartItems import CartItems
 class Carts(DynamicDocument):
     userId= ObjectIdField()
     itemIds=ListField(ReferenceField(CartItems))

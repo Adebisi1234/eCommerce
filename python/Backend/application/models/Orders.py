@@ -1,5 +1,5 @@
 from datetime import datetime
-from application.models.db import *
+from..models.db import *
 
 
 class Orders(DynamicDocument):

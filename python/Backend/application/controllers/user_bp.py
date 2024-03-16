@@ -1,8 +1,8 @@
 from flask import Blueprint, abort, request, jsonify, current_app as app
 import json
-from application.models.Carts import Carts
-from application.models.Users import Users
-from application.models.Addresses import Addresses
+from ..models.Carts import Carts
+from ..models.Users import Users
+from ..models.Addresses import Addresses
 from flask_bcrypt import Bcrypt
 bcrypt = Bcrypt(app)
 

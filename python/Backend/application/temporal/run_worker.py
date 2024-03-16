@@ -1,12 +1,14 @@
-# @@@SNIPSTART email-subscription-project-python-run_worker
 import asyncio
+import sys
+import os
 
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.dirname(SCRIPT_DIR))
 from temporalio.client import Client
 from temporalio.worker import Worker
-
-from activities import send_email
-from shared_objects import task_queue_name
-from workflows import SendEmailWorkflow
+from temporal.activities import send_email
+from temporal.shared_objects import task_queue_name
+from temporal.workflow import SendEmailWorkflow
 
 
 async def main():
@@ -23,4 +25,3 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-# @@@SNIPEND

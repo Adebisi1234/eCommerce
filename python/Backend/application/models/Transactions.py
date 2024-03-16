@@ -1,6 +1,6 @@
-from application.models.db import * 
-from application.models.Orders import Orders
-from application.models.Users import Users
+from..models.db import * 
+from ..models.Orders import Orders
+from ..models.Users import Users
 class Transactions(DynamicDocument):
     orderId= ReferenceField(Orders)
     userId= ReferenceField(Users, reverse_delete_rule=CASCADE)

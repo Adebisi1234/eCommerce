@@ -1,7 +1,5 @@
 from mongoengine import *
-from dotenv import load_dotenv
 import os
-load_dotenv()
 
 DB_USER = os.getenv('DB_USER')
 DB_PWD = os.getenv('DB_PWD')
