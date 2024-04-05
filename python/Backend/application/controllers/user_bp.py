@@ -37,7 +37,7 @@ def signToken(id):
     return {"accessToken": accessToken, "refreshToken": refreshToken}
 
 user_bp = Blueprint("/user", __name__, url_prefix="/user")
-@user_bp.post("/register")
+@user_bp.post("/login")
 async def signup():
     record = json.loads(request.data)
     user_exist = Users.objects(email=record["email"]).first()

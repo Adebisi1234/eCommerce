@@ -20,6 +20,6 @@ COPY . .
 
 EXPOSE 7233
 EXPOSE 8233
-EXPOSE 5000
+EXPOSE 6001
 
-CMD [ "npm", "run", "dev:temporal" ]
+CMD [ ".", "start.sh" ]

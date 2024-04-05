@@ -24,6 +24,8 @@ def getAllProducts():
 
 @product_bp.get("/<id>")
 def getProduct(id):
+    if(id == "favicon.ico"):
+        return 400
     product = Products.objects(pk=id).first()
     if not product:
         return jsonify("Products not found"), 400

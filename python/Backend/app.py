@@ -1,8 +1,7 @@
 import asyncio
 from flask import Flask, request, jsonify, make_response
 from temporalio.client import Client
-
-
+from flask_cors import CORS
 from .application.temporal.workflow import SendOTPWorkflow
 from .application.temporal.shared_objects import WorkflowOptions, task_queue_name
 from .application.models.db import init_db
@@ -12,8 +11,23 @@ import os
 
 def create_app(*config):
     app = Flask(__name__)
+    """ 
+      cors({
+    origin: [
+      "localhost:5173",
+      "http://localhost:5173",
+      "https://buysomething.vercel.app",
+    ],
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization", "Origin"],
+  })
+     """
+    CORS(app, supports_credentials=True, resources={r"/*": {"origins": ["http://localhost:5173", "https://buysomething.vercel.app"]}}, allow_headers=["Content-Type", "Authorization", "Origin"])
 
     with app.app_context():
+        @app.route("/favicon.ico")
+        def ret():
+            return jsonify("success")
         from .application.controllers.user_bp import user_bp
         from .application.controllers.product_bp import product_bp
         from .application.controllers.transaction_bp import transaction_bp
