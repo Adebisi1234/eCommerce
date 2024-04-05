@@ -22,4 +22,4 @@ EXPOSE 7233
 EXPOSE 8233
 EXPOSE 6001
 
-CMD [ ".","start.sh" ]
+CMD [ ". start.sh" ]
