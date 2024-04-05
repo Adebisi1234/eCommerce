@@ -22,4 +22,4 @@ EXPOSE 7233
 EXPOSE 8233
 EXPOSE 6001
 
-CMD ["temporal", "server", "start-dev", "&", "gunicorn", "'Backend.app:create_app()'", "&", "python3", "./Backend/application/temporal/run_worker.py"]
+CMD [ ".","start.sh" ]
