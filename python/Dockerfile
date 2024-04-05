@@ -22,4 +22,4 @@ EXPOSE 7233
 EXPOSE 8233
 EXPOSE 6001
 
-ENTRYPOINT [ "start.sh" ]
+ENTRYPOINT [ ".","start.sh" ]
