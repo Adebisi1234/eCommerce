@@ -41,6 +41,7 @@ class Users(DynamicDocument):
             "cart": self.cart.to_json(),
             "payment": self.payment,
             "verified": self.verified,
+            "address": self.address.to_json(),
             "otp": self.otp,
             "phone": self.phone,
             "order": [str(x) for x in self.order],

@@ -2,55 +2,90 @@
 
 import asyncio
 from datetime import timedelta
+import sys
+import os
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.dirname(SCRIPT_DIR))
 
 from temporalio import workflow
-
 with workflow.unsafe.imports_passed_through():
-    from .activities import send_email
-    from .shared_objects import EmailDetails, WorkflowOptions
+    from temporal.activities import send_otp, send_receipt
+    @workflow.defn
+    class SendOTPWorkflow:
 
+        @workflow.run
+        async def run(self, data: str) -> int:
 
-@workflow.defn
-class SendEmailWorkflow:
-    def __init__(self) -> None:
-        self.email_details = EmailDetails()
+            try:
+                return await workflow.execute_activity(
+                    send_otp,
+                    data,
+                    start_to_close_timeout=timedelta(seconds=10),
+                )
 
-    @workflow.run
-    async def run(self, data: WorkflowOptions) -> None:
-        duration = 12
-        self.email_details.email = data.email
-        self.email_details.message = "Welcome to our Subscription Workflow!"
-        self.email_details.subscribed = True
-        self.email_details.count = 0
+            except asyncio.CancelledError as err:
+                # raise error so workflow shows as cancelled.
+                raise err
+    @workflow.defn
+    class SendReceiptWorkflow:
 
-        while self.email_details.subscribed:
-            self.email_details.count += 1
-            if self.email_details.count > 1:
-                self.email_details.message = "Thank you for staying subscribed!"
+        @workflow.run
+        async def run(self, data: str) -> None:
 
             try:
                 await workflow.execute_activity(
-                    send_email,
-                    self.email_details,
+                    send_receipt,
+                    data,
                     start_to_close_timeout=timedelta(seconds=10),
                 )
-                await asyncio.sleep(duration)
 
             except asyncio.CancelledError as err:
-                # Cancelled by the user. Send them a goodbye message.
-                self.email_details.subscribed = False
-                self.email_details.message = "Sorry to see you go"
-                await workflow.execute_activity(
-                    send_email,
-                    self.email_details,
-                    start_to_close_timeout=timedelta(seconds=10),
-                )
                 # raise error so workflow shows as cancelled.
                 raise err
 
-    @workflow.query
-    def details(self) -> EmailDetails:
-        return self.email_details
+   
+    @workflow.defn
+    class ShippingWorkflow:
+    
+        @workflow.run
+        async def run(self, product_id: str) -> str:
+        
+            try:
+                # Start shipping process
+                await workflow.sleep(timedelta(seconds=5))
+                shipping_status = "In progress"
+    
+                # Check for cancellation signal
+                if await workflow.is_cancel_requested():
+                    shipping_status = "Cancelled"
+                    return shipping_status
+    
+                # Continue shipping process
+                await workflow.sleep(timedelta(seconds=5))
+                shipping_status = "Completed"
+    
+                return shipping_status
+    
+            except asyncio.CancelledError as err:
+                # raise error so workflow shows as cancelled.
+                raise err
+    
+    
+    @workflow.defn
+    class ShippingStatusQueryWorkflow:
+    
+        @workflow.run
+        async def run(self, product_id: str) -> str:
+        
+            try:
+                # Query shipping status
+                shipping_status = await workflow.execute_workflow(ShippingWorkflow, product_id)
+    
+                return shipping_status
+    
+            except asyncio.CancelledError as err:
+                # raise error so workflow shows as cancelled.
+                raise err
 
-
-# @@@SNIPEND
+   
