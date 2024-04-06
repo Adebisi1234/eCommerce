@@ -1,3 +1,4 @@
+import random, string
 from datetime import datetime, timedelta
 from flask import Blueprint, abort, make_response, request, jsonify, current_app as app
 import json
@@ -15,6 +16,10 @@ from temporalio.client import Client
 from flask_bcrypt import Bcrypt
 import jwt
 bcrypt = Bcrypt(app)
+
+def randomword(length):
+   letters = string.ascii_lowercase
+   return ''.join(random.choice(letters) for i in range(length))
 
 def generate_token(id, minutes=0, days=0):
         payload = {"id": id, "exp": datetime.now() + timedelta(minutes=minutes, days=days)}
@@ -37,23 +42,24 @@ def signToken(id):
     return {"accessToken": accessToken, "refreshToken": refreshToken}
 
 user_bp = Blueprint("/user", __name__, url_prefix="/user")
-@user_bp.post("/login")
+@user_bp.post("/register")
 async def signup():
     record = json.loads(request.data)
-    user_exist = Users.objects(email=record["email"]).first()
+    email = record["email"]
+    user_exist = Users.objects(email=email).first()
     if user_exist:
         return jsonify("User exist")
     hashedPassword = bcrypt.generate_password_hash(record["password"])
-    newUser = Users(**record, password=hashedPassword, profilePic= f"https://robohash.org/{record["email"]}")
-    client: Client = app.temporal_client
-    otp = await client.start_workflow(
+    newUser = Users(**record, password=hashedPassword, profilePic= f"https://robohash.org/{email}")
+    client: Client = app.temporal_client    
+    otp = await client.execute_workflow(
         SendOTPWorkflow.run,
-        record["email"],
-        id=record["email"],
+        email,
+        id=randomword(15),
         task_queue=task_queue_name,
     )
-    newUser.otp = otp
-    newUser.save()
+    print(otp)
+    
     return jsonify("Otp created")
 
 
@@ -72,14 +78,14 @@ async def login():
         return jsonify("Wrong credentials")
     
     client: Client = app.temporal_client
-    otp = await client.start_workflow(
+    handle = await client.execute_workflow(
         SendOTPWorkflow.run,
         email,
-        id=email,
+        id=randomword(15),
         task_queue=task_queue_name,
     )
-    user.otp = otp
-    user.save()
+    print(handle, "wtf")
+    # user.save()
     return jsonify("Otp created")
     
 
@@ -114,10 +120,10 @@ async def refreshOTP():
     if not user: 
         return jsonify("Wrong credentials"), 403
     client: Client = app.temporal_client
-    otp = await client.start_workflow(
+    otp = await client.execute_workflow(
         SendOTPWorkflow.run,
         email,
-        id=email,
+        id=randomword(15),
         task_queue=task_queue_name,
     )
     user.otp = otp

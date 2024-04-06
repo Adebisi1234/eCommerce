@@ -15,7 +15,7 @@ with workflow.unsafe.imports_passed_through():
     class SendOTPWorkflow:
 
         @workflow.run
-        async def run(self, data: str) -> int:
+        async def run(self, data):
 
             try:
                 return await workflow.execute_activity(
@@ -31,7 +31,7 @@ with workflow.unsafe.imports_passed_through():
     class SendReceiptWorkflow:
 
         @workflow.run
-        async def run(self, data: str) -> None:
+        async def run(self, data) -> None:
 
             try:
                 await workflow.execute_activity(
@@ -45,47 +45,47 @@ with workflow.unsafe.imports_passed_through():
                 raise err
 
    
-    @workflow.defn
-    class ShippingWorkflow:
+    # @workflow.defn
+    # class ShippingWorkflow:
     
-        @workflow.run
-        async def run(self, product_id: str) -> str:
+    #     @workflow.run
+    #     async def run(self, product_id: str) -> str:
         
-            try:
-                # Start shipping process
-                await workflow.sleep(timedelta(seconds=5))
-                shipping_status = "In progress"
+    #         try:
+    #             # Start shipping process
+    #             await workflow.sleep(timedelta(seconds=5))
+    #             shipping_status = "In progress"
     
-                # Check for cancellation signal
-                if await workflow.is_cancel_requested():
-                    shipping_status = "Cancelled"
-                    return shipping_status
+    #             # Check for cancellation signal
+    #             if await workflow.is_cancel_requested():
+    #                 shipping_status = "Cancelled"
+    #                 return shipping_status
     
-                # Continue shipping process
-                await workflow.sleep(timedelta(seconds=5))
-                shipping_status = "Completed"
+    #             # Continue shipping process
+    #             await workflow.sleep(timedelta(seconds=5))
+    #             shipping_status = "Completed"
     
-                return shipping_status
+    #             return shipping_status
     
-            except asyncio.CancelledError as err:
-                # raise error so workflow shows as cancelled.
-                raise err
+    #         except asyncio.CancelledError as err:
+    #             # raise error so workflow shows as cancelled.
+    #             raise err
     
     
-    @workflow.defn
-    class ShippingStatusQueryWorkflow:
+    # @workflow.defn
+    # class ShippingStatusQueryWorkflow:
     
-        @workflow.run
-        async def run(self, product_id: str) -> str:
+    #     @workflow.run
+    #     async def run(self, product_id: str) -> str:
         
-            try:
-                # Query shipping status
-                shipping_status = await workflow.execute_workflow(ShippingWorkflow, product_id)
+    #         try:
+    #             # Query shipping status
+    #             shipping_status = await workflow.execute_workflow(ShippingWorkflow, product_id)
     
-                return shipping_status
+    #             return shipping_status
     
-            except asyncio.CancelledError as err:
-                # raise error so workflow shows as cancelled.
-                raise err
+    #         except asyncio.CancelledError as err:
+    #             # raise error so workflow shows as cancelled.
+    #             raise err
 
    
