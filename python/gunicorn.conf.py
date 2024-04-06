@@ -1,4 +1,4 @@
 import multiprocessing
 
-bind = "127.0.0.1:6001"
+bind = "0.0.0.0"
 worker_class = "gevent"
