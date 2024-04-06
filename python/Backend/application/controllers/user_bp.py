@@ -78,14 +78,14 @@ async def login():
         return jsonify("Wrong credentials")
     
     client: Client = app.temporal_client
-    handle = await client.execute_workflow(
+    otp = await client.execute_workflow(
         SendOTPWorkflow.run,
         email,
         id=randomword(15),
         task_queue=task_queue_name,
     )
-    print(handle, "wtf")
-    # user.save()
+    user.otp = otp
+    user.save()
     return jsonify("Otp created")
     
 
