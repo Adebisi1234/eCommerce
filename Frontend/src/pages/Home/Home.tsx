@@ -11,9 +11,6 @@ export default function Home() {
   const navigate = useNavigate();
   const [products, setProducts] = useState<ProductDoc[]>([]);
   const { loading, data, error } = useFetchProduct("", 5, 0);
-  useEffect(() => {
-    !localStorage.getItem("token") && navigate("/auth/login");
-  }, []);
   useLayoutEffect(() => {
     if (!data) {
       return;
