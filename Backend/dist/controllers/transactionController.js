@@ -56,6 +56,7 @@ export const unSubscribe = async (req, res) => {
         const client = new Client();
         const workflow = client.workflow.getHandle(workflowId);
         workflow.signal(cancelPurchase);
+        return res.sendStatus(200);
     }
     catch (err) {
         if (err instanceof Error) {

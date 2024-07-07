@@ -10,11 +10,11 @@ import { Category } from "../models/Category.js";
 
 export const getAllProducts = async (req: Request, res: Response) => {
   try {
-    const { limit, skip } = req.query;
+    const { limit=100, skip=0 } = req.query;
 
     const products = await Product.find()
-      .skip(skip && !isNaN(+skip) ? +skip : 0)
-      .limit(limit && !isNaN(+limit) ? +limit : 0);
+      .skip(+skip)
+      .limit(+limit);
 
     if (!products) {
       return res.status(500).json("No product found");

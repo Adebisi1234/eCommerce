@@ -37,10 +37,10 @@ app.options("/login", function (req, res) {
     res.end();
 });
 app.use("/user", userRouter);
-app.use(verifyToken);
-app.use("/transaction", transactionRouter);
 app.use("/", productRoutes);
 app.all("/*", (req, res, next) => {
     res.sendFile(path.join(`${__dirname}/index.html`));
 });
+app.use(verifyToken);
+app.use("/transaction", transactionRouter);
 export default app;
