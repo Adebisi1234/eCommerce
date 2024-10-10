@@ -13,8 +13,7 @@ import { verifyToken } from "./utils/jwt.js";
 const app = express();
 app.use(
   cors({
-    origin: [/^(http:\/\/|https:\/\/)?localhost:\d{1,5}.*$/,
-      /^(http:\/\/|https:\/\/)?buysomething\.vercel\.app\/?.*$/,],
+    origin: "*",
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization", "Origin"],
   })
