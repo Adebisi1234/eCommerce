@@ -6,7 +6,7 @@ export const useLogin = (input?: auth) => {
     const response: Res<string> = useAxios("IGNORE", "/user/login", input);
     return response;
   }
-  const response: Res<string> = useAxios("POST", "/user/login", input);
+  const response: Res<UserDoc> = useAxios("POST", "/user/login", input);
   return response;
 };
 export const useRegister = (input?: auth) => {
@@ -14,7 +14,7 @@ export const useRegister = (input?: auth) => {
     const response: Res<string> = useAxios("IGNORE", "/");
     return response;
   }
-  const response: Res<string> = useAxios("POST", "/user/register", input);
+  const response: Res<UserDoc> = useAxios("POST", "/user/register", input);
   return response;
 };
 export const useVerify = (input?: auth) => {

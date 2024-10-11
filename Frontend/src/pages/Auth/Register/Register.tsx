@@ -30,9 +30,13 @@ export default function Register() {
   const { loading, data, error } = useRegister(details);
 
   useEffect(() => {
-    if (data) {
+    if (typeof data !== "string") {
       setIsLoading(false);
-      navigate("/auth/verify", { state: details?.email, replace: true });
+      localStorage.setItem("token", `Bearer ${data.token}`);
+      localStorage.setItem("id", `${data._id}`);
+      localStorage.setItem("cartId", `${data.cart}`);
+
+      navigate("/");
     }
   }, [data]);
   const getMap = () => {

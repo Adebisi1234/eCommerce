@@ -25,11 +25,15 @@ export default function Login() {
   const { loading, data, error } = useLogin(details);
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
-    if (data) {
-      navigate("/auth/verify", { state: details?.email, replace: true });
+    if (typeof data !== "string") {
+      setIsLoading(false);
+      localStorage.setItem("token", `Bearer ${data.token}`);
+      localStorage.setItem("id", `${data._id}`);
+      localStorage.setItem("cartId", `${data.cart}`);
+
+      navigate("/");
     }
-    setIsLoading(false);
-  }, [data, error]);
+  }, [data]);
   const getMap = () => {
     if (inputRef.current) return inputRef.current;
     inputRef.current = new Map<string, HTMLInputElement>();
