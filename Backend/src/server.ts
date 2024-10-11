@@ -3,8 +3,27 @@ import mongoose from "mongoose";
 import app from "./app.js";
 
 const DB = process.env.DATABASE_URI!;
+let i = 0;
+if (process.env.NODE_ENV === "production") {
+  mongoose.connect(DB).then(() => console.log("DB connected successfully!"));
+} else {
+  async function connect(db: string) {
+    try {
+      i++;
+      await mongoose.connect(db);
+      console.log("DB connected successfully!");
+    } catch (err) {
+      if (i > 10) {
+        throw err;
+      }
+      setTimeout(() => {
+        connect(db);
+      }, 250 * i);
+    }
+  }
 
-mongoose.connect(DB).then(() => console.log("DB connected successfully!"));
+  connect(DB);
+}
 
 const port = process.env.PORT || 6001;
 

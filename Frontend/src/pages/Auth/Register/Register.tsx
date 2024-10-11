@@ -33,8 +33,9 @@ export default function Register() {
   const { loading, data, error } = useRegister(details);
 
   useEffect(() => {
-    if (data) {
-      navigate("/auth/verify", { state: details?.email, replace: true });
+    if (data && typeof data !== "string") {
+      localStorage.setItem("token", `Bearer ${data.token}`);
+      navigate("/");
     }
   }, [data]);
   const getMap = () => {

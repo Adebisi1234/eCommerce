@@ -28,8 +28,9 @@ export default function Login() {
   const inputRef = useRef<Map<string, HTMLInputElement>>();
   const { loading, data, error } = useLogin(details);
   useEffect(() => {
-    if (data) {
-      navigate("/auth/verify", { state: details?.email, replace: true });
+    if (data && typeof data !== "string") {
+      localStorage.setItem("token", `Bearer ${data.token}`);
+      navigate("/");
     }
   }, [data]);
   const getMap = () => {

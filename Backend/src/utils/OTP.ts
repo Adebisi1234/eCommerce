@@ -1,32 +1,33 @@
-import client from "twilio";
-const accountSid = process.env.TWILIO_SID as string;
-const authToken = process.env.TWILIO_AUTH_TOKEN as string;
-const verifySid = process.env.TWILIO_VERIFY_SID as string;
-const cl = client(accountSid, authToken);
+// import client from "twilio";
+// const accountSid = process.env.TWILIO_SID as string;
+// const authToken = process.env.TWILIO_AUTH_TOKEN as string;
+// const verifySid = process.env.TWILIO_VERIFY_SID as string;
+// const cl = client(accountSid, authToken);
 
 export const sendOTP = async (phone: string) => {
   try {
-    const { status } = await cl.verify.v2
-      .services(verifySid)
-      .verifications.create({ to: `+${phone}`, channel: "sms" });
-    console.log(status);
-    return status;
+    // const { status } = await cl.verify.v2
+    //   .services(verifySid)
+    //   .verifications.create({ to: `+${phone}`, channel: "sms" });
+    // console.log(status);
+    // return status;
+    return phone;
   } catch (err: any) {
     throw new Error(err.message);
   }
 };
 
-export const verifyOTP = async (phone: string, otpCode: string) => {
-  try {
-    const { status } = await cl.verify.v2
-      .services(verifySid)
-      .verificationChecks.create({ to: `+${phone}`, code: otpCode });
-    console.log(status);
-    return status;
-  } catch (err: any) {
-    throw new Error(err.message);
-  }
-};
+// export const verifyOTP = async (phone: string, otpCode: string) => {
+//   try {
+//     const { status } = await cl.verify.v2
+//       .services(verifySid)
+//       .verificationChecks.create({ to: `+${phone}`, code: otpCode });
+//     console.log(status);
+//     return status;
+//   } catch (err: any) {
+//     throw new Error(err.message);
+//   }
+// };
 // cl.verify.v2
 //   .services(verifySid)
 //   .verifications.create({ to: "+2348114779597", channel: "sms" })
