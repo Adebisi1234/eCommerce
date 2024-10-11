@@ -22,7 +22,7 @@ export default function Cart() {
   const [cart, setCart] = useState<CartDoc | undefined>(undefined);
 
   const total =
-    cart && cart?.itemIds.length > 0
+    cart && cart?.itemIds?.length > 0
       ? cart?.itemIds
           ?.map(({ itemId, itemQty }) => {
             return +(itemId as ProductDoc)?.price ?? 0 * +itemQty ?? 0;
@@ -95,7 +95,7 @@ export default function Cart() {
               {cart && !loading ? (
                 <p
                   className={`${
-                    cart?.itemIds.length === 0 && "cursor-not-allowed"
+                    cart?.itemIds?.length === 0 && "cursor-not-allowed"
                   }`}
                   onClick={() => {
                     navigate("/order", { state: { ...cart, total } });
