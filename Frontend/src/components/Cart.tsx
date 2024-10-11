@@ -55,11 +55,11 @@ export default function Cart() {
         <Card className="w-full max-w-3xl p-4 mx-auto">
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>Shopping Cart</CardTitle>
-            {cart && !loading && <Badge>{cart?.itemIds.length} items</Badge>}
+            {cart && !loading && <Badge>{cart?.itemIds?.length} items</Badge>}
           </CardHeader>
           <CardContent className="divide-y">
             {cart && !loading ? (
-              cart?.itemIds.length === 0 ? (
+              cart?.itemIds?.length === 0 ? (
                 <div className="flex flex-col items-center justify-center gap-3 mx-auto w-60 h-60">
                   <img src={noCart} alt="Cart not found" loading="lazy" />
                   <p>No Cart found</p>
