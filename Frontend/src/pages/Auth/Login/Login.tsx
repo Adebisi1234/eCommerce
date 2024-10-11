@@ -25,7 +25,7 @@ export default function Login() {
   const { loading, data, error } = useLogin(details);
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
-    if (typeof data !== "string") {
+    if (data && typeof data !== "string") {
       setIsLoading(false);
       localStorage.setItem("token", `Bearer ${data.token}`);
       localStorage.setItem("id", `${data._id}`);

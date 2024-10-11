@@ -30,7 +30,7 @@ export default function Register() {
   const { loading, data, error } = useRegister(details);
 
   useEffect(() => {
-    if (typeof data !== "string") {
+    if (data && typeof data !== "string") {
       setIsLoading(false);
       localStorage.setItem("token", `Bearer ${data.token}`);
       localStorage.setItem("id", `${data._id}`);
